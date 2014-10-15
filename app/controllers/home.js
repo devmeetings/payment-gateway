@@ -1,19 +1,19 @@
 var express = require('express'),
-  router = express.Router(),
-  mongoose = require('mongoose'),
-  Article = mongoose.model('Article');
+    router = express.Router(),
+    mongoose = require('mongoose'),
+    Event = require('../models/event');
 
-module.exports = function (app) {
-  app.use('/', router);
+module.exports = function(app) {
+    app.use('/', router);
 };
 
-router.get('/', function (req, res, next) {
+router.get('/', function(req, res, next) {
 
-  Article.find(function (err, articles) {
-    if (err) return next(err);
-    res.render('index', {
-      title: 'Generator-Express MVC',
-      articles: articles
+    Event.find(function(err, events) {
+        if (err) return next(err);
+        res.render('index', {
+            title: 'Events',
+            events: events
+        });
     });
-  });
 });
