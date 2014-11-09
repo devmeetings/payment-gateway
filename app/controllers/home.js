@@ -42,20 +42,83 @@ router.get('/events/:name', function(req, res, next) {
         }
 
         // TODO [ToDr] reclaim tickets
+        Claims.update({
+                event: ev._id,
+                validTill: {
+                    $lt: new Date()
+                },
+                status: {
+                    $in: [Claims.STATUS.ACTIVE, Claims.STATUS.WAITING]
+                }
+            }, {
+                $set: {
+                    status: Claims.STATUS.EXPIRED
+                }
+            }, {
+                multi: true
+            },
+            intercept(next, function(noOfUpdatedItems) {
 
-        res.render('event', {
-            title: ev.title,
-            event: JSON.stringify(ev)
-        });
+                if (noOfUpdatedItems) {
+                    Event.update({
+                        _id: ev._id,
+                    }, {
+                        $inc: {
+                            ticketsLeft: noOfUpdatedItems
+                        }
+                    }).exec();
+
+                    ev.ticketsLeft += noOfUpdatedItems;
+                }
+
+                res.render('event', {
+                    title: ev.title,
+                    event: JSON.stringify(ev)
+                });
+
+            }));
     }));
 
 });
 
+router.post('/events/:id/tickets/:claim', function(req, res, next) {
+
+    // TODO [ToDr] validate user data
+
+    Claims.update({
+        _id: req.params.claim,
+        event: req.params.id,
+        validTill: {
+            $gte: new Date()
+        },
+        status: Claims.STATUS.ACTIVE
+    }, {
+        $set: {
+            status: Claims.STATUS.WAITING,
+            amount: req.body.payment,
+            userData: {
+                email: req.body.email,
+                phone: req.body.phone,
+                names: req.body.names
+            }
+        }
+    }).populate('event').exec(intercept(next, function(isUpdated, claim) {
+        if (!isUpdated) {
+            return res.send(404);
+        }
+
+        res.send("Paying.");
+    }));
+});
+
 router.get('/events/:id/tickets/:claim', function(req, res, next) {
+
+    // TODO [ToDr] Display some meaningful message if status is wrong
 
     Claims.findOne({
         _id: req.params.claim,
-        event: req.params.id
+        event: req.params.id,
+        status: Claims.STATUS.ACTIVE
     }).populate('event').exec(intercept(next, function(claim) {
         if (!claim) {
             return res.send(404);
@@ -81,7 +144,7 @@ router.post('/events/:name/tickets', function(req, res, next) {
             event: ev._id,
             claimedTime: new Date(),
             validTill: new Date(now.getTime() + CLAIM_TIME),
-            status: 'active'
+            status: Claims.STATUS.ACTIVE
         }, intercept(next, function(claim) {
 
             res.redirect('/events/' + ev._id + '/tickets/' + claim._id);

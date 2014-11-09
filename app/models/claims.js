@@ -13,8 +13,9 @@ var ClaimSchema = new Schema({
     validTill: Date,
     status: {
         type: String,
-        enum: ['active', 'payed', 'expired']
+        enum: ['active', 'waiting', 'payed', 'expired']
     },
+    amount: Number,
     userData: {
         name: String
     }
@@ -26,3 +27,10 @@ ClaimSchema.virtual('date')
     });
 
 module.exports = mongoose.model('claim', ClaimSchema);
+
+module.exports.STATUS = {
+    ACTIVE: 'active',
+    WAITING: 'waiting',
+    PAYED: 'payed',
+    EXPIRED: 'expired'
+};
