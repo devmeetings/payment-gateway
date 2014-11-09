@@ -1,14 +1,13 @@
-extends layout
+extends react-layout
 
 block content
   a.btn.btn-danger.btn-fab.btn-raised.mdi-navigation-arrow-back(href="/")
-  .event
+  .row
+    .col-md-8.col-md-offset-2.col-sm-10.col-sm-offset-1
+      .event
     
 
 append scripts
-  script(src='/components/react/react.js')
-  script(src='/components/react/JSXTransformer.js')
-  script(src='/components/moment/min/moment-with-locales.js')
   script.
     var currentEvent = !{event};
   script(type='text/jsx', src='/js/event.js')

@@ -27,20 +27,20 @@ var Event = (function(R, D) {
 
       if (isAvailable) {
         return (
-          <div className="jumbotron">
+          <div className="jumbotron clearfix">
             <h1>{this.props.event.title}</h1>
-            <h3>This event is available!</h3>
+            <h3>Bilety na to wydarzenie są już dostępne!</h3>
 
-            <h1>Tickets left: {this.props.event.ticketsLeft} / {this.props.event.tickets}</h1>
+            <h1>Pozostało biletów: {this.props.event.ticketsLeft} / {this.props.event.tickets}</h1>
 
             <div class="text-center">
               <form 
-                  action={"/events/" + this.props.event.name +"/ticket"} 
+                  action={"/events/" + this.props.event.name +"/tickets"} 
                   method="post">
                 <button 
-                  className="btn btn-lg btn-raised btn-primary block-center">
+                  className="btn btn-lg btn-raised btn-primary pull-right">
 
-                  Claim Ticket
+                  Zarezerwuj Bilet
                 </button>
               </form>
             </div>
@@ -51,8 +51,8 @@ var Event = (function(R, D) {
       return (
         <div className="jumbotron">
           <h1>{this.props.event.title}</h1>
-          <h1>Tickets: {this.props.event.ticketsLeft}</h1>
-          <h2>Opening in: {moment(this.props.event.openDate).from(this.state.currentTime)}</h2>
+          <h1>Bilety: {this.props.event.ticketsLeft}</h1>
+          <h2>Rejestracja otwiera się: {moment(this.props.event.openDate).from(this.state.currentTime)}</h2>
           <h3>{this.props.event.openDate}</h3>
         </div>
       );

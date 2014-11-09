@@ -1,0 +1,12 @@
+extends layout
+
+block content
+  a.btn.btn-primary.btn-fab.btn-raised.mdi-navigation-arrow-back(
+    href="/events/#{event.name}"
+  )
+  .event
+
+  h1= event.title
+  h1.alert.alert-danger
+    | Nie ma już więcej biletów.
+
