@@ -5,5 +5,9 @@
     "**/.*",
     "node_modules",
     "components"
-  ]
+  ],
+  "dependencies": {
+    "bootstrap-material-design": "~0.1.5",
+    "bootstrap": "~3.3.0"
+  }
 }
