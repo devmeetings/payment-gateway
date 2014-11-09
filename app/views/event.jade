@@ -1,0 +1,15 @@
+extends layout
+
+block content
+  a.btn.btn-danger.btn-fab.btn-raised.mdi-navigation-arrow-back(href="/")
+  .event
+    
+
+append scripts
+  script(src='/components/react/react.js')
+  script(src='/components/react/JSXTransformer.js')
+  script(src='/components/moment/min/moment-with-locales.js')
+  script.
+    var currentEvent = !{event};
+  script(type='text/jsx', src='/js/event.js')
+

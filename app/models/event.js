@@ -4,7 +4,12 @@ var mongoose = require('mongoose'),
     Schema = mongoose.Schema;
 
 var EventSchema = new Schema({
-    name: String,
+    name: {
+    	type: String,
+    	unique: true,
+    	index: true
+    },
+    title: String,
     openDate: Date,
     tickets: Number,
     ticketsLeft: Number

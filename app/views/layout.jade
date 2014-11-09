@@ -1,6 +1,5 @@
 doctype html
 html(lang='en')
-  head
     meta(charset='UTF-8')
     meta(name='viewport', content='width=device-width')
     title= title
@@ -8,11 +7,18 @@ html(lang='en')
       link(rel='stylesheet', href='/components/bootstrap/dist/css/bootstrap.css')
       link(rel='stylesheet', href='/components/bootstrap-material-design/dist/css/ripples.min.css')
       link(rel='stylesheet', href='/components/bootstrap-material-design/dist/css/material-wfont.css')
+      link(rel='stylesheet', href='/css/styles.css')
     block js
       script(src='http://localhost:35729/livereload.js')
       script(src='/components/jquery/dist/jquery.js')
       script(src='/components/bootstrap/dist/js/bootstrap.js')
       script(src='/components/bootstrap-material-design/dist/js/ripples.js')
       script(src='/components/bootstrap-material-design/dist/js/material.js')
+      script
+        :coffee
+          $ ->
+            $.material.init()
   body
-    block content
+    .container
+      block content
+    block scripts
