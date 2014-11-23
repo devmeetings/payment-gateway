@@ -94,11 +94,6 @@
               </fieldset>
 
               <fieldset>
-                <legend>Dane do faktury</legend>
-
-              </fieldset>
-
-              <fieldset>
                 <legend>Płatność</legend>
 
                 <div className="form-group">
