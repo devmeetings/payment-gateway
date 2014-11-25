@@ -27,8 +27,8 @@ router.get('/', function(req, res, next) {
     Event.find(intercept(next, function(events) {
         res.render('index', {
             title: 'Events',
-            events: events.map(function(ev){
-              ev.descriptionMd = marked(ev.description || "");
+            events: events.map(function(ev) {
+              ev.description = marked(ev.description || "");
               return ev;
             })
         });
