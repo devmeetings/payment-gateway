@@ -6,11 +6,15 @@ html(lang='en')
     block css
       link(rel='stylesheet', href='/components/bootstrap/dist/css/bootstrap.css')
       link(rel='stylesheet', href='/components/bootstrap-theme-cosmo/cosmo.min.css')
+      link(rel='stylesheet', href='/components/highlightjs/styles/default.css')
       link(rel='stylesheet', href='/css/styles.css')
     block js
       script(src='http://localhost:35729/livereload.js')
       script(src='/components/jquery/dist/jquery.js')
       script(src='/components/bootstrap/dist/js/bootstrap.js')
+      script(src='/components/highlightjs/highlight.pack.js')
+      script.
+        hljs.initHighlightingOnLoad();
   body
     .container
       block content
