@@ -50,7 +50,7 @@ var Event = (function(R, D) {
       }
 
       return (
-        <div className="jumbotron">
+        <div className="well">
           <h1>{this.props.event.title}</h1>
           <h1>Bilety: {this.props.event.ticketsLeft}</h1>
           <h2>Rejestracja otwiera się: {moment(this.props.event.openDate).from(this.state.currentTime)}</h2>
