@@ -1,4 +1,5 @@
 var express = require('express'),
+    marked = require('marked'),
     router = express.Router(),
     mongoose = require('mongoose'),
     Event = require('../models/event'),
@@ -26,7 +27,10 @@ router.get('/', function(req, res, next) {
     Event.find(intercept(next, function(events) {
         res.render('index', {
             title: 'Events',
-            events: events
+            events: events.map(function(ev){
+              ev.descriptionMd = marked(ev.description || "");
+              return ev;
+            })
         });
     }));
 
@@ -107,7 +111,14 @@ router.post('/events/:id/tickets/:claim', function(req, res, next) {
             return res.send(404);
         }
 
-        res.send("Paying.");
+        Claims.findById(req.params.claim).populate('event').exec(intercept(next, function(claim) {
+
+          res.render('event-ok', {
+            claim: claim,
+            id: req.params.claim
+          });
+
+        }));
     }));
 });
 

@@ -27,7 +27,7 @@ var Event = (function(R, D) {
 
       if (isAvailable) {
         return (
-          <div className="jumbotron clearfix">
+          <div className="well clearfix">
             <h1>{this.props.event.title}</h1>
             <h3>Bilety na to wydarzenie są już dostępne!</h3>
 
@@ -37,8 +37,9 @@ var Event = (function(R, D) {
               <form 
                   action={"/events/" + this.props.event.name +"/tickets"} 
                   method="post">
+                <br />
                 <button 
-                  className="btn btn-lg btn-raised btn-primary pull-right">
+                  className="btn btn-lg btn-primary center-block">
 
                   Zarezerwuj Bilet
                 </button>
@@ -53,7 +54,7 @@ var Event = (function(R, D) {
           <h1>{this.props.event.title}</h1>
           <h1>Bilety: {this.props.event.ticketsLeft}</h1>
           <h2>Rejestracja otwiera się: {moment(this.props.event.openDate).from(this.state.currentTime)}</h2>
-          <h3>{this.props.event.openDate}</h3>
+          <p className="text-muted">{this.props.event.openDate}</p>
         </div>
       );
     }

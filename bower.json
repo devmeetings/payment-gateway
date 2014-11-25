@@ -7,9 +7,9 @@
     "components"
   ],
   "dependencies": {
-    "bootstrap-material-design": "~0.1.5",
     "bootstrap": "~3.3.0",
     "react": "~0.12.0",
-    "moment": "~2.8.3"
+    "moment": "~2.8.3",
+    "bootstrap-theme-cosmo": "~3.1.1"
   }
 }

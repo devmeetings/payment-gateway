@@ -1,9 +1,10 @@
 extends layout
 
 block content
-  a.btn.btn-primary.btn-fab.btn-raised.mdi-navigation-arrow-back(
+  a.btn.btn-primary(
     href="/events/#{event.name}"
   )
+    span.glyphicon.glyphicon-chevron-left
   .event
 
   h1= event.title

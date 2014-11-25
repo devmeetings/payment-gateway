@@ -5,8 +5,12 @@ block content
   .row
     .col-md-8.col-md-offset-2.col-sm-10.col-sm-offset-1
       each ev in events
-        .jumbotron.clearfix
+        .well.clearfix
           h1 #{ev.title}
           h3.text-muted Bilety: #{ev.ticketsLeft} / #{ev.tickets}
+          hr
+          div #{ev.descriptionMd}
+
           p.hide #{ev}
-          a.btn.btn-primary.btn-lg.pull-right(href="/events/#{ev.name}") Zarejestruj się!
+          .text-center
+            a.btn.btn-primary.btn-lg(href="/events/#{ev.name}") Zarejestruj się!

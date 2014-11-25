@@ -30,8 +30,6 @@
           <div className={"radio " + this.props.type }>
             <label>
               <input type="radio" value={this.props.value} name={this.props.name} defaultChecked={this.props.checked} />
-              <span className="circle"></span>
-              <span className="check"></span>
               {this.props.children}
             </label>
           </div>
@@ -102,19 +100,19 @@
                   </label>
                   <div className="col-md-9">
                     <RadioField name="payment" value="10" type="radio-danger">
-                      <p>10 zł</p>
+                      <span>10 zł</span>
                     </RadioField>
                     <RadioField name="payment" value="25" type="radio-danger">
-                      <p>25 zł</p>
+                      <span>25 zł</span>
                     </RadioField>
                     <RadioField name="payment" value="50" type="radio-danger">
-                      <p>50 zł</p>
+                      <span>50 zł</span>
                     </RadioField>
                     <RadioField name="payment" value="10" type="" checked>
-                      <p>75 zł</p>
+                      <span>75 zł</span>
                     </RadioField>
                     <RadioField name="payment" value="10" type="radio-success">
-                      <p>100 zł</p>
+                      <span>100 zł</span>
                     </RadioField>
                   </div>
                 </div>

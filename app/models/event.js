@@ -10,6 +10,7 @@ var EventSchema = new Schema({
     	index: true
     },
     title: String,
+    description: String,
     openDate: Date,
     tickets: Number,
     ticketsLeft: Number

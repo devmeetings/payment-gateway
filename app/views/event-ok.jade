@@ -1,0 +1,17 @@
+extends layout
+
+block content
+  a.btn.btn-primary(
+    href="/"
+  )
+    span.glyphicon.glyphicon-chevron-left
+
+  h1.alert.alert-warning
+    | Aby dokonać płatności za swój bilet na #{claim.event.title} sprawdź swoją pocztę.
+
+  .well
+    h1 
+      | Id twojego biletu: 
+      code #{id}
+    h5.text-muted
+      p W razie jakichkolwiek problemów skontaktuj się z nami pod adresem <code>info@devmeetings.pl</code>
