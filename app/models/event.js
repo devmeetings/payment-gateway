@@ -9,6 +9,7 @@ var EventSchema = new Schema({
     	unique: true,
     	index: true
     },
+    isVisible: Boolean,
     title: String,
     description: String,
     openDate: Date,

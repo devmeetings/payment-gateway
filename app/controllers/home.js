@@ -1,7 +1,7 @@
 var express = require('express'),
   router = express.Router(),
   marked = require('marked'),
-  mongoose = require('mongoose'),
+  intercept = require('../utils/intercept'),
   Mailer = require('../utils/mailer'),
   Event = require('../models/event'),
   Claims = require('../models/claims');
@@ -11,21 +11,11 @@ module.exports = function(app) {
 };
 
 
-function intercept(next, func) {
-  return function( /*args*/ ) {
-    var err = arguments[0];
-    var args = Array.prototype.slice.call(arguments, 1);
-    if (err) {
-      next(err);
-    } else {
-      return func.apply(this, args);
-    }
-  };
-}
-
 router.get('/', function(req, res, next) {
 
-  Event.find(intercept(next, function(events) {
+  Event.find({
+    isVisible: true
+  }, intercept(next, function(events) {
     res.render('index', {
       title: 'Events',
       events: events.map(function(ev) {

@@ -1,0 +1,17 @@
+extends ../layout
+
+block content
+
+  .row
+    .col-md-8.col-md-offset-2.col-sm-10.col-sm-offset-1
+      each ev in events
+        .well.clearfix
+          h1(contenteditable) #{ev.title} (visible: #{ev.isVisible})
+          h2 #{ev.openDate}
+          h3.text-muted Bilety: #{ev.ticketsLeft} / #{ev.tickets}
+          hr
+          textarea.form-control(rows="10") #{ev.description}
+
+          p.hide #{ev}
+          .text-center
+            a.btn.btn-primary.btn-lg(href="/admin/events/#{ev._id}/claims") Pokaż bilety
