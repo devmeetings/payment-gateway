@@ -9,3 +9,5 @@ module.exports = nodemailer.createTransport(smtpTransport({
     pass: '-7ilnw_1ZPaoE3lqFsAQOQ'
   }
 }));
+
+module.exports.from = 'info@devmeetings.pl';
