@@ -158,3 +158,72 @@ hr {
   background-color: #ffffff;
   color: #e74c3c;
 }
+
+.container-light-gray {
+  background: #ecf0f1;
+}
+
+.container-dark-gray {
+  background: #dae2e4;
+}
+
+
+.noHeaderMargins {
+  line-height: normal;
+  margin-top:0;
+  margin-bottom:0;
+}
+
+.no-border {
+  border: none;
+}
+
+.vertical-space-s {
+  margin-top: 25px;
+}
+
+.vertical-space-m {
+  margin-top: 50px;
+}
+
+.vertical-space-l {
+  margin-top: 100px;
+}
+
+.vertical-space-xl {
+  margin-top: 150px;
+}
+
+.vertical-space-xxl {
+  margin-top: 300px;
+}
+
+.vertical-padding-s {
+  padding-top: 25px;
+  padding-bottom: 25px;
+}
+
+.vertical-padding-m {
+  padding-top: 50px;
+  padding-bottom: 50px;
+}
+
+.vertical-padding-l {
+  padding-top: 100px;
+  padding-bottom: 100px;
+}
+
+.vertical-padding-xl {
+  padding-top: 150px;
+  padding-bottom: 150px;
+}
+
+.vertical-padding-xxl {
+  padding-top: 300px;
+  padding-bottom: 300x;
+}
+
+.text-center {
+  text-align: center;
+}
+

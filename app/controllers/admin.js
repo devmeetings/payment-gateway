@@ -40,6 +40,8 @@ router.post('/events/:ev', function(req, res, next){
       title: req.body.title,
       isVisible: req.body.isVisible,
       openDate: req.body.openDate,
+      eventStartDate: req.body.eventStartDate,
+      eventEndDate: req.body.eventEndDate,
       description: req.body.description
     }
   }, intercept(next, function(isUpdated) {

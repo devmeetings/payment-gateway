@@ -8,6 +8,7 @@ html(lang='en')
       link(rel='stylesheet', href='http://fonts.googleapis.com/css?family=Open+Sans:400,700')
       link(rel='stylesheet', href='/components/highlightjs/styles/default.css')
       link(rel='stylesheet', href='/css/styles.css')
+      link(rel='stylesheet', href='http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css')
     block js
       script(src='http://localhost:35729/livereload.js')
       script(src='/components/jquery/dist/jquery.js')
@@ -18,8 +19,7 @@ html(lang='en')
   body
     include ./header
 
-    .container
-      block content
+    block content
 
     block scripts
 

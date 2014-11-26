@@ -1,17 +1,23 @@
 extends layout
 
 block content
-  a.btn.btn-primary(
-    href="/"
-  )
-    span.glyphicon.glyphicon-chevron-left
+  
+  .container.vertical-padding-s
+    .row
+      .col-md-8.col-md-offset-2.col-sm-10.col-sm-offset-1
+        .vertical-space-l
+        .alert.alert-info
+          h4.noHeaderMargins
+            .pull-left.fa.fa-thumbs-o-up.fa-4x
+            | Zarejestrowałeś się na DevMeeting #{claim.event.title}.
+          h5
+           | Potwierdzenie rejestracji oraz dane do płatności zadeklarowanej kwoty wysłaliśmy Tobie mailem.
 
-  h1.alert.alert-warning
-    | Aby dokonać płatności za swój bilet na #{claim.event.title} sprawdź swoją pocztę.
-
-  .well
-    h1 
-      | Id twojego biletu: 
-      code #{claim._id}
-    h5.text-muted
-      p W razie jakichkolwiek problemów skontaktuj się z nami pod adresem <code>info@devmeetings.pl</code>
+        .vertical-space-xl
+        hr
+        h5.text-muted.noHeaderMargins W razie jakichkolwiek problemów skontaktuj się z nami pod adresem <code>info@devmeetings.pl</code>        
+        h5.text-muted.noHeaderMargins
+          | Id twojego biletu: 
+          code #{claim._id}
+        
+        .vertical-space-xl

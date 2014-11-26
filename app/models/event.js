@@ -13,6 +13,8 @@ var EventSchema = new Schema({
     title: String,
     description: String,
     openDate: Date,
+    eventStartDate: Date,
+    eventEndDate: Date,
     tickets: Number,
     ticketsLeft: Number
 });

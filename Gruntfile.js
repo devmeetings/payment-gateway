@@ -38,7 +38,13 @@ module.exports = function(grunt) {
           'app/**/*.js',
           'config/*.js'
         ],
-        tasks: ['develop', 'delayed-livereload', 'jasmine_node']
+        tasks: ['develop', 'delayed-livereload', 'jasmine_node'],
+      },
+      frontend: {
+        files: ['public/**/*.js'],
+        options: {
+          livereload: reloadPort
+        }
       },
       views: {
         files: [

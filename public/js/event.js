@@ -1,5 +1,64 @@
 var Event = (function(R, D) {
 
+  var WaitingComponent = R.createClass({
+    render: function() {
+      var niceDate = moment(this.props.event.openDate).format("LLLL");
+      return (
+        <div>
+          <div className="row">
+            <div className="col-md-2">
+              <h1 className="noHeaderMargins text-center"><span className="fa fa-ticket"></span></h1>
+            </div>
+            <div className="col-md-10">
+              <h4 className="noHeaderMargins">Rejestracja będzie otwarta {moment(this.props.event.openDate).from(this.props.currentTime)}</h4>
+              <h5 className="noHeaderMargins text-muted">{niceDate}</h5>
+            </div>                    
+          </div>                 
+        </div>
+      );
+    }
+
+  });
+
+  var RegisterComponent = R.createClass({
+
+    render: function() {
+       var progress = {
+        width: this.props.event.ticketsLeft / this.props.event.tickets * 100 + "%"
+      };
+
+       var progressLeft = {
+        width: (100-(this.props.event.ticketsLeft / this.props.event.tickets * 100)) + "%"
+      };      
+
+      return (
+        <div>
+          <div className="row">
+            <div className="col-md-2">
+              <h1 className="noHeaderMargins"><span className="fa fa-ticket"></span></h1>
+            </div>
+            <div className="col-md-10">
+              <h4 className="noHeaderMargins">Rejestracja trwa!</h4>
+              Aby wziąć udział w DevMeetingu<br/>musisz się zarejestrować.
+              <h5>Pozostało {this.props.event.ticketsLeft} z {this.props.event.tickets} miejsc.</h5>
+          <form 
+                  action={"/events/" + this.props.event.name +"/tickets"} 
+                  method="post">
+            <div className="progress">
+              <div style={progressLeft} className="progress-bar progress-bar-warning"></div>            
+              <div style={progress} className="progress-bar progress-bar-info"></div>
+            </div>
+            <button className="btn btn-lg btn-dev">Zarejestruj się!</button>
+          </form>
+            </div>
+
+          </div>         
+          
+        </div>
+      );
+    }
+  });
+
   var EventComponent = R.createClass({
 
     getInitialState: function() {
@@ -24,40 +83,84 @@ var Event = (function(R, D) {
 
     render: function() {
       var isAvailable = moment(this.state.currentTime).isAfter(this.props.event.openDate);
+      var eventStartDate = moment(this.props.event.eventStartDate.toString());
+      var eventEndDate = moment(this.props.event.eventEndDate.toString());
 
+
+      var progress = {
+        width: this.props.event.ticketsLeft / this.props.event.tickets * 100 + "%"
+      };
+
+      var eventActions;
       if (isAvailable) {
-        return (
-          <div className="well clearfix">
-            <h1>{this.props.event.title}</h1>
-            <h3>Bilety na to wydarzenie są już dostępne!</h3>
-
-            <p>Pozostało biletów: {this.props.event.ticketsLeft} / {this.props.event.tickets}</p>
-            <hr />
-            <div dangerouslySetInnerHTML={{__html: this.props.event.description}}></div>
-            <hr />
-            <div className="text-center">
-              <form 
-                  action={"/events/" + this.props.event.name +"/tickets"} 
-                  method="post">
-                <br />
-                <p>Pozostało biletów: {this.props.event.ticketsLeft} / {this.props.event.tickets}</p>
-                <button 
-                  className="btn btn-lg btn-dev center-block">
-
-                  Zarezerwuj Bilet
-                </button>
-              </form>
-            </div>
-          </div>
-        );
+        eventActions = <RegisterComponent event={this.props.event}></RegisterComponent>;
+      } else {
+        eventActions = <WaitingComponent event={this.props.event} currentTime={this.state.currentTime}></WaitingComponent>;
       }
 
       return (
-        <div className="well">
-          <h1>{this.props.event.title}</h1>
-          <h1>Bilety: {this.props.event.ticketsLeft}</h1>
-          <h2>Rejestracja otwiera się: {moment(this.props.event.openDate).from(this.state.currentTime)}</h2>
-          <p className="text-muted">{this.props.event.openDate}</p>
+        <div>
+          <div className="container">
+            <div className="row">
+              <div className="col-md-8 col-sm-8">
+                <h4>{this.props.event.title}</h4>
+                <div dangerouslySetInnerHTML={{__html: this.props.event.description}}></div>
+              </div>
+              <div className="col-md-4 col-sm-4">
+                <div className="well">
+                  <div className="row">
+                    <div className="col-md-2 text-center">
+                      <h1 className="noHeaderMargins"><span className="fa fa-calendar-o"></span></h1>
+                    </div>
+                    <div className="col-md-10">
+                      <h4 className="noHeaderMargins">{eventStartDate.format('LL')}</h4>
+                      <h5 className="noHeaderMargins text-muted">{eventStartDate.format('dddd')}, {eventStartDate.format('HH:mm') + ' - ' + eventEndDate.format('HH:mm')}</h5>
+                    </div>                    
+                  </div>
+                  <hr className="no-border"/>
+                  <div className="row">
+                    <div className="col-md-2 text-center">
+                      <h1 className="noHeaderMargins"><span className="fa fa-map-marker"></span></h1>
+                    </div>
+                    <div className="col-md-10">
+                      <h4 className="noHeaderMargins">DevMeeting Online</h4>
+                      <h5 className="noHeaderMargins text-muted">Sprawdź co będzie potrzebne</h5>
+                    </div>                    
+                  </div>                  
+                  <hr/>
+                  {eventActions}
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className="container-light-gray">
+            <div className="container vertical-padding-s">
+              <div className="row">
+                <div className="col-md-8 col-sm-8">
+                  <h3>Informacje praktyczne</h3>
+                  <div className="vertical-space-s"></div>
+                  <p>
+                    <h5 className="noHeaderMargins">Komunikacja przez Teamspeak<br/></h5>Podczas warszatów będziemy komunikować się przez TeamSpeak - narzędzie używane m. in. przez graczy Battlefield czy Minecraft. Prosimy o instalację klienta dostępnego pod: http://www.teamspeak.com. Dane dostępowe do naszego serwera udostępnimy zarejestrowanym uczestnikom.
+                  </p>
+                  <p>
+                    <h5 className="noHeaderMargins">Słuchawki<br/></h5>Przygotuj proszę wygodne słuchawki, ponieważ głośniki mogą powodować echo utrudniać komunikację.
+                  </p>
+                  <p>
+                    <h5 className="noHeaderMargins">Przeglądarka Google Chrome<br/></h5>Nasza plaftorma do prowadzenia szkoleń wspiera aktualnie Google Chrome, dlatego prosimy o instalację tej przeglądarki.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className="container-dark-gray">
+            <div className="container vertical-padding-m">    
+              <div className="row">
+                <div className="col-md-4 col-sm-4 col-md-offset-4">
+                  {eventActions}
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       );
     }

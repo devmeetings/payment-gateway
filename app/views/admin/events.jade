@@ -16,8 +16,17 @@ block content
                   input(type='checkbox', checked=ev.isVisible, name="isVisible")
                   | Visible?
             .form-group
-              label.control-label Date
+              label.control-label Registration Open Date
               input.form-control(type="text", value=ev.openDate, name="openDate")
+
+            .form-group
+              label.control-label Event Start date
+              input.form-control(type="text", value=ev.eventStartDate, name="eventStartDate")
+
+            .form-group
+              label.control-label Event End date
+              input.form-control(type="text", value=ev.eventEndDate, name="eventEndDate")
+
             .form-group
               h3.text-muted Bilety: #{ev.ticketsLeft} / #{ev.tickets}
             hr

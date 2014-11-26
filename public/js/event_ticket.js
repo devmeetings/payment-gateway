@@ -73,38 +73,52 @@
 
       if (!isAvailable) {
         return (
-          <div className="alert alert-danger">
-            <h1>Twój bilet utracił ważność.</h1>
+          <div>
+            <div className="vertical-space-l"></div>
+            <div className="alert alert-danger">
+              <h4 className="noHeaderMargins">
+                <div className="pull-left fa fa-thumbs-o-down fa-4x"></div>Czas, który miałeś na dokończenie rejestracji skończył się.
+              </h4>
+              <h5 className="text-muted">
+                Możesz spróbować zarejestrować się jeszcze raz.<br/>W razie problemów, prosimy o maila: info@devmeetings.com.
+              </h5>
+            </div>  
+            <div className="vertical-space-xxl"></div>            
           </div>
         );
       }
 
       var inputField;
       if (this.state.ownPayment) {
-        inputField = (<InputField name="payment" title="Twoja kwota" placeholder="" type="number">
-        </InputField>);
+        inputField = <InputField name="payment" title="Twoja kwota" placeholder="" type="number">
+        </InputField>;
       }
+
+      var eventStartDate = moment(this.props.claim.event.eventStartDate.toString());
+      var eventEndDate = moment(this.props.claim.event.eventEndDate.toString());
 
       return (
         <div>
-          <div className="alert alert-success">
-            <h1 className="text-center">Bilet jest zarezerwowany.</h1>
-            <p>Musisz dokończyć rejestrację {timeLeft}.</p>
+          <div className="alert alert-warning">
+            <h4 className="noHeaderMargins">Prosimy o wypełnienie formularza.</h4>
+            <p>Aby się zarejestrować, musisz dokończyć rejestrację <strong>{timeLeft}</strong>.</p>
           </div>
 
           <div className="well">
-            <h1>Bilet na {this.props.claim.event.title}</h1>
-
+            <h5 className="noHeaderMargins text-muted">Rejestrujesz się na DevMeeting online</h5>
+            <h3 className="noHeaderMargins">{this.props.claim.event.title}</h3>
+            <h5 className="noHeaderMargins">{eventStartDate.format('LL')} ({eventStartDate.format('dddd')}), {eventStartDate.format('HH:mm') + ' - ' + eventEndDate.format('HH:mm')}</h5>
+            <hr/>
             <form method="post" className="form-horizontal clearfix">
               <fieldset>
-                <legend>Dane kontaktowe</legend>
+                <h4>Dane kontaktowe</h4>
                 <InputField name="email" type="email" title="E-mail" placeholder="Adres e-mail" />
                 <InputField name="names" title="Imię i nazwisko" placeholder="Imię i nazwisko" />
                 
               </fieldset>
 
               <fieldset>
-                <legend>Płatność</legend>
+                <h4>Płatność (Pay What You Want)</h4>
 
                 <div className="form-group">
                   <label className="col-md-3 control-label">
@@ -136,7 +150,7 @@
 
               <div className="pull-right">
                 <button className="btn btn-dev btn-lg" type="submit">
-                  Przejdź do płatności
+                  Potwierdź rejestrację
                 </button>
               </div>
             </form>

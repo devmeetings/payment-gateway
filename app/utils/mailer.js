@@ -10,4 +10,4 @@ module.exports = nodemailer.createTransport(smtpTransport({
   }
 }));
 
-module.exports.from = 'info@devmeetings.pl';
+module.exports.from = 'DevMeetings <info@devmeetings.pl>';
