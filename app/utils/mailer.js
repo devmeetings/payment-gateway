@@ -1,9 +1,11 @@
 var nodemailer = require('nodemailer');
+var smtpTransport = require('nodemailer-smtp-transport');
 
-module.exports = nodemailer.createTransport({
-  service: 'Gmail',
+module.exports = nodemailer.createTransport(smtpTransport({
+  port: 587,
+  host: 'smtp.mandrillapp.com',
   auth: {
-    user: 'server@todr.me',
-    pass: 'bLj6L=KR'
+    user: 'zwolinskipiotr@gmail.com',
+    pass: '-7ilnw_1ZPaoE3lqFsAQOQ'
   }
-});
+}));
