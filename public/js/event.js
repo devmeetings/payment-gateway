@@ -33,7 +33,7 @@ var Event = (function(R, D) {
 
             <h1>Pozostało biletów: {this.props.event.ticketsLeft} / {this.props.event.tickets}</h1>
 
-            <div class="text-center">
+            <div className="text-center">
               <form 
                   action={"/events/" + this.props.event.name +"/tickets"} 
                   method="post">
