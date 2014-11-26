@@ -76,7 +76,7 @@
         <div>
           <div className="alert alert-success">
             <h1>Bilet należy do Ciebie.</h1>
-            <p>Musisz zapłacić za swój bilet {timeLeft}.</p>
+            <p>Musisz wypełnić formularz płatności w ciągu {timeLeft}.</p>
           </div>
 
           <div className="well">
