@@ -123,7 +123,7 @@ router.post('/events/:id/tickets/:claim', function(req, res, next) {
   }, {
     $set: {
       status: Claims.STATUS.WAITING,
-      amount: req.body.payment[0] === -1 ? req.body.payment[1] : req.body.payment[0],
+      amount: req.body.payment[0] === -1 ? req.body.payment[1] : req.body.payment,
       userData: {
         email: req.body.email,
         names: req.body.names
@@ -146,7 +146,9 @@ router.get('/events/:id/tickets/:claim', function(req, res, next) {
   Claims.findOne({
     _id: req.params.claim,
     event: req.params.id,
-    status: Claims.STATUS.ACTIVE
+    status: {
+      $in: [Claims.STATUS.ACTIVE, Claims.STATUS.WAITING]
+    }
   }).populate('event').exec(intercept(next, function(claim) {
     if (!claim) {
       return res.send(404);
