@@ -32,6 +32,21 @@ router.get('/events', function(req, res, next) {
   }));
 });
 
+router.post('/events/:ev', function(req, res, next){
+  Event.update({
+    _id: req.params.ev
+  }, {
+    $set: {
+      title: req.body.title,
+      isVisible: req.body.isVisible,
+      openDate: req.body.openDate,
+      description: req.body.description
+    }
+  }, intercept(next, function(isUpdated) {
+    res.redirect('/admin/events');
+  }));
+});
+
 router.get('/events/:ev/claims', function(req, res, next){
   Claims.find({
     event: req.params.ev

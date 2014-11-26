@@ -6,12 +6,25 @@ block content
     .col-md-8.col-md-offset-2.col-sm-10.col-sm-offset-1
       each ev in events
         .well.clearfix
-          h1(contenteditable) #{ev.title} (visible: #{ev.isVisible})
-          h2 #{ev.openDate}
-          h3.text-muted Bilety: #{ev.ticketsLeft} / #{ev.tickets}
-          hr
-          textarea.form-control(rows="10") #{ev.description}
+          form(method="post", action="/admin/events/#{ev._id}")
+            .form-group
+              label.control-label Title
+              input.form-control(type='text' value=ev.title, name="title") 
+            .form-group
+              .checkbox
+                label
+                  input(type='checkbox', checked=ev.isVisible, name="isVisible")
+                  | Visible?
+            .form-group
+              label.control-label Date
+              input.form-control(type="text", value=ev.openDate, name="openDate")
+            .form-group
+              h3.text-muted Bilety: #{ev.ticketsLeft} / #{ev.tickets}
+            hr
+            textarea.form-control(rows="10", name="description") #{ev.description}
 
-          p.hide #{ev}
-          .text-center
-            a.btn.btn-primary.btn-lg(href="/admin/events/#{ev._id}/claims") Pokaż bilety
+            p.hide #{ev}
+            .text-center
+              a.btn.btn-primary.btn-lg(href="/admin/events/#{ev._id}/claims") Pokaż bilety
+            hr
+            button.btn.btn-danger(type="submit") Uaktualnij
