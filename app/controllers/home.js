@@ -153,11 +153,17 @@ router.get('/events/:id/tickets/:claim', function(req, res, next) {
     if (!claim) {
       return res.send(404);
     }
-
-    res.render('event-ticket_fill', {
-      claim: claim,
-      claim_json: JSON.stringify(claim)
-    });
+  
+    if (claim.status === Claims.STATUS.ACTIVE) {
+      res.render('event-ticket_fill', {
+        claim: claim,
+        claim_json: JSON.stringify(claim)
+      });
+    } else {
+      res.render('event-ok', {
+        claim: claim,
+      });
+    }
 
   }));
 
