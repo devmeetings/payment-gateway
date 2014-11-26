@@ -31,15 +31,18 @@ var Event = (function(R, D) {
             <h1>{this.props.event.title}</h1>
             <h3>Bilety na to wydarzenie są już dostępne!</h3>
 
-            <h1>Pozostało biletów: {this.props.event.ticketsLeft} / {this.props.event.tickets}</h1>
-
+            <p>Pozostało biletów: {this.props.event.ticketsLeft} / {this.props.event.tickets}</p>
+            <hr />
+            <div dangerouslySetInnerHTML={{__html: this.props.event.description}}></div>
+            <hr />
             <div className="text-center">
               <form 
                   action={"/events/" + this.props.event.name +"/tickets"} 
                   method="post">
                 <br />
+                <p>Pozostało biletów: {this.props.event.ticketsLeft} / {this.props.event.tickets}</p>
                 <button 
-                  className="btn btn-lg btn-primary center-block">
+                  className="btn btn-lg btn-dev center-block">
 
                   Zarezerwuj Bilet
                 </button>

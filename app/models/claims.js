@@ -18,7 +18,6 @@ var ClaimSchema = new Schema({
     amount: Number,
     userData: {
         email: String,
-        phone: String,
         names: String
     }
 });

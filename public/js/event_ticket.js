@@ -29,7 +29,7 @@
       return (
           <div className={"radio " + this.props.type }>
             <label>
-              <input type="radio" value={this.props.value} name={this.props.name} defaultChecked={this.props.checked} />
+              <input type="radio" value={this.props.value} name={this.props.name} defaultChecked={this.props.checked} onChange={this.props.onChange}/>
               {this.props.children}
             </label>
           </div>
@@ -42,13 +42,20 @@
 
     getInitialState: function() {
       return {
-        currentTime: new Date()
+        currentTime: new Date(),
+        ownPayment: false
       };
     },
 
     tick: function() {
       this.setState({
         currentTime: new Date()
+      });
+    },
+
+    changeValue: function() {
+      this.setState({
+        ownPayment: event.target.value === "-1"
       });
     },
 
@@ -72,11 +79,17 @@
         );
       }
 
+      var inputField;
+      if (this.state.ownPayment) {
+        inputField = (<InputField name="payment" title="Twoja kwota" placeholder="" type="number">
+        </InputField>);
+      }
+
       return (
         <div>
           <div className="alert alert-success">
-            <h1>Bilet należy do Ciebie.</h1>
-            <p>Musisz wypełnić formularz płatności w ciągu {timeLeft}.</p>
+            <h1 className="text-center">Bilet jest zarezerwowany.</h1>
+            <p>Musisz dokończyć rejestrację {timeLeft}.</p>
           </div>
 
           <div className="well">
@@ -87,7 +100,6 @@
                 <legend>Dane kontaktowe</legend>
                 <InputField name="email" type="email" title="E-mail" placeholder="Adres e-mail" />
                 <InputField name="names" title="Imię i nazwisko" placeholder="Imię i nazwisko" />
-                <InputField name="phone" title="Telefon" placeholder="Numer telefonu" />
                 
               </fieldset>
 
@@ -99,27 +111,31 @@
                     Deklarowana kwota
                   </label>
                   <div className="col-md-9">
-                    <RadioField name="payment" value="10" type="radio-danger">
+                    <RadioField name="payment" value="10" type="radio-danger" onChange={this.changeValue}>
                       <span>10 zł</span>
                     </RadioField>
-                    <RadioField name="payment" value="25" type="radio-danger">
+                    <RadioField name="payment" value="25" type="radio-danger" onChange={this.changeValue}>
                       <span>25 zł</span>
                     </RadioField>
-                    <RadioField name="payment" value="50" type="radio-danger">
+                    <RadioField name="payment" value="50" type="radio-danger" onChange={this.changeValue}>
                       <span>50 zł</span>
                     </RadioField>
-                    <RadioField name="payment" value="10" type="" checked>
+                    <RadioField name="payment" value="10" type="" checked onChange={this.changeValue}>
                       <span>75 zł</span>
                     </RadioField>
-                    <RadioField name="payment" value="10" type="radio-success">
+                    <RadioField name="payment" value="10" type="radio-success" onChange={this.changeValue}>
                       <span>100 zł</span>
                     </RadioField>
+                    <RadioField name="payment" value="-1" type="" onChange={this.changeValue}>
+                      <span>Inna</span>
+                    </RadioField>
+                    {inputField}
                   </div>
                 </div>
               </fieldset>
 
               <div className="pull-right">
-                <button className="btn btn-primary btn-lg" type="submit">
+                <button className="btn btn-dev btn-lg" type="submit">
                   Przejdź do płatności
                 </button>
               </div>

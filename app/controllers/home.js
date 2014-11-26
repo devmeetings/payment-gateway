@@ -67,6 +67,8 @@ router.get('/events/:name', function(req, res, next) {
           ev.ticketsLeft += noOfUpdatedItems;
         }
 
+        ev.description = marked(ev.description);
+
         res.render('event', {
           title: ev.title,
           event: JSON.stringify(ev)
@@ -121,10 +123,9 @@ router.post('/events/:id/tickets/:claim', function(req, res, next) {
   }, {
     $set: {
       status: Claims.STATUS.WAITING,
-      amount: req.body.payment,
+      amount: req.body.payment[0] === -1 ? req.body.payment[1] : req.body.payment[0],
       userData: {
         email: req.body.email,
-        phone: req.body.phone,
         names: req.body.names
       }
     }
