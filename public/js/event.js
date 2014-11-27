@@ -75,7 +75,7 @@ var Event = (function(R, D) {
 
     componentDidMount: function() {
       this.interval = setInterval(this.tick, 100);
-      [].map.call(this.getDOMNode().querySelectorAll('code'), function(node) {
+      [].map.call(this.getDOMNode().querySelectorAll('pre > code'), function(node) {
         hljs.highlightBlock(node);
       });
     },
