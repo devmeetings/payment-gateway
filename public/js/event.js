@@ -105,6 +105,7 @@ var Event = (function(R, D) {
               <div className="col-md-8 col-sm-8">
                 <h4>{this.props.event.title}</h4>
                 <div dangerouslySetInnerHTML={{__html: this.props.event.description}}></div>
+                <div className="vertical-space-m"></div>
               </div>
               <div className="col-md-4 col-sm-4">
                 <div className="well">
@@ -139,6 +140,9 @@ var Event = (function(R, D) {
                 <div className="col-md-8 col-sm-8">
                   <h3>Informacje praktyczne</h3>
                   <div className="vertical-space-s"></div>
+                  <p>
+                    DevMeeting odbywa się w formie spotkania online, bez konieczności wychodzenia z domu. Ponieważ podstawą spotkania jest komunikacja i współpraca pomiędzy uczestnikami, warto zadbać o przygotowanie komputera do porządnej komunikacji głosowej.</p>
+
                   <p>
                     <h5 className="noHeaderMargins">Komunikacja przez Teamspeak<br/></h5>Podczas warszatów będziemy komunikować się przez TeamSpeak - narzędzie używane m. in. przez graczy Battlefield czy Minecraft. Prosimy o instalację klienta dostępnego pod: http://www.teamspeak.com. Dane dostępowe do naszego serwera udostępnimy zarejestrowanym uczestnikom.
                   </p>
