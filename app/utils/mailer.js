@@ -11,3 +11,4 @@ module.exports = nodemailer.createTransport(smtpTransport({
 }));
 
 module.exports.from = 'DevMeetings <info@devmeetings.pl>';
+module.exports.bcc = 'tomek@devmeetings.com, piotr@devmeetings.com';

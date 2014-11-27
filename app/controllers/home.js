@@ -100,6 +100,7 @@ router.post('/events/:id/tickets/:claim', function(req, res, next) {
       Mailer.sendMail({
         from: Mailer.from,
         to: claim.userData.email,
+        bcc: Mailer.bcc,
         subject: 'Potwierdzenie rejestracji na DevMeeting Online ' + claim.event.title,
         html: mailText
       }, intercept(next, function(info) {
