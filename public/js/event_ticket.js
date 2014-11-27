@@ -94,8 +94,8 @@
         </InputField>;
       }
 
-      var eventStartDate = moment(this.props.claim.event.eventStartDate.toString());
-      var eventEndDate = moment(this.props.claim.event.eventEndDate.toString());
+      var eventStartDate = moment(this.props.claim.event.eventStartDate);
+      var eventEndDate = moment(this.props.claim.event.eventEndDate);
 
       return (
         <div>

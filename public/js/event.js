@@ -23,13 +23,21 @@ var Event = (function(R, D) {
   var RegisterComponent = R.createClass({
 
     render: function() {
-       var progress = {
-        width: this.props.event.ticketsLeft / this.props.event.tickets * 100 + "%"
+      var progressVal = this.props.event.ticketsLeft / this.props.event.tickets * 100;
+      var progress = {
+        width: progressVal + "%"
       };
 
-       var progressLeft = {
-        width: (100-(this.props.event.ticketsLeft / this.props.event.tickets * 100)) + "%"
-      };      
+      var progressLeft = {
+        width: (100-progressVal) + "%"
+      };
+      
+      var messageText;
+      if (progressVal === 0) {
+        messageText = 'Brak wolnych miejsc.';
+      } else {
+        messageText = 'Pozostało '+this.props.event.ticketsLeft+ ' z '+ this.props.event.tickets + ' miejsc.';
+      }
 
       return (
         <div>
@@ -40,7 +48,7 @@ var Event = (function(R, D) {
             <div className="col-md-10">
               <h4 className="noHeaderMargins">Rejestracja trwa!</h4>
               Aby wziąć udział w DevMeetingu<br/>musisz się zarejestrować.
-              <h5>Pozostało {this.props.event.ticketsLeft} z {this.props.event.tickets} miejsc.</h5>
+              <h5>{messageText}</h5>
           <form 
                   action={"/events/" + this.props.event.name +"/tickets"} 
                   method="post">
@@ -48,7 +56,7 @@ var Event = (function(R, D) {
               <div style={progressLeft} className="progress-bar progress-bar-warning"></div>            
               <div style={progress} className="progress-bar progress-bar-info"></div>
             </div>
-            <button className="btn btn-lg btn-dev">Zarejestruj się!</button>
+            <button className={"btn btn-lg btn-dev " + ((progressVal === 0) ? "btn-disabled disabled" : "")} disabled={progressVal === 0}>Zarejestruj się!</button>
           </form>
             </div>
 
@@ -75,6 +83,9 @@ var Event = (function(R, D) {
 
     componentDidMount: function() {
       this.interval = setInterval(this.tick, 100);
+      [].map.call(this.getDOMNode().querySelectorAll('pre > code'), function(node) {
+        hljs.highlightBlock(node);
+      });
     },
 
     componentWillUnmount: function() {
@@ -83,8 +94,8 @@ var Event = (function(R, D) {
 
     render: function() {
       var isAvailable = moment(this.state.currentTime).isAfter(this.props.event.openDate);
-      var eventStartDate = moment(this.props.event.eventStartDate.toString());
-      var eventEndDate = moment(this.props.event.eventEndDate.toString());
+      var eventStartDate = moment(this.props.event.eventStartDate);
+      var eventEndDate = moment(this.props.event.eventEndDate);
 
 
       var progress = {
