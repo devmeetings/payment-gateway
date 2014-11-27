@@ -1,13 +1,14 @@
 extends layout
 
 block content
-  a.btn.btn-primary(
-    href="/events/#{event.name}"
-  )
-    span.glyphicon.glyphicon-chevron-left
-  .event
-
-  h1= event.title
-  h1.alert.alert-danger
-    | Nie ma już więcej biletów.
+  .container
+    .row
+      .col-md-8.col-md-offset-2.col-sm-10.col-sm-offset-1
+        .vertical-space-l
+          .alert.alert-danger.clearfix
+            h4.noHeaderMargins
+              .pull-left.fa.fa-thumbs-o-down.fa-4x
+              | #{event.title}<br>
+              | Nie ma już więcej biletów.
+          .vertical-space-xxl
 
