@@ -83,8 +83,8 @@ var Event = (function(R, D) {
 
     render: function() {
       var isAvailable = moment(this.state.currentTime).isAfter(this.props.event.openDate);
-      var eventStartDate = moment(this.props.event.eventStartDate.toString());
-      var eventEndDate = moment(this.props.event.eventEndDate.toString());
+      var eventStartDate = moment(this.props.event.eventStartDate);
+      var eventEndDate = moment(this.props.event.eventEndDate);
 
 
       var progress = {

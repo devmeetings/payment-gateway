@@ -1,10 +1,13 @@
 var express = require('express'),
-  router = express.Router(),
-  marked = require('marked'),
-  intercept = require('../utils/intercept'),
-  Mailer = require('../utils/mailer'),
-  Event = require('../models/event'),
-  Claims = require('../models/claims');
+    router = express.Router(),
+    moment = require('moment'),
+    marked = require('marked'),
+    intercept = require('../utils/intercept'),
+    Mailer = require('../utils/mailer'),
+    Event = require('../models/event'),
+    Claims = require('../models/claims');
+
+moment.locale('pl');
 
 module.exports = function(app) {
   app.use('/', router);
@@ -90,7 +93,8 @@ router.post('/events/:id/tickets/:claim', function(req, res, next) {
 
     res.render('mails/event-confirmation', {
       claim: claim,
-      endDate: new Date(Date.now() + daysToPay * 3600 * 24 * 1000)
+      endDate: moment(new Date(Date.now() + daysToPay * 3600 * 24 * 1000)).format('LLL'),
+      eventDate: moment(claim.event.eventStartDate).format('LLL')
     }, intercept(next, function(mailText) {
 
       Mailer.sendMail({
@@ -123,7 +127,7 @@ router.post('/events/:id/tickets/:claim', function(req, res, next) {
   }, {
     $set: {
       status: Claims.STATUS.WAITING,
-      amount: req.body.payment[0] === -1 ? req.body.payment[1] : req.body.payment,
+      amount: req.body.payment[0] === "-1" ? req.body.payment[1] : req.body.payment,
       userData: {
         email: req.body.email,
         names: req.body.names
