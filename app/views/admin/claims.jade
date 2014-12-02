@@ -1,8 +1,40 @@
 extends ../layout
 
 block content
+  .container(ng-app="claims")
+    div(ng-controller="ClaimsCtrl")
+      button.btn.btn-primary(
+        ng-class="{active: hideExpired}"
+        ng-click="hideExpired = !hideExpired") Hide Expired
+      input.form-control(type="text", ng-model="search.$", placeholder="Search")
+      .row
 
-  .row
-    .col-md-8.col-md-offset-2.col-sm-10.col-sm-offset-1
-      each claim in claims
-        pre: code= claim
+        .well.col-sm-8.col-sm-offset-2(
+          ng-repeat="claim in claims | filter:search" 
+          ng-if="!hideExpired || claim.status !== 'expired'")
+
+          h1.pull-right {{claim.amount}}
+          h1 {{claim.userData.names}}
+          h2 {{claim.userData.email}}
+    
+          h4 
+            | Claimed: 
+            span(am-time-ago="claim.claimedTime")
+            span.text-muted  ({{claim.claimedTime | amCalendar}})
+          h4 
+            | Valid till: 
+            span {{claim.validTill | amCalendar}}
+
+          button.btn.btn-link.btn-xs(ng-click="showMore = !showMore") More
+          pre(ng-if="showMore"): code(ng-bind="claim | json")
+
+  script(src="/components/angular/angular.js")
+  script(src="/components/moment/min/moment-with-locales.js")
+  script(src="/components/angular-moment/angular-moment.js")
+
+  script.
+    angular.module("claims", ['angularMoment']).controller("ClaimsCtrl", function($scope) {
+      $scope.hideExpired = true;
+      $scope.search = {};
+      $scope.claims = !{claims}; 
+    });

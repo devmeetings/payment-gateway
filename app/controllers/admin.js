@@ -52,10 +52,10 @@ router.post('/events/:ev', function(req, res, next){
 router.get('/events/:ev/claims', function(req, res, next){
   Claims.find({
     event: req.params.ev
-  }).populate('event').exec(intercept(next, function(claims) {
+  }).exec(intercept(next, function(claims) {
     res.render('admin/claims', {
       title: 'Claims for ' + req.params.ev,
-      claims: claims
+      claims: JSON.stringify(claims)
     });
   }));
 });
