@@ -256,7 +256,7 @@ h4 {
   line-height: 20px; 
 }
 
-.box-details a {
+.text-darkblue {
   color: #34495e;
 }
 
@@ -286,4 +286,21 @@ color: #2c3e50;
 .likebox-holder * {
   width: 100% !important;
   padding-top: 25px;
+}
+
+.sub-footer-holder a {
+  color: #34495e;
+}
+
+.btn-dev {
+  border-radius: 0;
+  border: 2px solid #e74c3c;
+  background-color: #e74c3c;
+  color: #ffffff;
+  font-weight: 700;
+  font-size: 12px;
+  padding: 10px 12px;
+  -webkit-transition: all 0.2s ease;
+  transition: all 0.2s ease;
+  text-transform: uppercase;
 }
