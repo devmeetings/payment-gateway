@@ -31,9 +31,19 @@ block content
               h3.text-muted Bilety: #{ev.ticketsLeft} / #{ev.tickets}
             hr
             textarea.form-control(rows="10", name="description") #{ev.description}
-
+            br
+            p.text-right
+              button.btn.btn-danger(type="submit") Uaktualnij
             p.hide #{ev}
-            .text-center
-              a.btn.btn-dev.btn-lg(href="/admin/events/#{ev._id}/claims") Pokaż bilety
-            hr
-            button.btn.btn-danger(type="submit") Uaktualnij
+          hr
+          .text-center
+            a.btn.btn-dev.btn-lg(href="/admin/events/#{ev._id}/claims") Pokaż bilety
+          h4
+            h4 Dodaj bilety
+            form(method="post", action="/admin/events/#{ev._id}/tickets")
+              .form-group
+                label.control-label Liczba do dodania
+                input.form-control(type="number", name="amount", min="1", max="99", value="1")
+              .form-group.text-center
+                button.btn.btn-primary.btn-lg(type="submit") Dodaj
+          
