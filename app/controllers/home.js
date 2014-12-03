@@ -14,12 +14,12 @@ module.exports = function(app) {
 };
 
 
-router.get('/', function(req, res, next) {
+router.get('/events', function(req, res, next) {
 
   Event.find({
     isVisible: true
   }, intercept(next, function(events) {
-    res.render('index', {
+    res.render('events', {
       title: 'Events',
       events: events.map(function(ev) {
         ev.description = marked(ev.description || "");

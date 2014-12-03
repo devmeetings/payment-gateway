@@ -100,6 +100,9 @@ a:hover h5 {
 }
 .footer-ul {
   margin-top: 10px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
 }
 .footer-ul li {
   font-size: 13px;
@@ -227,3 +230,60 @@ hr {
   text-align: center;
 }
 
+h4 {
+  font-weight: 700;
+  color: #2c3e50;
+  font-size: 19px;
+  line-height: 25px;
+  margin-top: 14px;
+  margin-bottom: 10.5px;
+}
+
+.box {
+  text-align: left;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border: 1px solid #ccc;
+  margin-bottom: 80px;
+}
+
+.box-details {
+  padding: 0 16px;
+}
+
+.box-details p {
+  font-size: 13px;
+  line-height: 20px; 
+}
+
+.box-details a {
+  color: #34495e;
+}
+
+.box-image {
+  border: 1px solid #fff;
+  border-radius: 3px;
+}
+
+.figure-list {
+  list-style-type: square;
+  padding-left: 20px;
+  margin-bottom: 18px;
+}
+
+.centered {
+  text-align: center;
+}
+
+.line-through {
+  text-decoration: line-through
+}
+
+.footer h5 a {
+color: #2c3e50;
+}
+
+.likebox-holder * {
+  width: 100% !important;
+  padding-top: 25px;
+}
