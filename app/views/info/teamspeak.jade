@@ -1,0 +1,97 @@
+extends ../layout
+extends ../layout
+
+block js
+
+block content
+
+  .container-full
+    .container
+      .course-holder
+        .course-col
+          .row
+            .col-md-12.col-sm-12
+              h3.centered.vertical-space-m Konfiguracja TeamSpeak na warsztaty online
+          .row
+            .col-md-6.col-sm-6
+              h4 1. Ściągnij klienta TeamSpeak
+              p
+                | Download ze strony:
+                a(href='http://www.teamspeak.com', target='_blank') http://www.teamspeak.com
+          .row
+            .col-md-12.col-sm-12
+              hr
+          .row
+            .col-md-6.col-sm-6
+              h4 2. Połącz się z naszym serwerem
+              p
+                | Menu (na Mac'u):
+                strong Connections -> Connect
+              p
+                | Adres i port: 
+                strong applejack.todr.me
+                br
+                | Nickname: 
+                strong
+                  | Twoje imię i inicjał nazwiska, np.
+                  em PiotrZ
+                br
+                | Hasło: 
+                strong devmeetings123
+                br
+            .col-md-6.col-sm-6
+              img.img-responsive(src='/img/teamspeak/teamspeak_connect.png')
+          .row
+            .col-md-12.col-sm-12
+              hr
+          .row
+            .col-md-6.col-sm-6
+              h4 3. Skonfiguruj mikrofon / nadawanie
+              p
+                | Menu: 
+                strong TeamSpeak 3 -> Preferences -> Capture
+              p
+                | W ustawieniach TeamSpeak'a wybierz jedną z opcji:
+                br
+                | a) 
+                strong Push-To-Talk 
+                | (nadajesz kiedy wciśniesz ustawione klawisze; ustaw jakie klawisze będą powodować nadawanie) lub
+                br
+                | b) 
+                strong Voice Activation Detection 
+                | (nadajesz kiedy TeamSpeak rozpozna, że mówisz; ustaw odpowiedni poziom głośności aktywacji nadawania)
+              p
+                | Opcja "Continuos transmission" nie jest zalecana, ponieważ inni uczestnicy przez cały czas będą słychać co nadajesz, w tym wszystkie rozpraszające dźwięki.
+            .col-md-6.col-sm-6
+              img.img-responsive(src='/img/teamspeak/teamspeak_capture.png')
+          .row
+            .col-md-12.col-sm-12
+              hr
+          .row
+            .col-md-6.col-sm-6
+              h4 4. Wyłącz powiadomienia głosowe
+              p
+                | Menu: 
+                strong TeamSpeak 3 -> Preferences -> Playback
+              p
+                | Zalecamy wyłączenie powiadomień dźwiękowych o tym co robią inni użytkownicy (wejście / wyjście z TeamSpeaka itp.).
+              p
+                | Ustaw 
+                strong Playback -> Sound Pack Volume 
+                | na 
+                strong Quiet
+            .col-md-6.col-sm-6
+              img.img-responsive(src='/img/teamspeak/teamspeak_playback.png')
+          .row
+            .col-md-12.col-sm-12
+              hr
+          .row
+            .col-md-6.col-sm-6
+              h4 5. Słuchawki
+              p
+                | Wyposaż się 
+                strong koniecznie 
+                | w słuchawki - jeśli ich nie będziesz używał, inni uczestnicy będą słyszeć echo, co jest bardzo uciążliwe.
+            .col-md-6.col-sm-6
+              img.img-responsive(src='/img/teamspeak/teamspeak_headphones.png')
+      .vertical-space-m                
