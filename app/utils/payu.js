@@ -1,4 +1,5 @@
-var rest = require('restler');
+var  _ = require('lodash'),
+  rest = require('restler');
 
 var Payu = function(id, key) {
   this.id = id;
@@ -22,7 +23,14 @@ Payu.prototype = {
   },
 
   _createRequestModel: function(options, products, buyer) {
+    var total = this._calculateTotalAmount(products);
 
+    var model = _.extend({}, options);
+    model.buyer = buyer;
+    model.products = products;
+    model.totalAmount = total;
+
+    return model;
   },
   /**
    *
@@ -46,9 +54,9 @@ Payu.prototype = {
    */
   createOrderRequest: function(options, products, buyer) {
     var data = this._createRequestModel(options, products, buyer);
-    var total = this._calculateTotalAmount(products);
 
     rest.post(this.host + '/api/v2_1/orders', {
+      data: data,
       username: this.id,
       password: this.key
     });
