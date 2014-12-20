@@ -42,6 +42,7 @@ describe 'Payu service', ->
 
     # then
     expect(_.isEqual(result, {
+      merchantPosId: '145227',
       notifyUrl: options.notifyUrl,
       completeUrl: options.completeUrl,
       customerIp: options.customerIp,

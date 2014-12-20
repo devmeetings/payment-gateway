@@ -16,6 +16,10 @@ var ClaimSchema = new Schema({
         enum: ['active', 'waiting', 'payed', 'expired']
     },
     amount: Number,
+    payment: {
+      id: String,
+      url: String
+    },
     userData: {
         email: String,
         names: String
@@ -31,6 +35,7 @@ module.exports = mongoose.model('claim', ClaimSchema);
 
 module.exports.STATUS = {
     ACTIVE: 'active',
+    CREATING_PAYMENT: 'creatingPayment',
     WAITING: 'waiting',
     PAYED: 'payed',
     EXPIRED: 'expired'

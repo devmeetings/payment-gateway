@@ -1,21 +1,17 @@
 var express = require('express'),
-    router = express.Router(),
-    moment = require('moment'),
-    marked = require('marked'),
-    intercept = require('../utils/intercept'),
-    Mailer = require('../utils/mailer'),
-    Event = require('../models/event'),
-    Claims = require('../models/claims');
+  router = express.Router(),
+  marked = require('marked'),
+  intercept = require('../utils/intercept'),
+  Event = require('../models/event'),
+  Claims = require('../models/claims');
 
-moment.locale('pl');
 
 module.exports = function(app) {
   app.use('/', router);
 };
 
-router.get('/', function(req, res){
-
-    res.render('info/index');
+router.get('/', function(req, res) {
+  res.render('info/index');
 });
 
 router.get('/events', function(req, res, next) {
@@ -51,7 +47,7 @@ router.get('/events/:name', function(req, res, next) {
         },
         status: {
           // TODO [ToDr] Dont remove WAITING tickets automatically!
-          $in: [Claims.STATUS.ACTIVE/*, Claims.STATUS.WAITING*/]
+          $in: [Claims.STATUS.ACTIVE /*, Claims.STATUS.WAITING*/ ]
         }
       }, {
         $set: {
@@ -86,94 +82,32 @@ router.get('/events/:name', function(req, res, next) {
 
 });
 
-router.post('/events/:id/tickets/:claim', function(req, res, next) {
-
-  // TODO [ToDr] validate user data
-
-  function sendMailAndRenderResponse(claim) {
-    console.log(claim);
-
-    var daysToPay = 3;
-
-    res.render('mails/event-confirmation', {
-      claim: claim,
-      endDate: moment(new Date(Date.now() + daysToPay * 3600 * 24 * 1000)).format('LLL'),
-      eventDate: moment(claim.event.eventStartDate).format('LLL')
-    }, intercept(next, function(mailText) {
-
-      Mailer.sendMail({
-        from: Mailer.from,
-        to: claim.userData.email,
-        bcc: Mailer.bcc,
-        subject: 'Potwierdzenie rejestracji na DevMeeting Online ' + claim.event.title,
-        html: mailText
-      }, intercept(next, function(info) {
-
-        res.render('event-ok', {
-          claim: claim,
-        });
-
-      }));
-
-    }));
-  }
-
-  function findClaimById(id, cb) {
-    Claims.findById(id).populate('event').exec(intercept(next, cb));
-  }
-
-  Claims.update({
-    _id: req.params.claim,
-    event: req.params.id,
-    validTill: {
-      $gte: new Date()
-    },
-    status: Claims.STATUS.ACTIVE
-  }, {
-    $set: {
-      status: Claims.STATUS.WAITING,
-      amount: req.body.payment[0] === "-1" ? req.body.payment[1] : req.body.payment,
-      userData: {
-        email: req.body.email,
-        names: req.body.names
-      }
-    }
-  }).exec(intercept(next, function(isUpdated, claim) {
-    if (!isUpdated) {
-      return res.send(404);
-    }
-
-    findClaimById(req.params.claim, sendMailAndRenderResponse);
-
-  }));
-});
-
 router.get('/events/:id/tickets/:claim', function(req, res, next) {
 
   // TODO [ToDr] Display some meaningful message if status is wrong
-
   Claims.findOne({
     _id: req.params.claim,
     event: req.params.id,
     status: {
-      $in: [Claims.STATUS.ACTIVE, Claims.STATUS.WAITING]
+      $in: [Claims.STATUS.ACTIVE, Claims.STATUS.WAITING, Claims.STATUS.PAYED]
     }
   }).populate('event').exec(intercept(next, function(claim) {
     if (!claim) {
       return res.send(404);
     }
-  
+
     if (claim.status === Claims.STATUS.ACTIVE) {
       res.render('event-ticket_fill', {
         claim: claim,
         claim_json: JSON.stringify(claim)
       });
+    } else if (claim.status === Claims.STATUS.WAITING) {
+      res.redirect(claim.payment.url);
     } else {
       res.render('event-ok', {
         claim: claim,
       });
     }
-
   }));
 
 });
@@ -232,5 +166,4 @@ router.post('/events/:name/tickets', function(req, res, next) {
     }
     tryToClaimTicket(ev);
   }));
-
 });

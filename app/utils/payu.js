@@ -1,5 +1,5 @@
 var  _ = require('lodash'),
-  rest = require('restler');
+  request = require('superagent');
 
 var Payu = function(id, key) {
   this.id = id;
@@ -10,7 +10,7 @@ var Payu = function(id, key) {
 Payu.prototype = {
   id: null,
   key: null,
-  host: 'https://secure.pay.com',
+  host: 'https://secure.payu.com',
 
   _calculateTotalAmount: function(products) {
     function add(a, b) {
@@ -29,9 +29,18 @@ Payu.prototype = {
     model.buyer = buyer;
     model.products = products;
     model.totalAmount = total;
+    model.merchantPosId = this.id;
 
     return model;
   },
+
+  getIp: function(req) {
+    if (this === Payu.test) {
+      return '127.0.0.1';
+    }
+    return req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+  },
+
   /**
    *
    * this.createOrderRequest({
@@ -55,11 +64,14 @@ Payu.prototype = {
   createOrderRequest: function(options, products, buyer) {
     var data = this._createRequestModel(options, products, buyer);
 
-    rest.post(this.host + '/api/v2_1/orders', {
-      data: data,
-      username: this.id,
-      password: this.key
-    });
+    console.log("sending ", data);
+    return request
+      .post(this.host + '/api/v2_1/orders')
+      .type('json')
+      .redirects(0)
+      .auth(this.id, this.key)
+      .set('Accept', 'application/json')
+      .send(data);
   }
 };
 

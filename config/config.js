@@ -6,7 +6,8 @@ var config = {
   development: {
     root: rootPath,
     app: {
-      name: 'payment-gateway'
+      name: 'payment-gateway',
+      url: 'http://localhost'
     },
     port: 3000,
     db: 'mongodb://localhost/payment-gateway-development'
@@ -16,7 +17,8 @@ var config = {
   test: {
     root: rootPath,
     app: {
-      name: 'payment-gateway'
+      name: 'payment-gateway',
+      url: 'http://devmeetings.pl'
     },
     port: 3000,
     db: 'mongodb://localhost/payment-gateway-test'
@@ -26,7 +28,8 @@ var config = {
   production: {
     root: rootPath,
     app: {
-      name: 'payment-gateway'
+      name: 'payment-gateway',
+      url: 'http://devmeetings.com'
     },
     port: 3000,
     db: 'mongodb://localhost/payment-gateway-production'
