@@ -46,7 +46,7 @@ router.post('/tickets/:claim/notify', function(req, res, next) {
       if (!isUpdated) {
         console.error("Didn't update completed notification", order);
       } else {
-        sendMailWithPaymentConfirmation(claim);
+        Claims.findById(id).populate('event').exec(intercept(next, sendMailWithPaymentConfirmation));
       }
       res.send(200);
     }));
