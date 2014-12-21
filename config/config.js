@@ -7,7 +7,7 @@ var config = {
     root: rootPath,
     app: {
       name: 'payment-gateway',
-      url: 'http://localhost'
+      url: 'http://localhost:3000'
     },
     payu: null,
     port: 3000,

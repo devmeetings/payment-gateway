@@ -17,7 +17,7 @@ module.exports = function(app) {
 
 router.post('/tickets/:claim/notify', function(req, res, next) {
 
-  function sendMailWithPaymentConfirmation(claim) {
+  function sendMailWithPaymentConfirmation(claim, cb) {
     res.render('mails/payment-confirmation', {
       claim: claim
     }, intercept(next, function(mailText) {
@@ -27,7 +27,7 @@ router.post('/tickets/:claim/notify', function(req, res, next) {
         to: Mailer.bcc,
         subject: 'Potwierdzenie płatności: ' + claim.amount + ' zł',
         html: mailText
-      }, intercept(next, function() {}));
+      }, intercept(next, cb));
 
     }));
   }
@@ -45,10 +45,15 @@ router.post('/tickets/:claim/notify', function(req, res, next) {
     }).exec(intercept(next, function(isUpdated) {
       if (!isUpdated) {
         console.error("Didn't update completed notification", order);
-      } else {
-        Claims.findById(order.extOrderId).populate('event').exec(intercept(next, sendMailWithPaymentConfirmation));
+        res.send(200);
+        return;
       }
-      res.send(200);
+      // send mail with confirmation
+      Claims.findById(order.extOrderId).populate('event').exec(intercept(next, function(claim) {
+        sendMailWithPaymentConfirmation(claim, function() {
+          res.send(200);
+        });
+      }));
     }));
 
   } else if (order.status === 'PENDING') {
@@ -61,7 +66,7 @@ router.post('/tickets/:claim/notify', function(req, res, next) {
       $set: {
         status: Claims.STATUS.PENDING
       }
-    }).exec(intercept(next, function(isUpdated){
+    }).exec(intercept(next, function(isUpdated) {
       res.send(200);
     }));
   } else {
