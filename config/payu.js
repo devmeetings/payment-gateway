@@ -1,3 +1,8 @@
-var Payu = require('../app/utils/payu');
+var Payu = require('../app/utils/payu'),
+  config = require('./config');
 
-module.exports = Payu.test;
+if (config.payu) {
+  module.exports = Payu.create(config.payu.id, config.payu.key);
+} else {
+  module.exports = Payu.test;
+}

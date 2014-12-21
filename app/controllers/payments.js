@@ -16,7 +16,26 @@ module.exports = function(app) {
 
 
 router.post('/tickets/:claim/notify', function(req, res, next) {
-  // TODO [ToDr] Handle Payu Notification
+  var order = req.body.order;
+  if (order.status === 'COMPLETED') {
+    // Update status of claim
+    Claims.update({
+      _id: order.extOrderId,
+      "payment.id": order.orderId
+    }, {
+      $set: {
+        status: Claims.STATUS.PAYED
+      }
+    }).exec(intercept(next, function(isUpdated){
+      if (!isUpdated) {
+        console.error("Didn't update completed notification", order);
+      }
+      res.send(200);
+    }));
+  } else {
+    console.warning("Got ignored notification", order);
+    res.send(200);
+  }
 });
 
 
@@ -100,6 +119,7 @@ router.post('/events/:id/tickets/:claim', function(req, res, next) {
       // Generate payment url
       Payu.createOrderRequest({
         notifyUrl: config.app.url + '/tickets/' + claim._id + '/notify',
+        continueUrl: config.app.url + '/events/' + claim.event._id + '/tickets/' + claim._id,
         customerIp: Payu.getIp(req),
         description: 'Opłata za udział w Devmeetingu ' + claim.event.title,
         currencyCode: 'PLN',

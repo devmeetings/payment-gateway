@@ -9,6 +9,7 @@ var config = {
       name: 'payment-gateway',
       url: 'http://localhost'
     },
+    payu: null,
     port: 3000,
     db: 'mongodb://localhost/payment-gateway-development'
     
@@ -20,6 +21,7 @@ var config = {
       name: 'payment-gateway',
       url: 'http://devmeetings.pl'
     },
+    payu: null,
     port: 3000,
     db: 'mongodb://localhost/payment-gateway-test'
     
@@ -31,6 +33,7 @@ var config = {
       name: 'payment-gateway',
       url: 'http://devmeetings.com'
     },
+    payu: null,
     port: 3000,
     db: 'mongodb://localhost/payment-gateway-production'
     

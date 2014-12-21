@@ -21,6 +21,9 @@ block content
             | Claimed: 
             span(am-time-ago="claim.claimedTime")
             span.text-muted  ({{claim.claimedTime | amCalendar}})
+          h4
+            | Status: 
+            span {{claim.status}}
           h4 
             | Valid till: 
             span {{claim.validTill | amCalendar}}
