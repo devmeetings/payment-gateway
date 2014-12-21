@@ -33,7 +33,10 @@ var config = {
       name: 'payment-gateway',
       url: 'http://devmeetings.com'
     },
-    payu: null,
+    payu: {
+      id: '183152',
+      key: '724da1db5192f8f78371158ea116dbb8'
+    },
     port: 3000,
     db: 'mongodb://localhost/payment-gateway-production'
     
