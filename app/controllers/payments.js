@@ -51,7 +51,7 @@ router.post('/tickets/:claim/notify', function(req, res, next) {
       res.send(200);
     }));
   } else {
-    console.warning("Got ignored notification", order);
+    console.warn("Got ignored notification", order);
     res.send(200);
   }
 });
