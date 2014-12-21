@@ -16,6 +16,22 @@ module.exports = function(app) {
 
 
 router.post('/tickets/:claim/notify', function(req, res, next) {
+
+  function sendMailWithPaymentConfirmation(claim) {
+    res.render('mails/payment-confirmation', {
+      claim: claim
+    }, intercept(next, function(mailText) {
+
+      Mailer.sendMail({
+        from: Mail.from,
+        to: Mailer.bcc,
+        subject: 'Potwierdzenie płatności: ' + claim.amount + ' zł',
+        html: mailText
+      }, intercept(next, function() {}));
+
+    }));
+  }
+
   var order = req.body.order;
   if (order.status === 'COMPLETED') {
     // Update status of claim
@@ -26,9 +42,11 @@ router.post('/tickets/:claim/notify', function(req, res, next) {
       $set: {
         status: Claims.STATUS.PAYED
       }
-    }).exec(intercept(next, function(isUpdated){
+    }).exec(intercept(next, function(isUpdated) {
       if (!isUpdated) {
         console.error("Didn't update completed notification", order);
+      } else {
+        sendMailWithPaymentConfirmation(claim);
       }
       res.send(200);
     }));
