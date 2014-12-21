@@ -23,7 +23,7 @@ router.post('/tickets/:claim/notify', function(req, res, next) {
     }, intercept(next, function(mailText) {
 
       Mailer.sendMail({
-        from: Mail.from,
+        from: Mailer.from,
         to: Mailer.bcc,
         subject: 'Potwierdzenie płatności: ' + claim.amount + ' zł',
         html: mailText
@@ -48,6 +48,20 @@ router.post('/tickets/:claim/notify', function(req, res, next) {
       } else {
         Claims.findById(order.extOrderId).populate('event').exec(intercept(next, sendMailWithPaymentConfirmation));
       }
+      res.send(200);
+    }));
+
+  } else if (order.status === 'PENDING') {
+    // Updating status to pending
+    Claims.update({
+      _id: order.extOrderId,
+      "payment.id": order.orderId,
+      status: Claims.STATUS.WAITING
+    }, {
+      $set: {
+        status: Claims.STATUS.PENDING
+      }
+    }).exec(intercept(next, function(isUpdated){
       res.send(200);
     }));
   } else {

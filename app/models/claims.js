@@ -37,6 +37,7 @@ module.exports.STATUS = {
     ACTIVE: 'active',
     CREATING_PAYMENT: 'creatingPayment',
     WAITING: 'waiting',
+    PENDING: 'pending',
     PAYED: 'payed',
     EXPIRED: 'expired'
 };

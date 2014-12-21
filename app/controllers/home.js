@@ -89,7 +89,7 @@ router.get('/events/:id/tickets/:claim', function(req, res, next) {
     _id: req.params.claim,
     event: req.params.id,
     status: {
-      $in: [Claims.STATUS.ACTIVE, Claims.STATUS.WAITING, Claims.STATUS.PAYED]
+      $in: [Claims.STATUS.ACTIVE, Claims.STATUS.WAITING, Claims.STATUS.PENDING, Claims.STATUS.PAYED]
     }
   }).populate('event').exec(intercept(next, function(claim) {
     if (!claim) {
