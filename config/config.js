@@ -35,7 +35,7 @@ var config = {
     },
     payu: {
       id: '183152',
-      key: '724da1db5192f8f78371158ea116dbb8'
+      key: '8da6d279e0b48992aa164b5a431a78b7'
     },
     port: 3000,
     db: 'mongodb://localhost/payment-gateway-production'
