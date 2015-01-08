@@ -1,4 +1,4 @@
-extends ../layout
+extends ../angular-layout
 
 block content
   .container(ng-app="claims")
@@ -31,10 +31,7 @@ block content
           button.btn.btn-link.btn-xs(ng-click="showMore = !showMore") More
           pre(ng-if="showMore"): code(ng-bind="claim | json")
 
-  script(src="/components/angular/angular.js")
-  script(src="/components/moment/min/moment-with-locales.js")
-  script(src="/components/angular-moment/angular-moment.js")
-
+append scripts
   script.
     angular.module("claims", ['angularMoment']).controller("ClaimsCtrl", function($scope) {
       $scope.hideExpired = true;
