@@ -1,22 +1,37 @@
 var express = require('express'),
-    router = express.Router(),
-    glob = require('glob'),
-    path = require('path');
-
-module.exports = function(app) {
-  app.use('/info/', router);
-};
+  glob = require('glob'),
+  path = require('path');
 
 
+var routers = [];
 
-glob(__dirname + '/../views/info/*.jade', {}, function(err, files) {
+require('../../config/config').languages.map(function(lang) {
 
-  files.map(function(file) {
-    var staticPage = path.basename(file, '.jade');
+  var router = express.Router();
 
-    router.get('/' + staticPage, function(req, res) {
-      res.render('info/' + staticPage);
+  glob(__dirname + '/../views/info/' + lang + '/*.jade', {}, function(err, files) {
+
+    files.map(function(file) {
+      var staticPage = path.basename(file, '.jade');
+
+      router.get('/' + staticPage, function(req, res) {
+        res.render('info/' + lang + '/' + staticPage);
+      });
+
     });
+  });
 
+  routers.push({
+    lang: lang,
+    router: router
   });
 });
+
+
+
+module.exports = function(app) {
+  routers.map(function(r) {
+    console.log("use", '/' + r.lang + '/info');
+    app.use('/' + r.lang + '/info', r.router);
+  });
+};

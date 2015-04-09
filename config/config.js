@@ -2,6 +2,8 @@ var path = require('path'),
     rootPath = path.normalize(__dirname + '/..'),
     env = process.env.NODE_ENV || 'development';
 
+var languages = ['pl', 'en'];
+
 var config = {
   development: {
     root: rootPath,
@@ -44,3 +46,4 @@ var config = {
 };
 
 module.exports = config[env];
+module.exports.languages = languages;

@@ -11,7 +11,13 @@ module.exports = function(app) {
 };
 
 router.get('/', function(req, res) {
-  res.render('info/index');
+  res.redirect('/pl');
+});
+
+require('../../config/config').languages.map(function(lang) {
+  router.get('/' + lang, function(req, res) {
+    res.render('info/' + lang + '/index');
+  });
 });
 
 router.get('/events', function(req, res, next) {
