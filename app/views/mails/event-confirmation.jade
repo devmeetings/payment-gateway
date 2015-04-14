@@ -13,12 +13,8 @@ block content
     strong prosimy o wpłatę zadeklarowanej kwoty&nbsp;
     | najpóźniej do <strong>#{endDate}</strong>.
 
-  strong Dane do płatności:<br/>
-  | Odbiorca: Developers Peak Sp. z o. o.<br/>
-  | Kwota: #{claim.amount} PLN<br/>
-  | Nr konta: 43 1140 2004 0000 3702 7521 7540<br/>
-  | Tytuł przelewu: Udział w DevMeetingu Online #{claim.event.title}, #{claim.userData.names}<br/>
-  
+  strong Link do płatności:<br/>
+    a(href="#{claim.payment.url}") Płatność z PayU
   p
     strong Faktura?<br/>
     | Jesli życzysz sobie fakturę, prześlij proszę dane łącznie z NIPem na adres info@devmeetings.pl.
