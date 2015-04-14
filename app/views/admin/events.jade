@@ -1,7 +1,7 @@
 extends ../angular-layout
 
 block content
-  
+
   .container
     .row
       .col-md-8.col-md-offset-2.col-sm-10.col-sm-offset-1
@@ -54,7 +54,7 @@ block content
         form(ng-submit="newEvent(data)", name="form")
           .form-group
             label.control-label Short Name
-            input.form-control(type="text", ng-model="data.id", name="id", required)
+            input.form-control(type="text", ng-model="data.name", name="id", required)
           .form-group
             label.control-label Title
             input.form-control(type="text", ng-model="data.title", name="title", required)
@@ -74,10 +74,14 @@ append scripts
   script.
     angular.module('events', []).controller('NewEventCtrl', function($scope, $http, $window) {
       $scope.data = {
-        id: 'angular1',
+        name: 'angular1',
         title: 'Angular Workshop',
         tickets: 10,
-        ticketsLeft: 10
+        ticketsLeft: 10,
+        description: '',
+        openDate: new Date(),
+        eventStartDate: new Date(),
+        eventEndDate: new Date(),
       };
 
       $scope.newEvent = function(data) {
