@@ -114,12 +114,32 @@ var Event = (function(R, D) {
           <div className="container">
             <div className="row">
               <div className="col-md-8 col-sm-8">
+                <div className="container-dark-gray visible-xs">
+                  <div className="vertical-padding-m">    
+                    <div className="row">
+                      <div className="col-xs-10 col-xs-offset-1">
+                        {eventActions}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div className="vertical-padding-s"></div>
                 <h4>{this.props.event.title}</h4>
                 <div dangerouslySetInnerHTML={{__html: this.props.event.description}}></div>
                 <div className="vertical-space-m"></div>
+                <div className="container-dark-gray visible-xs">
+                  <div className="container-fluid vertical-padding-m">    
+                    <div className="row">
+                      <div className="col-xs-10 col-xs-offset-1">
+                      {eventActions}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div className="vertical-padding-m"></div>
               </div>
-              <div className="col-md-4 col-sm-4">
-                <div className="well">
+              <div className="col-md-4 col-sm-4" style={{position: 'relative'}}>
+                <div className="well" style={{position: 'fixed', width: 'auto'}}>
                   <div className="row">
                     <div className="col-md-2 text-center">
                       <h1 className="noHeaderMargins"><span className="fa fa-calendar-o"></span></h1>
@@ -145,7 +165,12 @@ var Event = (function(R, D) {
               </div>
             </div>
           </div>
-          <div className="container-light-gray">
+        </div>
+      );
+    }
+  });
+
+/*<div className="container-light-gray">
             <div className="container vertical-padding-s">
               <div className="row">
                 <div className="col-md-8 col-sm-8">
@@ -175,11 +200,7 @@ var Event = (function(R, D) {
                 </div>
               </div>
             </div>
-          </div>
-        </div>
-      );
-    }
-  });
+          </div>*/
 
   R.render(
     <EventComponent event={currentEvent} />,
