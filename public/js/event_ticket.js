@@ -132,7 +132,7 @@
                       <span>75 zł</span>
                     </RadioField>
                     <RadioField name="payment" value="100" type="" checked onChange={this.changeValue}>
-                      <span>100 zł</span>
+                      <span>100 zł (Jeśli wpłacisz 100 zł lub więcej, otrzymasz wysokiej jakości wydrukowany certyfikat)</span>
                     </RadioField>
                     <RadioField name="payment" value="150" type="radio-success" onChange={this.changeValue}>
                       <span>150 zł</span>
