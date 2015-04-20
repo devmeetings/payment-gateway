@@ -4,3 +4,4 @@ public/components
 *.swp
 .grunt
 data
+npm-debug.log

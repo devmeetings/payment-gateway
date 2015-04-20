@@ -5,7 +5,8 @@
 
     getDefaultProps: function(){
       return {
-        type: 'text'
+        type: 'text',
+        min: '1'
       }
     },
 
@@ -16,8 +17,12 @@
             {this.props.title}
           </label>
           <div className="col-md-9">
-            <input type={this.props.type} className="form-control" 
-              placeholder={this.props.placeholder} name={this.props.name} id={this.props.name} required/>
+            <input type={this.props.type} 
+              className="form-control" 
+              min={this.props.min}
+              placeholder={this.props.placeholder} 
+              name={this.props.name} 
+              id={this.props.name} required/>
           </div>
         </div>
       );
