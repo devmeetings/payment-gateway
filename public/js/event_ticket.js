@@ -100,12 +100,12 @@
       return (
         <div>
           <div className="alert alert-warning">
-            <h4 className="noHeaderMargins">Prosimy o wypełnienie formularza.</h4>
+            <h4 className="noHeaderMargins">Prosimy o wypełnienie formularza. Masz 15 min czasu, nie spiesz się</h4>
             <p>Aby się zarejestrować, musisz dokończyć rejestrację <strong>{timeLeft}</strong>.</p>
           </div>
 
           <div className="well">
-            <h5 className="noHeaderMargins text-muted">Rejestrujesz się na DevMeeting online</h5>
+            <h5 className="noHeaderMargins text-muted">Rejestrujesz się na DevMeeting</h5>
             <h3 className="noHeaderMargins">{this.props.claim.event.title}</h3>
             <h5 className="noHeaderMargins">{eventStartDate.format('LL')} ({eventStartDate.format('dddd')}), {eventStartDate.format('HH:mm') + ' - ' + eventEndDate.format('HH:mm')}</h5>
             <hr/>
@@ -125,12 +125,6 @@
                     Deklarowana kwota
                   </label>
                   <div className="col-md-9">
-                    <RadioField name="payment" value="10" type="radio-danger" onChange={this.changeValue}>
-                      <span>10 zł</span>
-                    </RadioField>
-                    <RadioField name="payment" value="25" type="radio-danger" onChange={this.changeValue}>
-                      <span>25 zł</span>
-                    </RadioField>
                     <RadioField name="payment" value="50" type="radio-danger" onChange={this.changeValue}>
                       <span>50 zł</span>
                     </RadioField>
@@ -138,7 +132,11 @@
                       <span>75 zł</span>
                     </RadioField>
                     <RadioField name="payment" value="100" type="radio-success" onChange={this.changeValue}>
-                      <span>100 zł</span>
+                      <span>100 zł (osoby, które wpłacą 100 zł lub więcej, otrzymają wysokiej jakości wydrukowany certyfikat)</span>
+                    <RadioField name="payment" value="150" type="radio-success" onChange={this.changeValue}>
+                      <span>150 zł</span>
+                    <RadioField name="payment" value="200" type="radio-success" onChange={this.changeValue}>
+                      <span>200 zł</span>                                
                     </RadioField>
                     <RadioField name="payment" value="-1" type="" onChange={this.changeValue}>
                       <span>Inna</span>
