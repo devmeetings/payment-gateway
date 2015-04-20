@@ -105,7 +105,7 @@
           </div>
 
           <div className="well">
-            <h5 className="noHeaderMargins text-muted">Rejestrujesz się na DevMeeting online</h5>
+            <h5 className="noHeaderMargins text-muted">Rejestrujesz się na DevMeeting</h5>
             <h3 className="noHeaderMargins">{this.props.claim.event.title}</h3>
             <h5 className="noHeaderMargins">{eventStartDate.format('LL')} ({eventStartDate.format('dddd')}), {eventStartDate.format('HH:mm') + ' - ' + eventEndDate.format('HH:mm')}</h5>
             <hr/>
