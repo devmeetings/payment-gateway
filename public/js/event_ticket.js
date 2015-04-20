@@ -125,21 +125,21 @@
                     Deklarowana kwota
                   </label>
                   <div className="col-md-9">
-                    <RadioField name="payment" value="10" type="radio-danger" onChange={this.changeValue}>
-                      <span>10 zł</span>
-                    </RadioField>
                     <RadioField name="payment" value="25" type="radio-danger" onChange={this.changeValue}>
                       <span>25 zł</span>
                     </RadioField>
                     <RadioField name="payment" value="50" type="radio-danger" onChange={this.changeValue}>
                       <span>50 zł</span>
                     </RadioField>
-                    <RadioField name="payment" value="75" type="" checked onChange={this.changeValue}>
+                    <RadioField name="payment" value="75" type="radio-danger" onChange={this.changeValue}>
                       <span>75 zł</span>
                     </RadioField>
-                    <RadioField name="payment" value="100" type="radio-success" onChange={this.changeValue}>
+                    <RadioField name="payment" value="100" type="" checked onChange={this.changeValue}>
                       <span>100 zł</span>
                     </RadioField>
+                    <RadioField name="payment" value="150" type="radio-success" onChange={this.changeValue}>
+                      <span>150 zł</span>
+                    </RadioField>                    
                     <RadioField name="payment" value="-1" type="" onChange={this.changeValue}>
                       <span>Inna</span>
                     </RadioField>
