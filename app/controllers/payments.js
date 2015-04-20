@@ -78,7 +78,10 @@ router.post('/tickets/:claim/notify', function(req, res, next) {
 
 router.post('/events/:id/tickets/:claim', function(req, res, next) {
 
-  // TODO [ToDr] validate user data
+  var paymentAmount = req.body.payment[0] === "-1" ? req.body.payment[1] : req.body.payment;
+  if (parseFloat(paymentAmount) < 1) {
+    return next('Wrong payment amount');
+  }
 
   function sendMailAndRenderResponse(claim) {
 
@@ -138,7 +141,7 @@ router.post('/events/:id/tickets/:claim', function(req, res, next) {
   }, {
     $set: {
       status: Claims.STATUS.CREATING_PAYMENT,
-      amount: req.body.payment[0] === "-1" ? req.body.payment[1] : req.body.payment,
+      amount: paymentAmount,
       userData: {
         email: req.body.email,
         names: req.body.names

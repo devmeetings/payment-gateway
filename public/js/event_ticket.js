@@ -130,9 +130,6 @@
                     Deklarowana kwota
                   </label>
                   <div className="col-md-9">
-                    <RadioField name="payment" value="10" type="radio-danger" onChange={this.changeValue}>
-                      <span>10 zł</span>
-                    </RadioField>
                     <RadioField name="payment" value="25" type="radio-danger" onChange={this.changeValue}>
                       <span>25 zł</span>
                     </RadioField>
