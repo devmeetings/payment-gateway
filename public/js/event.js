@@ -1,5 +1,21 @@
 var Event = (function(R, D) {
 
+  var InfoComponent = R.createClass({
+    render: function() {
+
+      return (
+        <div className="row">
+          <div className="col-md-2 text-center">
+          </div>
+          <div className="col-md-10">
+            <h5 className="noHeaderMargins">3-dniowe warsztaty<br/>Mastering Node.js + Express:</h5>
+            <h5 className="noHeaderMargins"><a href="http://mastering-node-express-wro.evenea.pl" target="_blank">Kup bilet na evenea.pl</a></h5>
+          </div>
+        </div>
+      );
+    }
+  });
+
   var WaitingComponent = R.createClass({
     render: function() {
       var niceDate = moment(this.props.event.openDate).format("LLLL");
@@ -10,10 +26,12 @@ var Event = (function(R, D) {
               <h1 className="noHeaderMargins text-center"><span className="fa fa-ticket"></span></h1>
             </div>
             <div className="col-md-10">
-              <h4 className="noHeaderMargins">Rejestracja będzie otwarta {moment(this.props.event.openDate).from(this.props.currentTime)}</h4>
+              <h4 className="noHeaderMargins">Rejestracja na Devmeeting zostanie otwarta {moment(this.props.event.openDate).from(this.props.currentTime)}</h4>
               <h5 className="noHeaderMargins text-muted">{niceDate}</h5>
             </div>                    
           </div>                 
+          <hr/>                  
+          <InfoComponent />
         </div>
       );
     }
@@ -49,19 +67,18 @@ var Event = (function(R, D) {
               <h4 className="noHeaderMargins">Rejestracja trwa!</h4>
               Aby wziąć udział w DevMeetingu<br/>musisz się zarejestrować.
               <h5>{messageText}</h5>
-          <form 
-                  action={"/events/" + this.props.event.name +"/tickets"} 
-                  method="post">
-            <div className="progress">
-              <div style={progressLeft} className="progress-bar progress-bar-warning"></div>            
-              <div style={progress} className="progress-bar progress-bar-info"></div>
+              <form 
+                    action={"/events/" + this.props.event.name +"/tickets"} 
+                    method="post">
+                <div className="progress">
+                  <div style={progressLeft} className="progress-bar progress-bar-warning"></div>            
+                  <div style={progress} className="progress-bar progress-bar-info"></div>
+                </div>
+                <button className={"btn btn-lg btn-dev " + ((progressVal === 0) ? "btn-disabled disabled" : "")} disabled={progressVal === 0}>Zarejestruj się!</button>
+              </form>
             </div>
-            <button className={"btn btn-lg btn-dev " + ((progressVal === 0) ? "btn-disabled disabled" : "")} disabled={progressVal === 0}>Zarejestruj się!</button>
-          </form>
-            </div>
-
-          </div>         
-          
+          </div>
+          <InfoComponent />
         </div>
       );
     }
@@ -114,12 +131,32 @@ var Event = (function(R, D) {
           <div className="container">
             <div className="row">
               <div className="col-md-8 col-sm-8">
+                <div className="container-dark-gray visible-xs">
+                  <div className="vertical-padding-m">    
+                    <div className="row">
+                      <div className="col-xs-10 col-xs-offset-1">
+                        {eventActions}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div className="vertical-padding-s visible-xs"></div>
                 <h4>{this.props.event.title}</h4>
                 <div dangerouslySetInnerHTML={{__html: this.props.event.description}}></div>
                 <div className="vertical-space-m"></div>
+                <div className="container-dark-gray visible-xs">
+                  <div className="container-fluid vertical-padding-m">    
+                    <div className="row">
+                      <div className="col-xs-10 col-xs-offset-1">
+                      {eventActions}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div className="vertical-padding-m"></div>
               </div>
-              <div className="col-md-4 col-sm-4">
-                <div className="well">
+              <div className="col-md-4 col-sm-4" style={{position: 'relative'}}>
+                <div className="well" style={{position: 'fixed', width: '25%', zIndex: 2}}>
                   <div className="row">
                     <div className="col-md-2 text-center">
                       <h1 className="noHeaderMargins"><span className="fa fa-calendar-o"></span></h1>
@@ -135,8 +172,8 @@ var Event = (function(R, D) {
                       <h1 className="noHeaderMargins"><span className="fa fa-map-marker"></span></h1>
                     </div>
                     <div className="col-md-10">
-                      <h4 className="noHeaderMargins">DevMeeting Online</h4>
-                      <h5 className="noHeaderMargins text-muted">Sprawdź co będzie potrzebne</h5>
+                      <h4 className="noHeaderMargins">Wrocław</h4>
+                      <h5 className="noHeaderMargins text-muted">Centrum miasta</h5>
                     </div>                    
                   </div>                  
                   <hr/>
@@ -145,7 +182,12 @@ var Event = (function(R, D) {
               </div>
             </div>
           </div>
-          <div className="container-light-gray">
+        </div>
+      );
+    }
+  });
+
+/*<div className="container-light-gray">
             <div className="container vertical-padding-s">
               <div className="row">
                 <div className="col-md-8 col-sm-8">
@@ -175,11 +217,7 @@ var Event = (function(R, D) {
                 </div>
               </div>
             </div>
-          </div>
-        </div>
-      );
-    }
-  });
+          </div>*/
 
   R.render(
     <EventComponent event={currentEvent} />,
