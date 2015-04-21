@@ -5,7 +5,8 @@ var express = require('express'),
   intercept = require('../utils/intercept'),
   Mailer = require('../utils/mailer'),
   Payu = require('../../config/payu'),
-  Claims = require('../models/claims');
+  Claims = require('../models/claims'),
+  checkIfAdmin = require('./admin').checkIfAdmin;
 
 
 moment.locale('pl');
@@ -48,6 +49,8 @@ router.post('/tickets/:claim/notify', function(req, res, next) {
         res.send(200);
         return;
       }
+      var claimId = order.extOrderId;
+      claimId = claimId.split('_')[0];
       // send mail with confirmation
       Claims.findById(order.extOrderId).populate('event').exec(intercept(next, function(claim) {
         sendMailWithPaymentConfirmation(claim, function() {
@@ -75,23 +78,43 @@ router.post('/tickets/:claim/notify', function(req, res, next) {
   }
 });
 
+// Regenerate payment
+router.post('/admin/events/:id/tickets/:claim/payment', checkIfAdmin, function(req, res, next) {
 
-router.post('/events/:id/tickets/:claim', function(req, res, next) {
+  Claims.findOne({
+    _id: req.params.claim,
+    event: req.params.id,
+  }).populate('event').exec(intercept(next, function(claim) {
+    console.log(claim);
+    var num = Math.random() * 100;
+    createPaymentForClaim(req, res, next, claim, '_' + num.toFixed(0)[0]);
+  }));
 
-  var paymentAmount = req.body.payment[0] === "-1" ? req.body.payment[1] : req.body.payment;
-  if (parseFloat(paymentAmount) < 1) {
-    return next('Wrong payment amount');
-  }
+});
+
+function extractNames(name) {
+  name = name || "";
+  var parts = name.split(' ');
+
+  return {
+    firstName: parts[0] || "",
+    lastName: parts[1] || ""
+  };
+}
+
+function createPaymentForClaim(req, res, next, claim, postfix) {
+
+  postfix = postfix || '';
 
   var daysToPay = 3;
-  var timeToPayInSeconds = daysToPay * 3600 * 24 * 1000;
+  var timeToPayInSeconds = daysToPay * 3600 * 24;
 
   function sendMailAndRenderResponse(claim) {
 
 
     res.render('mails/event-confirmation', {
       claim: claim,
-      endDate: moment(new Date(Date.now() + timeToPayInSeconds)).format('LLL'),
+      endDate: moment(new Date(Date.now() + 1000 * timeToPayInSeconds)).format('LLL'),
       eventDate: moment(claim.event.eventStartDate).format('LLL')
     }, intercept(next, function(mailText) {
 
@@ -119,19 +142,50 @@ router.post('/events/:id/tickets/:claim', function(req, res, next) {
     claim.save(intercept(next, sendMailAndRenderResponse));
   }
 
-  function findClaimById(id, cb) {
-    Claims.findById(id).populate('event').exec(intercept(next, cb));
+  var names = extractNames(claim.userData.names);
+
+  // Generate payment url
+  Payu.createOrderRequest({
+    notifyUrl: config.app.url + '/tickets/' + claim._id + '/notify',
+    continueUrl: config.app.url + '/events/' + claim.event._id + '/tickets/' + claim._id,
+    customerIp: Payu.getIp(req),
+    description: 'Opłata za udział w Devmeetingu ' + claim.event.title,
+    currencyCode: 'PLN',
+    validityTime: timeToPayInSeconds,
+    extOrderId: claim._id.toString() + postfix
+  }, [{
+    name: 'Udział w Devmetingu ' + claim.event.title,
+    unitPrice: claim.amount * 100,
+    quantity: 1
+  }], {
+    email: claim.userData.email,
+    firstName: names.firstName,
+    lastName: names.lastName
+  }).on('error', function() {
+    next("Couldn't generate payment");
+  }).end(function(res) {
+    if (res.ok || res.status === 302) {
+      var orderId = res.body.orderId;
+      var url = res.body.redirectUri;
+
+      updateClaimWithPaymentDetails(claim, orderId, url);
+    } else {
+      next("Error while creating payment: " + res.text);
+    }
+  });
+}
+
+function findClaimById(id, cb, next) {
+  Claims.findById(id).populate('event').exec(intercept(next, cb));
+}
+
+router.post('/events/:id/tickets/:claim', function(req, res, next) {
+
+  var paymentAmount = req.body.payment[0] === "-1" ? req.body.payment[1] : req.body.payment;
+  if (parseFloat(paymentAmount) < 1) {
+    return next('Wrong payment amount');
   }
 
-  function extractNames(name) {
-    name = name || "";
-    var parts = name.split(' ');
-
-    return {
-      firstName: parts[0] || "",
-      lastName: parts[1] || ""
-    };
-  }
 
   Claims.update({
     _id: req.params.claim,
@@ -155,38 +209,7 @@ router.post('/events/:id/tickets/:claim', function(req, res, next) {
     }
 
     findClaimById(req.params.claim, function(claim) {
-
-      var names = extractNames(claim.userData.names);
-
-      // Generate payment url
-      Payu.createOrderRequest({
-        notifyUrl: config.app.url + '/tickets/' + claim._id + '/notify',
-        continueUrl: config.app.url + '/events/' + claim.event._id + '/tickets/' + claim._id,
-        customerIp: Payu.getIp(req),
-        description: 'Opłata za udział w Devmeetingu ' + claim.event.title,
-        currencyCode: 'PLN',
-        validityTime: timeToPayInSeconds,
-        extOrderId: claim._id.toString()
-      }, [{
-        name: 'Udział w Devmetingu ' + claim.event.title,
-        unitPrice: claim.amount * 100,
-        quantity: 1
-      }], {
-        email: claim.userData.email,
-        firstName: names.firstName,
-        lastName: names.lastName
-      }).on('error', function() {
-        next("Couldn't generate payment");
-      }).end(function(res) {
-        if (res.ok || res.status === 302) {
-          var orderId = res.body.orderId;
-          var url = res.body.redirectUri;
-
-          updateClaimWithPaymentDetails(claim, orderId, url);
-        } else {
-          next("Error while creating payment: " + res.text);
-        }
-      });
-    });
+      createPaymentForClaim(req, res, next, claim);
+    }, next);
   }));
 });

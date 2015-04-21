@@ -8,13 +8,16 @@ module.exports = function(app) {
   app.use('/admin', router);
 };
 
-router.use(function(req, res, next) {
+function checkIfAdmin(req, res, next) {
   if (req.cookies.admin === 'Devmeetings1') {
     next();
   } else {
     res.send(403);
   }
-});
+}
+module.exports.checkIfAdmin = checkIfAdmin;
+
+router.use(checkIfAdmin);
 
 
 router.get('/', function(req, res) {
