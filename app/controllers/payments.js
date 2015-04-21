@@ -83,13 +83,15 @@ router.post('/events/:id/tickets/:claim', function(req, res, next) {
     return next('Wrong payment amount');
   }
 
+  var daysToPay = 3;
+  var timeToPayInSeconds = daysToPay * 3600 * 24 * 1000;
+
   function sendMailAndRenderResponse(claim) {
 
-    var daysToPay = 3;
 
     res.render('mails/event-confirmation', {
       claim: claim,
-      endDate: moment(new Date(Date.now() + daysToPay * 3600 * 24 * 1000)).format('LLL'),
+      endDate: moment(new Date(Date.now() + timeToPayInSeconds)).format('LLL'),
       eventDate: moment(claim.event.eventStartDate).format('LLL')
     }, intercept(next, function(mailText) {
 
@@ -163,6 +165,7 @@ router.post('/events/:id/tickets/:claim', function(req, res, next) {
         customerIp: Payu.getIp(req),
         description: 'Opłata za udział w Devmeetingu ' + claim.event.title,
         currencyCode: 'PLN',
+        validityTime: timeToPayInSeconds,
         extOrderId: claim._id.toString()
       }, [{
         name: 'Udział w Devmetingu ' + claim.event.title,
