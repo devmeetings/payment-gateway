@@ -32,10 +32,10 @@ router.post('/tickets/:claim/notify', function(req, res, next) {
 
     }));
   }
+  var order = req.body.order;
   var claimId = order.extOrderId;
   claimId = claimId.split('_')[0];
 
-  var order = req.body.order;
   if (order.status === 'COMPLETED') {
     // Update status of claim
     Claims.update({
