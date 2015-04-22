@@ -32,6 +32,8 @@ router.post('/tickets/:claim/notify', function(req, res, next) {
 
     }));
   }
+  var claimId = order.extOrderId;
+  claimId = claimId.split('_')[0];
 
   var order = req.body.order;
   if (order.status === 'COMPLETED') {
@@ -49,8 +51,6 @@ router.post('/tickets/:claim/notify', function(req, res, next) {
         res.send(200);
         return;
       }
-      var claimId = order.extOrderId;
-      claimId = claimId.split('_')[0];
       // send mail with confirmation
       Claims.findById(order.extOrderId).populate('event').exec(intercept(next, function(claim) {
         sendMailWithPaymentConfirmation(claim, function() {
@@ -62,7 +62,7 @@ router.post('/tickets/:claim/notify', function(req, res, next) {
   } else if (order.status === 'PENDING') {
     // Updating status to pending
     Claims.update({
-      _id: order.extOrderId,
+      _id: claimId,
       "payment.id": order.orderId,
       status: Claims.STATUS.WAITING
     }, {
