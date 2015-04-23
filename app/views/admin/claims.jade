@@ -18,16 +18,22 @@ block content
       .row(ng-if="!view.detailed")
         table.table.table-striped.table-hover.table-condensed
           tr
-            th Name
-            th E-mail
-            th Claimed Time
-            th Valid Till
-            th Status
-            th Amount
+            th
+              a(ng-click="sortBy('userData.names')") Name
+            th 
+              a(ng-click="sortBy('userData.email')") E-mail
+            th 
+              a(ng-click="sortBy('claimedTime')") Claimed Time
+            th 
+              a(ng-click="sortBy('validTill')") Valid Till
+            th 
+              a(ng-click="sortBy('status')") Status
+            th 
+              a(ng-click="sortBy('amount')") Amount
             th 
 
           tr(
-            ng-repeat="claim in claims | filter:search"
+            ng-repeat="claim in claims | filter:search | orderBy:sort.by:sort.reverse"
             ng-if="!hideExpired || claim.status !== 'expired'"
             )
             td {{claim.userData.names}}
@@ -44,7 +50,7 @@ block content
 
       .row(ng-if="view.detailed")
         .col-sm-6(
-          ng-repeat="claim in claims | filter:search" 
+          ng-repeat="claim in claims | filter:search | orderBy:sort.by:sort.reverse" 
           ng-if="!hideExpired || claim.status !== 'expired'")
           .well
             h1.pull-right {{claim.amount}}
@@ -84,5 +90,11 @@ append scripts
         var name = '/admin/events/' + evId + '/tickets/' + claimId + '/payment';
         $sce.trustAsUrl(name);
         return name;
+      };
+
+      $scope.sort = {};
+      $scope.sortBy = function(by) {
+        $scope.sort.by = by;
+        $scope.sort.reverse = !$scope.sort.reverse;
       };
     });
