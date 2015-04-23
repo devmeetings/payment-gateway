@@ -167,7 +167,9 @@ append scripts
       $scope.events = !{events};
 
       $scope.getPostUrl = function(id) {
-        return $sce.trustAsUrl('/admin/events/' + id);
+        var url = '/admin/events/' + id;
+        $sce.trustAsUrl(url);
+        return url;
       }
     });
 

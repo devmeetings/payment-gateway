@@ -3,38 +3,86 @@ extends ../angular-layout
 block content
   .container(ng-app="claims")
     div(ng-controller="ClaimsCtrl")
-      button.btn.btn-primary(
-        ng-class="{active: hideExpired}"
-        ng-click="hideExpired = !hideExpired") Hide Expired
-      input.form-control(type="text", ng-model="search.$", placeholder="Search")
-      .row
+      .well.clearfix
+        .form-group
+          a.pull-right(
+              ng-click="view.detailed = !view.detailed"
+            )
+            | Toggle Detailed View
+          button.btn.btn-primary(
+            ng-class="{active: hideExpired}"
+            ng-click="hideExpired = !hideExpired") Hide Expired
+        .form-group
+          input.form-control(type="text", ng-model="search.$", placeholder="Search")
 
-        .well.col-sm-8.col-sm-offset-2(
+      .row(ng-if="!view.detailed")
+        table.table.table-striped.table-hover.table-condensed
+          tr
+            th Name
+            th E-mail
+            th Claimed Time
+            th Valid Till
+            th Status
+            th Amount
+            th 
+
+          tr(
+            ng-repeat="claim in claims | filter:search"
+            ng-if="!hideExpired || claim.status !== 'expired'"
+            )
+            td {{claim.userData.names}}
+            td {{claim.userData.email}}
+            td {{claim.claimedTime | date:'short'}}
+            td {{claim.validTill | date:'short' }}
+            td {{claim.status }}
+            td {{claim.amount }}
+            td
+              a(
+                ng-click='search.$=claim._id; view.detailed=true'
+                )
+                | More
+
+      .row(ng-if="view.detailed")
+        .col-sm-6(
           ng-repeat="claim in claims | filter:search" 
           ng-if="!hideExpired || claim.status !== 'expired'")
+          .well
+            h1.pull-right {{claim.amount}}
+            h1 {{claim.userData.names}}
+            h2 {{claim.userData.email}}
+      
+            h4 
+              | Claimed: 
+              span(am-time-ago="claim.claimedTime")
+              span.text-muted  ({{claim.claimedTime | amCalendar}})
+            h4
+              | Status: 
+              span {{claim.status}}
+            h4 
+              | Valid till: 
+              span {{claim.validTill | amCalendar}}
 
-          h1.pull-right {{claim.amount}}
-          h1 {{claim.userData.names}}
-          h2 {{claim.userData.email}}
-    
-          h4 
-            | Claimed: 
-            span(am-time-ago="claim.claimedTime")
-            span.text-muted  ({{claim.claimedTime | amCalendar}})
-          h4
-            | Status: 
-            span {{claim.status}}
-          h4 
-            | Valid till: 
-            span {{claim.validTill | amCalendar}}
-
-          button.btn.btn-link.btn-xs(ng-click="showMore = !showMore") More
-          pre(ng-if="showMore"): code(ng-bind="claim | json")
+            button.btn.btn-link.btn-xs(ng-click="showMore = !showMore") More
+            pre(ng-if="showMore"): code(ng-bind="claim | json")
+            form(
+              method="post" 
+              action="{{getPostUrl(claim.event, claim._id)}}"
+              ng-if="claim.status !== 'payed'"
+              )
+              button.btn.btn-primary(type="submit")
+                | Recreate Payment
 
 append scripts
   script.
-    angular.module("claims", ['angularMoment']).controller("ClaimsCtrl", function($scope) {
+    angular.module("claims", ['angularMoment']).controller("ClaimsCtrl", function($scope, $sce) {
       $scope.hideExpired = true;
       $scope.search = {};
-      $scope.claims = !{claims}; 
+      $scope.claims = !{claims};
+      $scope.view = {};
+
+      $scope.getPostUrl = function(evId, claimId) {
+        var name = '/admin/events/' + evId + '/tickets/' + claimId + '/payment';
+        $sce.trustAsUrl(name);
+        return name;
+      };
     });
