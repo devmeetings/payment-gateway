@@ -25,12 +25,10 @@ router.get('/', function(req, res) {
 });
 
 router.get('/events', function(req, res, next) {
-  console.log("Events?");
-
   Event.find(intercept(next, function(events) {
     res.render('admin/events', {
       title: 'Events',
-      events: events
+      events: JSON.stringify(events)
     });
   }));
 });

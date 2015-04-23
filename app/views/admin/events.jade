@@ -2,73 +2,142 @@ extends ../angular-layout
 
 block content
 
-  .container
-    .row
-      .col-md-8.col-md-offset-2.col-sm-10.col-sm-offset-1
-        each ev in events
-          .well.clearfix
-            form(method="post", action="/admin/events/#{ev._id}")
-              .form-group
-                label.control-label Title
-                input.form-control(type='text' value=ev.title, name="title") 
-              .form-group
-                .checkbox
-                  label
-                    input(type='checkbox', checked=ev.isVisible, name="isVisible")
-                    | Visible?
-              .form-group
-                label.control-label Registration Open Date
-                input.form-control(type="text", value=ev.openDate, name="openDate")
+  .container(ng-app="events")
+    .row.ng-cloak
+      .col-xs-12(
+          ng-controller="EventsCtrl"
+        )
+        .well.clearfix
+          .form-group.clearfix
+            a.pull-right(
+                ng-click="view.detailed = !view.detailed"
+              )
+              Toggle Detailed View
+          .form-group
+            .input-group
+              .input-group-addon
+                span.fa.fa-search
+              input.form-control(
+                  type='text'
+                  ng-model='model.search'
+                  placeholder='Search'
+                  )
+        
+        div(ng-if="!view.detailed")
+          table.table.table-striped.table-hover.table-condensed
+            tr
+              th Short
+              th Title
+              th Registration Date
+              th Event Date
+              th Tickets Left
+              th Tickets Total
+              th Actions
 
-              .form-group
-                label.control-label Event Start date
-                input.form-control(type="text", value=ev.eventStartDate, name="eventStartDate")
+            tr(ng-repeat="ev in events | filter:model.search")
+              td 
+                a(ng-href="/events/{{ev.name}}") {{ev.name}}
+              td {{ev.title}}
+              td {{ev.openDate | date:'short'}}
+              td {{ev.eventStartDate | date:'short'}}
+              td {{ev.ticketsLeft }}
+              td {{ev.tickets }}
+              td
+                a.btn.btn-link.btn-xs(
+                    ng-href="/admin/events/{{ev._id}}/claims"
+                  )
+                  | Bilety
+                a.btn.btn-link.btn-xs(
+                    ng-click="model.search=ev.name;view.detailed=true"
+                  )
+                  | Edytuj
 
-              .form-group
-                label.control-label Event End date
-                input.form-control(type="text", value=ev.eventEndDate, name="eventEndDate")
+        div(ng-if="view.detailed")
+          .col-sm-6(ng-repeat="ev in events | filter:model.search")
+            .well.clearfix
+              form(
+                method="post", 
+                action="{{ getPostUrl(ev._id)}}"
+                )
+                .col-sm-6
+                  .form-group
+                    label.control-label Title
+                    input.form-control(type='text' value="{{ev.title}}" name="title") 
+                  .form-group
+                    label.control-label Short Name
+                    input.form-control(type='text' value="{{ev.name}}" readonly)
+                  .form-group
+                    .checkbox
+                      label
+                        input(type='checkbox' ng-checked="ev.isVisible" name="isVisible")
+                        | Visible?
+                  .form-group
+                    h3.text-muted Bilety: {{ev.ticketsLeft}} / {{ev.tickets}}
+                .col-sm-6
+                  .form-group
+                    label.control-label Registration Open Date
+                    input.form-control(type="text", value="{{ev.openDate | date:'short'}}", name="openDate")
 
-              .form-group
-                h3.text-muted Bilety: #{ev.ticketsLeft} / #{ev.tickets}
+                  .form-group
+                    label.control-label Event Start date
+                    input.form-control(type="text", value="{{ev.eventStartDate | date:'short'}}", name="eventStartDate")
+
+                  .form-group
+                    label.control-label Event End date
+                    input.form-control(type="text", value="{{ev.eventEndDate | date:'short'}}", name="eventEndDate")
+
+                hr
+                textarea.form-control(rows="4", name="description") {{ev.description}}
+                br
+                p.text-right
+                  button.btn.btn-danger(type="submit") Uaktualnij
+                a(
+                  ng-click="details = !details"
+                  )
+                  small Details
+                pre(ng-show="details") {{ev | json}}
               hr
-              textarea.form-control(rows="10", name="description") #{ev.description}
-              br
-              p.text-right
-                button.btn.btn-danger(type="submit") Uaktualnij
-              p.hide #{ev}
-            hr
-            .text-center
-              a.btn.btn-dev.btn-lg(href="/admin/events/#{ev._id}/claims") Pokaż bilety
-            h4
-              h4 Dodaj bilety
-              form(method="post", action="/admin/events/#{ev._id}/tickets")
-                .form-group
-                  label.control-label Liczba do dodania
-                  input.form-control(type="number", name="amount", min="1", max="99", value="1")
-                .form-group.text-center
-                  button.btn.btn-primary.btn-lg(type="submit") Dodaj
-    .row(ng-app="events")
-      .col-md-8.col-md-offset-2.col-sm-10.col-sm-offset-1(
+              .text-center
+                a.btn.btn-dev.btn-lg(ng-href="/admin/events/{{ev._id}}/claims") Pokaż bilety
+              h4
+                h4 Dodaj bilety
+                form(method="post", action="/admin/events/{{ev._id}}/tickets")
+                  .form-group
+                    label.control-label Liczba do dodania
+                    input.form-control(type="number", name="amount", min="1", max="99", value="1")
+                  .form-group.text-center
+                    button.btn.btn-primary.btn-lg(type="submit") Dodaj
+    .row.ng-cloak
+      .col-xs-12(
         ng-controller="NewEventCtrl"
       )
-        form(ng-submit="newEvent(data)", name="form")
-          .form-group
-            label.control-label Short Name
-            input.form-control(type="text", ng-model="data.name", name="id", required)
-          .form-group
-            label.control-label Title
-            input.form-control(type="text", ng-model="data.title", name="title", required)
-          .form-group
-            label.control-label Tickets
-            input.form-control(type="number", ng-model="data.tickets", name="tickets", required)
-          .form-group
-            label.control-label Tickets Left
-            input.form-control(type="number", ng-model="data.ticketsLeft", name="ticketsLeft", required)
+        button.pull-right.btn.btn-primary(
+            ng-show="!showNew"
+            ng-click="showNew = true"
+          )
+            | Nowy
+        br
+        br
+        .col-md-8.col-md-offset-2.col-sm-10.col-sm-offset-1(ng-if="showNew")
+          .well.clearfix
+            form(ng-submit="newEvent(data)", name="form")
+              .form-group
+                label.control-label Short Name
+                input.form-control(type="text", ng-model="data.name", name="id", required)
+              .form-group
+                label.control-label Title
+                input.form-control(type="text", ng-model="data.title", name="title", required)
+              .form-group
+                label.control-label Tickets
+                input.form-control(type="number", ng-model="data.tickets", name="tickets", required)
+              .form-group
+                label.control-label Tickets Left
+                input.form-control(type="number", ng-model="data.ticketsLeft", name="ticketsLeft", required)
 
 
-          .form-group
-            button.btn.btn-primary.btn-lg(type="submit", ng-disabled="form.$invalid")
-              | Stwórz Event
+              .form-group
+                button.btn.btn-primary.btn-lg(type="submit", ng-disabled="form.$invalid")
+                  | Stwórz Event
 
 append scripts
   script.
@@ -92,6 +161,14 @@ append scripts
           alert("error while adding");
         });
       };
+    }).controller('EventsCtrl', function($scope, $sce){
+      $scope.model = {};
+      $scope.view = {};
+      $scope.events = !{events};
+
+      $scope.getPostUrl = function(id) {
+        return $sce.trustAsUrl('/admin/events/' + id);
+      }
     });
 
 
