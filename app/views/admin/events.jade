@@ -101,7 +101,7 @@ block content
                 a.btn.btn-dev.btn-lg(ng-href="/admin/events/{{ev._id}}/claims") Pokaż bilety
               h4
                 h4 Dodaj bilety
-                form(method="post", action="/admin/events/{{ev._id}}/tickets")
+                form(method="post", action="{{getTicketsUrl(ev._id)}}")
                   .form-group
                     label.control-label Liczba do dodania
                     input.form-control(type="number", name="amount", min="1", max="99", value="1")
@@ -170,7 +170,13 @@ append scripts
         var url = '/admin/events/' + id;
         $sce.trustAsUrl(url);
         return url;
-      }
+      };
+
+      $scope.getTicketsUrl = function(id) {
+        var url = '/admin/events/' + id +'/tickets';
+        $sce.trustAsUrl(url);
+        return url;
+      };
     });
 
 
