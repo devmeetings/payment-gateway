@@ -49,6 +49,11 @@ block content
                 | More
 
       .row(ng-if="view.detailed")
+        .col-sm-12
+          a(
+            ng-click='search.$=""; view.detailed.false'
+            )
+            | &lArr; Back
         .col-sm-6(
           ng-repeat="claim in claims | filter:search | orderBy:sort.by:sort.reverse" 
           ng-if="!hideExpired || claim.status !== 'expired'")
