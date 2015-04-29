@@ -5,12 +5,11 @@ block content
     .row(ng-controller="InvoicesCtrl")
       .col-xs-12
         h1 Invoices
-        table
+        table.table.table-striped.table-hover
           thead
             tr
               th OrderId
               th Amount
-              th Status
               th Name / Email
               th eInvoice
               th Invoice Recipient
@@ -23,16 +22,21 @@ block content
           tbody
             tr(ng-repeat="in in invoices")
               td {{ in.orderId }}
-              td {{ in.totalAmount / 100 | currency }}
-              td {{ in.status }}
+              td 
+                | {{ in.totalAmount / 100 | currency }}
+                br
+                | {{ in.status }}
               td {{ in.buyer.firstName }} {{ in.buyer.lastName }}<br>{{ in.buyer.email}}
+
               td {{ in.buyer.invoice.eInvoiceRequested }}
+
               td {{ in.buyer.invoice.recipientName }}
               td {{ in.buyer.invoice.tin }}
-              td {{ in.buyer.invoice.street }}
-              td {{ in.buyer.invoice.postalCode }}
-              td {{ in.buyer.invoice.city }}
-              td {{ in.buyer.invoice.countryCode }}
+
+              td 
+                | {{ in.buyer.invoice.street }}
+                br
+                | {{ in.buyer.invoice.postalCode }} {{ in.buyer.invoice.city }} ({{ in.buyer.invoice.countryCode }})
 
 
 append scripts
