@@ -1,0 +1,42 @@
+extends ../angular-layout.jade
+
+block content
+  .container(ng-app="invoices")
+    .row(ng-controller="InvoicesCtrl")
+      .col-xs-12
+        h1 Invoices
+        table
+          thead
+            tr
+              th OrderId
+              th Amount
+              th Status
+              th Name / Email
+              th eInvoice
+              th Invoice Recipient
+              th Invoice NIP
+              th Invoice Street
+              th Invoice PostalCode
+              th Invoice City
+              th Invoice Country
+
+          tbody
+            tr(ng-repeat="in in invoices")
+              td {{ in.orderId }}
+              td {{ in.totalAmount / 100 | currency }}
+              td {{ in.status }}
+              td {{ in.buyer.firstName }} {{ in.buyer.lastName }}<br>{{ in.buyer.email}}
+              td {{ in.buyer.invoice.eInvoiceRequested }}
+              td {{ in.buyer.invoice.recipientName }}
+              td {{ in.buyer.invoice.tin }}
+              td {{ in.buyer.invoice.street }}
+              td {{ in.buyer.invoice.postalCode }}
+              td {{ in.buyer.invoice.city }}
+              td {{ in.buyer.invoice.countryCode }}
+
+
+append scripts
+  script.
+    angular.module('invoices', []).controller('InvoicesCtrl', function($scope) {
+      $scope.invoices = !{invoices};
+    });

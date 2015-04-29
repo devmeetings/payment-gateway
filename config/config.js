@@ -1,6 +1,6 @@
 var path = require('path'),
-    rootPath = path.normalize(__dirname + '/..'),
-    env = process.env.NODE_ENV || 'development';
+  rootPath = path.normalize(__dirname + '/..'),
+  env = process.env.NODE_ENV || 'development';
 
 var languages = ['pl', 'en'];
 
@@ -14,7 +14,7 @@ var config = {
     payu: null,
     port: 3000,
     db: 'mongodb://localhost/payment-gateway-development'
-    
+
   },
 
   test: {
@@ -26,7 +26,7 @@ var config = {
     payu: null,
     port: 3000,
     db: 'mongodb://localhost/payment-gateway-test'
-    
+
   },
 
   production: {
@@ -41,7 +41,7 @@ var config = {
     },
     port: 3000,
     db: 'mongodb://localhost/payment-gateway-production'
-    
+
   }
 };
 

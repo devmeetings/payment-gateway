@@ -5,10 +5,17 @@ block content
     div(ng-controller="ClaimsCtrl")
       .well.clearfix
         .form-group
-          a.pull-right(
-              ng-click="view.detailed = !view.detailed"
-            )
-            | Toggle Detailed View
+          .pull-right
+            a(
+                ng-click="view.detailed = !view.detailed"
+              )
+                | Toggle Detailed View
+            br
+            a(
+              ng-href="/admin/events/#{eventId}/invoices"
+              )
+              | Invoices
+
           button.btn.btn-primary(
             ng-class="{active: hideExpired}"
             ng-click="hideExpired = !hideExpired") Hide Expired

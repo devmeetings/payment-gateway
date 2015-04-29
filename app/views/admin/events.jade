@@ -9,10 +9,11 @@ block content
         )
         .well.clearfix
           .form-group.clearfix
-            a.pull-right(
-                ng-click="view.detailed = !view.detailed"
-              )
-              Toggle Detailed View
+            .pull-right
+              a(
+                  ng-click="view.detailed = !view.detailed"
+                )
+                  | Toggle Detailed View
           .form-group
             .input-group
               .input-group-addon

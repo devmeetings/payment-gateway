@@ -3,6 +3,7 @@ var express = require('express'),
   intercept = require('../utils/intercept'),
   Event = require('../models/event'),
   Claims = require('../models/claims'),
+  Q = require('q'),
   Payu = require('../../config/payu');
 
 module.exports = function(app) {
@@ -84,9 +85,55 @@ router.get('/events/:ev/claims', function(req, res, next) {
   }).exec(intercept(next, function(claims) {
     res.render('admin/claims', {
       title: 'Claims for ' + req.params.ev,
+      eventId: req.params.ev,
       claims: JSON.stringify(claims)
     });
   }));
+});
+
+router.get('/events/:ev/invoices', function(req, res, next) {
+  Claims.find({
+    event: req.params.ev,
+    'payment.id': {
+      $exists: true
+    }
+  }).exec(intercept(next, function(claims) {
+
+    Q.all(
+      claims.map(function(claim) {
+        var def = Q.defer();
+
+        Payu.getOrderInfo(claim.payment.id).on('error', function(err) {
+          def.reject(err);
+        }).end(function(resp) {
+          if (!resp.ok) {
+            def.reject(resp.body);
+            return;
+          }
+
+          def.resolve(resp.body);
+        });
+        return def.promise;
+      })
+
+    ).then(function(responses) {
+      
+      return responses.map(function(resp){
+        return resp.orders[0];
+      }).filter(function(resp) {
+        return resp.buyer && resp.buyer.invoice;
+      });
+
+    }).done(function(invoices) {
+
+      res.render('admin/invoices', {
+        title: 'Invoices for ' + req.params.ev,
+        invoices: JSON.stringify(invoices)
+      });
+
+    });
+  }));
+
 });
 
 router.get('/claims/:claimId/payment', function(req, res, next) {
