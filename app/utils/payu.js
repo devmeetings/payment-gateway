@@ -72,7 +72,15 @@ Payu.prototype = {
       .auth(this.id, this.key)
       .set('Accept', 'application/json')
       .send(data);
+  },
+
+  getOrderInfo: function(orderId) {
+    return request
+      .get(this.host + '/api/v2_1/orders/' + orderId)
+      .auth(this.id, this.key)
+      .set('Accept', 'application/json');
   }
+
 };
 
 Payu.create = function(id, key) {

@@ -2,7 +2,8 @@ var express = require('express'),
   router = express.Router(),
   intercept = require('../utils/intercept'),
   Event = require('../models/event'),
-  Claims = require('../models/claims');
+  Claims = require('../models/claims'),
+  Payu = require('../../config/payu');
 
 module.exports = function(app) {
   app.use('/admin', router);
@@ -86,4 +87,38 @@ router.get('/events/:ev/claims', function(req, res, next) {
       claims: JSON.stringify(claims)
     });
   }));
+});
+
+router.get('/claims/:claimId/payment', function(req, res, next) {
+  Claims.findOne({
+    _id: req.params.claimId,
+    'payment.id': {
+      $exists: true
+    }
+  }).exec(intercept(next, function(claim) {
+
+    if (!claim) {
+      res.send(404);
+      return;
+    }
+
+    Payu.getOrderInfo(claim.payment.id).on('error', function() {
+      next('Couldn\'t fetch payment info for:' + claim.payment.id);
+    }).end(function(resp) {
+      if (!resp.ok) {
+        console.error(resp);
+        next('OrderInfo unexpected status: ' + resp.status);
+        return;
+      }
+
+      res.render('admin/payment', {
+        title: 'Payment for ' + req.params.claimId,
+        claim: claim,
+        payment: JSON.stringify(resp.body, null, 2)
+      });
+
+    });
+  }));
+
+
 });

@@ -75,6 +75,13 @@ block content
 
             button.btn.btn-link.btn-xs(ng-click="showMore = !showMore") More
             pre(ng-if="showMore"): code(ng-bind="claim | json")
+            
+            p
+              a.btn.btn-primary(
+                href="{{getPaymentDetailsUrl(claim._id)}}"
+                ng-if="claim.payment.id"
+                  )
+                | Payment Details
             form(
               method="post" 
               action="{{getPostUrl(claim.event, claim._id)}}"
@@ -93,6 +100,12 @@ append scripts
 
       $scope.getPostUrl = function(evId, claimId) {
         var name = '/admin/events/' + evId + '/tickets/' + claimId + '/payment';
+        $sce.trustAsUrl(name);
+        return name;
+      };
+
+      $scope.getPaymentDetailsUrl = function(claimId) {
+        var name = '/admin/claims/' + claimId + '/payment';
         $sce.trustAsUrl(name);
         return name;
       };
