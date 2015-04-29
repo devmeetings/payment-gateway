@@ -4,24 +4,25 @@ block content
   .container(ng-app="invoices")
     .row(ng-controller="InvoicesCtrl")
       .col-xs-12
+        a.pull-right(
+            ng-click="showOrder = !showOrder"
+          )
+          | Show Order Id
         h1 Invoices
         table.table.table-striped.table-hover
           thead
             tr
-              th OrderId
+              th(ng-show="showOrder") OrderId
               th Amount
               th Name / Email
               th eInvoice
               th Invoice Recipient
               th Invoice NIP
-              th Invoice Street
-              th Invoice PostalCode
-              th Invoice City
-              th Invoice Country
+              th Invoice Address
 
           tbody
             tr(ng-repeat="in in invoices")
-              td {{ in.orderId }}
+              td(ng-show="showOrder") {{ in.orderId }}
               td 
                 | {{ in.totalAmount / 100 | currency }}
                 br
