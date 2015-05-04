@@ -7,10 +7,6 @@ var Event = (function(R, D) {
         <div className="row">
           <div className="col-md-2 text-center">
           </div>
-          <div className="col-md-10">
-            <h5 className="noHeaderMargins">3-dniowe warsztaty<br/>Mastering Node.js + Express:</h5>
-            <h5 className="noHeaderMargins"><a href="http://mastering-node-express-wro.evenea.pl" target="_blank">Kup bilet na evenea.pl</a></h5>
-          </div>
         </div>
       );
     }
