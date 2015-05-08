@@ -122,7 +122,7 @@ function createPaymentForClaim(req, res, next, claim, postfix) {
         from: Mailer.from,
         to: claim.userData.email,
         bcc: Mailer.bcc,
-        subject: 'Potwierdzenie rejestracji na DevMeeting ' + claim.event.title,
+        subject: 'Potwierdzenie rejestracji na ' + claim.event.title,
         html: mailText
       }, intercept(next, function(info) {
 
@@ -149,12 +149,12 @@ function createPaymentForClaim(req, res, next, claim, postfix) {
     notifyUrl: config.app.url + '/tickets/' + claim._id + '/notify',
     continueUrl: config.app.url + '/events/' + claim.event._id + '/tickets/' + claim._id,
     customerIp: Payu.getIp(req),
-    description: 'Opłata za udział w Devmeetingu ' + claim.event.title,
+    description: 'Opłata za udział w ' + claim.event.title,
     currencyCode: 'PLN',
     validityTime: timeToPayInSeconds,
     extOrderId: claim._id.toString() + postfix
   }, [{
-    name: 'Udział w Devmetingu ' + claim.event.title,
+    name: 'Udział w ' + claim.event.title,
     unitPrice: claim.amount * 100,
     quantity: 1
   }], {
