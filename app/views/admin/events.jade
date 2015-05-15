@@ -68,6 +68,10 @@ block content
                     label.control-label Short Name
                     input.form-control(type='text' value="{{ev.name}}" readonly)
                   .form-group
+                    label.control-label City
+                    input.form-control(type='text' value="{{ev.city}}" name="city")
+
+                  .form-group
                     .checkbox
                       label
                         input(type='checkbox' ng-checked="ev.isVisible" name="isVisible")
@@ -129,6 +133,9 @@ block content
                 label.control-label Title
                 input.form-control(type="text", ng-model="data.title", name="title", required)
               .form-group
+                label.control-label City
+                input.form-control(type="text", ng-model="data.city", name="city", required)
+              .form-group
                 label.control-label Tickets
                 input.form-control(type="number", ng-model="data.tickets", name="tickets", required)
               .form-group
@@ -146,6 +153,7 @@ append scripts
       $scope.data = {
         name: 'angular1',
         title: 'Angular Workshop',
+        city: 'Wrocław, Centrum Miasta',
         tickets: 10,
         ticketsLeft: 10,
         description: '',
