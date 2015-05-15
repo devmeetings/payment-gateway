@@ -42,6 +42,7 @@ router.post('/events/:ev', function(req, res, next) {
     $set: {
       title: req.body.title,
       isVisible: req.body.isVisible,
+      city: req.body.city,
       openDate: req.body.openDate,
       eventStartDate: req.body.eventStartDate,
       eventEndDate: req.body.eventEndDate,

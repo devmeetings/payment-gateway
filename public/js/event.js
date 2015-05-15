@@ -105,10 +105,21 @@ var Event = (function(R, D) {
       clearInterval(this.interval);
     },
 
+    getCityPart: function(city, part) {
+      if (!city) {
+        city = 'Wrocław, Centrum Miasta';
+      }
+
+      var a = city.split(', ');
+      return a[part];
+    },
+
     render: function() {
       var isAvailable = moment(this.state.currentTime).isAfter(this.props.event.openDate);
       var eventStartDate = moment(this.props.event.eventStartDate);
       var eventEndDate = moment(this.props.event.eventEndDate);
+      var eventCity1 = this.getCityPart(this.props.event.city, 0);
+      var eventCity2 = this.getCityPart(this.props.event.city, 1);
 
 
       var progress = {
@@ -168,8 +179,8 @@ var Event = (function(R, D) {
                       <h1 className="noHeaderMargins"><span className="fa fa-map-marker"></span></h1>
                     </div>
                     <div className="col-md-10">
-                      <h4 className="noHeaderMargins">Wrocław</h4>
-                      <h5 className="noHeaderMargins text-muted">Centrum miasta</h5>
+                      <h4 className="noHeaderMargins">{eventCity1}</h4>
+                      <h5 className="noHeaderMargins text-muted">{eventCity2}</h5>
                     </div>                    
                   </div>                  
                   <hr/>
