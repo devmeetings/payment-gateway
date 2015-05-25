@@ -1,5 +1,6 @@
 doctype html
 html(lang='en')
+  head
     meta(charset='UTF-8')
     meta(name='viewport', content='width=device-width')
     title= title
@@ -14,8 +15,12 @@ html(lang='en')
       script(src='/components/jquery/dist/jquery.js')
       script(src='/components/bootstrap/dist/js/bootstrap.js')
       script(src='/components/highlightjs/highlight.pack.js')
+      script(src='/components/fitvids/jquery.fitvids.js')
       script.
         hljs.initHighlightingOnLoad();
+        $(function(){
+          $('.video').fitVids();
+        });
   body
     include ./header
 
