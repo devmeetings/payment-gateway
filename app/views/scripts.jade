@@ -1,0 +1,10 @@
+script(src='http://localhost:35729/livereload.js')
+script(src='/components/jquery/dist/jquery.js')
+script(src='/components/bootstrap/dist/js/bootstrap.js')
+script(src='/components/highlightjs/highlight.pack.js')
+script(src='/components/fitvids/jquery.fitvids.js')
+script(async).
+  hljs.initHighlightingOnLoad();
+  $(function(){
+    $('.videos').fitVids();
+  });
