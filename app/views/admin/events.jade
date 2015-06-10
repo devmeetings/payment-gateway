@@ -54,7 +54,7 @@ block content
                   | Edytuj
 
         div(ng-if="view.detailed")
-          .col-sm-6(ng-repeat="ev in events | filter:model.search")
+          .col-sm-12(ng-repeat="ev in events | filter:model.search")
             .well.clearfix
               form(
                 method="post", 
@@ -92,7 +92,22 @@ block content
                     input.form-control(type="text", value="{{ev.eventEndDate | date:'short'}}", name="eventEndDate")
 
                 hr
-                textarea.form-control(rows="4", name="description") {{ev.description}}
+                p(style="clear:both")
+                  a(
+                    ng-click="showPreview = !showPreview"
+                    )
+                    | Preview
+                  | &nbsp;
+                  a(
+                    ng-click="sideBySide = !sideBySide; showPreview = true"
+                    )
+                    span.fa.fa-columns
+                .row
+                  div(ng-if="showPreview" marked="ev.description" ng-class="{'col-xs-6': !sideBySide}")
+                  div(ng-class="{'col-xs-6': !sideBySide}")
+                    textarea.form-control(
+                      rows="{{ showPreview ? 20 : 4 }}", name="description" ng-model="ev.description"
+                      )
                 br
                 p.text-right
                   button.btn.btn-danger(type="submit") Uaktualnij
@@ -148,8 +163,10 @@ block content
                   | Stwórz Event
 
 append scripts
+  script(src="/components/marked/lib/marked.js")
+  script(src="/components/angular-marked/angular-marked.js")
   script.
-    angular.module('events', []).controller('NewEventCtrl', function($scope, $http, $window) {
+    angular.module('events', ['hc.marked']).controller('NewEventCtrl', function($scope, $http, $window) {
       $scope.data = {
         name: 'angular1',
         title: 'Angular Workshop',
