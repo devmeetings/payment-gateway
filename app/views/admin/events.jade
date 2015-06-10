@@ -54,7 +54,7 @@ block content
                   | Edytuj
 
         div(ng-if="view.detailed")
-          .col-sm-6(ng-repeat="ev in events | filter:model.search")
+          .col-sm-12(ng-repeat="ev in events | filter:model.search")
             .well.clearfix
               form(
                 method="post", 
@@ -92,7 +92,23 @@ block content
                     input.form-control(type="text", value="{{ev.eventEndDate | date:'short'}}", name="eventEndDate")
 
                 hr
-                textarea.form-control(rows="4", name="description") {{ev.description}}
+                p(style="clear:both")
+                  a(
+                    ng-click="showPreview = !showPreview"
+                    title="Preview"
+                    )
+                    span.fa.fa-columns
+                .row.event-preview(
+                  ng-class="{'with-preview': showPreview}"
+                    )
+                  .col-xs-6(
+                    ng-if="showPreview" 
+                    marked="ev.description" 
+                    )
+                  .col-xs-6
+                    textarea.form-control(
+                      rows="{{ showPreview ? 20 : 4 }}", name="description" ng-model="ev.description"
+                      )
                 br
                 p.text-right
                   button.btn.btn-danger(type="submit") Uaktualnij
@@ -146,10 +162,24 @@ block content
               .form-group
                 button.btn.btn-primary.btn-lg(type="submit", ng-disabled="form.$invalid")
                   | Stwórz Event
+append css
+  style.
+    .event-preview.with-preview {
+      height: 100vh;
+    }
+    .event-preview.with-preview .col-xs-6 {
+      height: 100%;
+      overflow-y: auto;
+    }
+    .event-preview.with-preview textarea {
+      height: 100%;
+    }
 
 append scripts
+  script(src="/components/marked/lib/marked.js")
+  script(src="/components/angular-marked/angular-marked.js")
   script.
-    angular.module('events', []).controller('NewEventCtrl', function($scope, $http, $window) {
+    angular.module('events', ['hc.marked']).controller('NewEventCtrl', function($scope, $http, $window) {
       $scope.data = {
         name: 'angular1',
         title: 'Angular Workshop',
