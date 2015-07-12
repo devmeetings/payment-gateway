@@ -1,28 +1,27 @@
-var  _ = require('lodash'),
-  request = require('superagent');
+var _ = require('lodash');
+var request = require('superagent');
 
-var Payu = function(id, key) {
+var Payu = function (id, key) {
   this.id = id;
   this.key = key;
 };
-
 
 Payu.prototype = {
   id: null,
   key: null,
   host: 'https://secure.payu.com',
 
-  _calculateTotalAmount: function(products) {
-    function add(a, b) {
+  _calculateTotalAmount: function (products) {
+    function add (a, b) {
       return a + b;
     }
-    function calcValue(product) {
+    function calcValue (product) {
       return product.quantity * product.unitPrice;
     }
     return products.map(calcValue).reduce(add);
   },
 
-  _createRequestModel: function(options, products, buyer) {
+  _createRequestModel: function (options, products, buyer) {
     var total = this._calculateTotalAmount(products);
 
     var model = _.extend({}, options);
@@ -34,7 +33,7 @@ Payu.prototype = {
     return model;
   },
 
-  getIp: function(req) {
+  getIp: function (req) {
     if (this === Payu.test) {
       return '127.0.0.1';
     }
@@ -61,10 +60,10 @@ Payu.prototype = {
    *   "lastName": "Doe"
    *});
    */
-  createOrderRequest: function(options, products, buyer) {
+  createOrderRequest: function (options, products, buyer) {
     var data = this._createRequestModel(options, products, buyer);
 
-    console.log("sending ", data);
+    console.log('sending ', data);
     return request
       .post(this.host + '/api/v2_1/orders')
       .type('json')
@@ -74,7 +73,7 @@ Payu.prototype = {
       .send(data);
   },
 
-  getOrderInfo: function(orderId) {
+  getOrderInfo: function (orderId) {
     return request
       .get(this.host + '/api/v2_1/orders/' + orderId)
       .auth(this.id, this.key)
@@ -83,11 +82,10 @@ Payu.prototype = {
 
 };
 
-Payu.create = function(id, key) {
+Payu.create = function (id, key) {
   return new Payu(id, key);
 };
 
 Payu.test = Payu.create('145227', '13a980d4f851f3d9a1cfc792fb1f5e50');
-
 
 module.exports = Payu;

@@ -4,6 +4,8 @@
   "private": true,
   "scripts": {
     "postinstall": "bower install",
+    "lint": "semistandard",
+    "build": "npm run lin",
     "start": "node app.js"
   },
   "dependencies": {
@@ -36,6 +38,13 @@
     "grunt-jasmine-node-coffee": "^0.1.4",
     "load-grunt-tasks": "~0.6.0",
     "request": "~2.36.0",
+    "semistandard": "^6.1.2",
     "time-grunt": "~0.3.2"
+  },
+  "semistandard": {
+    "ignore": [
+      "node_modules/**",
+      "public/components/**"
+    ]
   }
 }

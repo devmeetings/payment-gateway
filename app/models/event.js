@@ -1,28 +1,28 @@
 // Example model
 
-var mongoose = require('mongoose'),
-    Schema = mongoose.Schema;
+var mongoose = require('mongoose');
+var Schema = mongoose.Schema;
 
 var EventSchema = new Schema({
-    name: {
-    	type: String,
-    	unique: true,
-    	index: true
-    },
-    city: String,
-    isVisible: Boolean,
-    title: String,
-    description: String,
-    openDate: Date,
-    eventStartDate: Date,
-    eventEndDate: Date,
-    tickets: Number,
-    ticketsLeft: Number
+  name: {
+    type: String,
+    unique: true,
+    index: true
+  },
+  city: String,
+  isVisible: Boolean,
+  title: String,
+  description: String,
+  openDate: Date,
+  eventStartDate: Date,
+  eventEndDate: Date,
+  tickets: Number,
+  ticketsLeft: Number
 });
 
 EventSchema.virtual('date')
-    .get(function() {
-        return this._id.getTimestamp();
-    });
+  .get(function () {
+    return this._id.getTimestamp();
+  });
 
 module.exports = mongoose.model('event', EventSchema);

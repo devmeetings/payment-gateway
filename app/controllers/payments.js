@@ -1,28 +1,24 @@
-var express = require('express'),
-  config = require('../../config/config'),
-  router = express.Router(),
-  moment = require('moment'),
-  intercept = require('../utils/intercept'),
-  Mailer = require('../utils/mailer'),
-  Payu = require('../../config/payu'),
-  Claims = require('../models/claims'),
-  checkIfAdmin = require('./admin').checkIfAdmin;
-
+var express = require('express');
+var config = require('../../config/config');
+var router = express.Router();
+var moment = require('moment');
+var intercept = require('../utils/intercept');
+var Mailer = require('../utils/mailer');
+var Payu = require('../../config/payu');
+var Claims = require('../models/claims');
+var checkIfAdmin = require('./admin').checkIfAdmin;
 
 moment.locale('pl');
 
-module.exports = function(app) {
+module.exports = function (app) {
   app.use('/', router);
 };
 
-
-router.post('/tickets/:claim/notify', function(req, res, next) {
-
-  function sendMailWithPaymentConfirmation(claim, cb) {
+router.post('/tickets/:claim/notify', function (req, res, next) {
+  function sendMailWithPaymentConfirmation (claim, cb) {
     res.render('mails/payment-confirmation', {
       claim: claim
-    }, intercept(next, function(mailText) {
-
+    }, intercept(next, function (mailText) {
       Mailer.sendMail({
         from: Mailer.from,
         to: Mailer.bcc,
@@ -40,20 +36,20 @@ router.post('/tickets/:claim/notify', function(req, res, next) {
     // Update status of claim
     Claims.update({
       _id: order.extOrderId,
-      "payment.id": order.orderId
+      'payment.id': order.orderId
     }, {
       $set: {
         status: Claims.STATUS.PAYED
       }
-    }).exec(intercept(next, function(isUpdated) {
+    }).exec(intercept(next, function (isUpdated) {
       if (!isUpdated) {
         console.error("Didn't update completed notification", order);
         res.send(200);
         return;
       }
       // send mail with confirmation
-      Claims.findById(order.extOrderId).populate('event').exec(intercept(next, function(claim) {
-        sendMailWithPaymentConfirmation(claim, function() {
+      Claims.findById(order.extOrderId).populate('event').exec(intercept(next, function (claim) {
+        sendMailWithPaymentConfirmation(claim, function () {
           res.send(200);
         });
       }));
@@ -63,28 +59,27 @@ router.post('/tickets/:claim/notify', function(req, res, next) {
     // Updating status to pending
     Claims.update({
       _id: claimId,
-      "payment.id": order.orderId,
+      'payment.id': order.orderId,
       status: Claims.STATUS.WAITING
     }, {
       $set: {
         status: Claims.STATUS.PENDING
       }
-    }).exec(intercept(next, function(isUpdated) {
+    }).exec(intercept(next, function (isUpdated) {
       res.send(200);
     }));
   } else {
-    console.warn("Got ignored notification", order);
+    console.warn('Got ignored notification', order);
     res.send(200);
   }
 });
 
 // Regenerate payment
-router.post('/admin/events/:id/tickets/:claim/payment', checkIfAdmin, function(req, res, next) {
-
+router.post('/admin/events/:id/tickets/:claim/payment', checkIfAdmin, function (req, res, next) {
   Claims.findOne({
     _id: req.params.claim,
-    event: req.params.id,
-  }).populate('event').exec(intercept(next, function(claim) {
+    event: req.params.id
+  }).populate('event').exec(intercept(next, function (claim) {
     console.log(claim);
     var num = Math.random() * 100;
     createPaymentForClaim(req, res, next, claim, '_' + num.toFixed(0)[0]);
@@ -92,40 +87,35 @@ router.post('/admin/events/:id/tickets/:claim/payment', checkIfAdmin, function(r
 
 });
 
-function extractNames(name) {
-  name = name || "";
+function extractNames (name) {
+  name = name || '';
   var parts = name.split(' ');
 
   return {
-    firstName: parts[0] || "",
-    lastName: parts[1] || ""
+    firstName: parts[0] || '',
+    lastName: parts[1] || ''
   };
 }
 
-function createPaymentForClaim(req, res, next, claim, postfix) {
-
+function createPaymentForClaim (req, res, next, claim, postfix) {
   postfix = postfix || '';
 
   var daysToPay = 3;
   var timeToPayInSeconds = daysToPay * 3600 * 24;
 
-  function sendMailAndRenderResponse(claim) {
-
-
+  function sendMailAndRenderResponse (claim) {
     res.render('mails/event-confirmation', {
       claim: claim,
       endDate: moment(new Date(Date.now() + 1000 * timeToPayInSeconds)).format('LLL'),
       eventDate: moment(claim.event.eventStartDate).format('LLL')
-    }, intercept(next, function(mailText) {
-
+    }, intercept(next, function (mailText) {
       Mailer.sendMail({
         from: Mailer.from,
         to: claim.userData.email,
         bcc: Mailer.bcc,
         subject: 'Potwierdzenie rejestracji na ' + claim.event.title,
         html: mailText
-      }, intercept(next, function(info) {
-
+      }, intercept(next, function (info) {
         res.redirect(claim.payment.url);
 
       }));
@@ -133,7 +123,7 @@ function createPaymentForClaim(req, res, next, claim, postfix) {
     }));
   }
 
-  function updateClaimWithPaymentDetails(claim, orderId, redirectUri) {
+  function updateClaimWithPaymentDetails (claim, orderId, redirectUri) {
     claim.status = Claims.STATUS.WAITING;
     claim.payment = {
       id: orderId,
@@ -161,31 +151,29 @@ function createPaymentForClaim(req, res, next, claim, postfix) {
     email: claim.userData.email,
     firstName: names.firstName,
     lastName: names.lastName
-  }).on('error', function() {
+  }).on('error', function () {
     next("Couldn't generate payment");
-  }).end(function(res) {
+  }).end(function (res) {
     if (res.ok || res.status === 302) {
       var orderId = res.body.orderId;
       var url = res.body.redirectUri;
 
       updateClaimWithPaymentDetails(claim, orderId, url);
     } else {
-      next("Error while creating payment: " + res.text);
+      next('Error while creating payment: ' + res.text);
     }
   });
 }
 
-function findClaimById(id, cb, next) {
+function findClaimById (id, cb, next) {
   Claims.findById(id).populate('event').exec(intercept(next, cb));
 }
 
-router.post('/events/:id/tickets/:claim', function(req, res, next) {
-
-  var paymentAmount = req.body.payment[0] === "-1" ? req.body.payment[1] : req.body.payment;
+router.post('/events/:id/tickets/:claim', function (req, res, next) {
+  var paymentAmount = req.body.payment[0] === '-1' ? req.body.payment[1] : req.body.payment;
   if (parseFloat(paymentAmount) < 1) {
     return next('Wrong payment amount');
   }
-
 
   Claims.update({
     _id: req.params.claim,
@@ -203,12 +191,12 @@ router.post('/events/:id/tickets/:claim', function(req, res, next) {
         names: req.body.names
       }
     }
-  }).exec(intercept(next, function(isUpdated) {
+  }).exec(intercept(next, function (isUpdated) {
     if (!isUpdated) {
       return res.send(404);
     }
 
-    findClaimById(req.params.claim, function(claim) {
+    findClaimById(req.params.claim, function (claim) {
       createPaymentForClaim(req, res, next, claim);
     }, next);
   }));

@@ -1,14 +1,13 @@
 var express = require('express');
 var glob = require('glob');
 
-var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var compress = require('compression');
 var methodOverride = require('method-override');
 
-module.exports = function(app, config) {
+module.exports = function (app, config) {
   app.set('views', config.root + '/app/views');
   app.set('view engine', 'jade');
 
@@ -34,7 +33,7 @@ module.exports = function(app, config) {
     next(err);
   });
 
-  if(app.get('env') === 'development'){
+  if (app.get('env') === 'development') {
     app.use(function (err, req, res) {
       res.status(err.status || 500);
       res.render('error', {
