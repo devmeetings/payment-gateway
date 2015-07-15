@@ -49,6 +49,10 @@ block content
                   )
                   | Bilety
                 a.btn.btn-link.btn-xs(
+                    ng-href="/admin/events/{{ev._id}}/users"
+                  )
+                  | Użytkownicy
+                a.btn.btn-link.btn-xs(
                     ng-click="model.search=ev.name;view.detailed=true"
                   )
                   | Edytuj
