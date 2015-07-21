@@ -17,7 +17,11 @@ var EventSchema = new Schema({
   eventStartDate: Date,
   eventEndDate: Date,
   tickets: Number,
-  ticketsLeft: Number
+  ticketsLeft: Number,
+  mail: {
+    location: String,
+    partner: String
+  }
 });
 
 EventSchema.virtual('date')
