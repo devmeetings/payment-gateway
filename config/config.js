@@ -47,3 +47,4 @@ var config = {
 
 module.exports = config[env];
 module.exports.languages = languages;
+module.exports.env = env;
