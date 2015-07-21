@@ -1,0 +1,70 @@
+extends ../angular-layout
+
+block content
+    .container(ng-app="users")
+        div(ng-controller="UsersCtrl")
+            .well.clearfix
+                .form-group
+                    input.form-control(type="text", ng-model="search.$", placeholder="Search")
+            .row
+                table.table.table-striped.table-hover.table-condensed
+                    tr
+                        th
+                            a(ng-click="sortBy('userData.names')") Name
+                        th
+                            a(ng-click="sortBy('userData.email')") E-mail
+                    tr(
+                    ng-repeat="user in users | filter:search | orderBy:sort.by:sort.reverse"
+                    )
+                        td {{user.userData.names}}
+                        td {{user.userData.email}}
+            .row.ng-cloak
+                .col-xs-12(
+                ng-controller="SendEmailCtrl"
+                )
+                    button.pull-right.btn.btn-primary(
+                    ng-disabled="sendMail"
+                    ng-click="sendLocationEmail()"
+                    )
+                        | {{mailBtnLabel}}
+                    br
+                    br
+            .row.ng-cloak
+                .col-xs-12(
+                ng-controller="SendEmailCtrl"
+                )
+                    button.pull-right.btn.btn-primary(
+                    ng-disabled="sendMail"
+                    ng-click="sendLocationTestEmail()"
+                    )
+                        | Wyślij maila testowego
+                    br
+                    br
+
+append scripts
+    script.
+        angular.module('users', []).controller('UsersCtrl', function ($scope) {
+            $scope.users = !{users};
+        })
+        .controller('SendEmailCtrl', function ($scope, $http) {
+
+            initMailBtn();
+
+            function initMailBtn(){
+                $scope.mailBtnLabel = "Mail do uczestników";
+                $scope.sendMail = false;
+            }
+
+            $scope.sendLocationTestEmail = function(){
+                $scope.sendLocationEmail({test:true});
+            };
+            $scope.sendLocationEmail = function (data) {
+                var eventId = '!{eventId}';
+                $scope.mailBtnLabel = "Trwa wysyłanie ..."
+                $scope.sendMail = true;
+                $http.post('/admin/events/' + eventId + '/users/notify', data).then(function(){
+                    initMailBtn();
+                })
+            };
+
+        });
