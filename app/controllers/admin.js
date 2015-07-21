@@ -7,6 +7,7 @@ var Mailer = require('../utils/mailer');
 var Claims = require('../models/claims');
 var Q = require('q');
 var Payu = require('../../config/payu');
+var config = require('../../config/config');
 
 module.exports = function (app) {
   app.use('/admin', router);
@@ -114,7 +115,9 @@ router.post('/events/:ev/users/notify', function (req, res, next){
               'w najbliższy czwartek',
               'w najbliższy piątek',
               'w najbliższą sobotę'
-          ];
+          ], verificationEmails = [];
+
+
 
       res.render('mails/event-location', {
         eventDay:  eventDaysWeek[moment(event.eventStartDate).day()],
@@ -129,10 +132,16 @@ router.post('/events/:ev/users/notify', function (req, res, next){
           });
         }
         else {
+          verificationEmails.push(sendMailToUser(mailText, 'lukaszewczak@gmail.com', mailTitle));
+
+          if (config.env === 'production'){
+            verificationEmails.push(sendMailToUser(mailText, Mailer.bcc, mailTitle));
+          }
+
           Q.all(
               claims.map(function(claim){
                 return sendMailToUser(mailText, claim.userData.email, mailTitle);
-              })
+              }).concat(verificationEmails)
           ).then(function(){
                 res.send(200);
               });
