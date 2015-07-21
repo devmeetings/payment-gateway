@@ -1,2 +1,2 @@
 [payment]
-root@xplatform.org server_name=reg-test.devmeetings.com server_id=payments_test
+root@xplatform.org server_name=reg-test.devmeetings.com server_id=payments_test payments_port=6700
