@@ -1,0 +1,33 @@
+extends ./mail.jade
+
+block content
+    p Cześć!
+    P Już #{eventDay} widzimy się na DevMeetingu "EcmaScript 6".
+    p
+        strong Gdzie?<br/>
+        | !{event.mail.location}
+
+    p
+        strong Kiedy?<br/>
+        | Sobota, #{startDate}, prosimy o przybycie najpóźniej #{regDate}. Zakończenie ok. #{endDate}.
+
+    p
+        strong Co należy przynieść?<br/>
+        | Laptop z zainstalowanym Google Chrome
+
+    p
+        strong Kontakt do organizatora w dniu DevMeetingu<br/>
+        | Piotr Zwoliński, 532 264 968
+
+    p
+        strong Partner DevMeetingu <br/>
+        | !{event.mail.partner}
+
+    br
+    br
+
+    p Do zobaczenia!
+
+    p
+        | Pozdrawiamy,<br/>
+        | Zespół DevMeetings
