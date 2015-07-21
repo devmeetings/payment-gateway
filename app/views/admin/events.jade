@@ -49,6 +49,10 @@ block content
                   )
                   | Bilety
                 a.btn.btn-link.btn-xs(
+                    ng-href="/admin/events/{{ev._id}}/users"
+                  )
+                  | Użytkownicy
+                a.btn.btn-link.btn-xs(
                     ng-click="model.search=ev.name;view.detailed=true"
                   )
                   | Edytuj
@@ -70,6 +74,11 @@ block content
                   .form-group
                     label.control-label City
                     input.form-control(type='text' value="{{ev.city}}" name="city")
+                  .form-group
+                    label.control-label Event Location (For mail)
+                    textarea.form-control(
+                      rows="4", name="location"
+                    ) {{ev.mail.location}}
 
                   .form-group
                     .checkbox
@@ -91,6 +100,11 @@ block content
                     label.control-label Event End date
                     input.form-control(type="text", value="{{ev.eventEndDate | date:'short'}}", name="eventEndDate")
 
+                  .form-group
+                    label.control-label Event Partner (For mail)
+                    textarea.form-control(
+                      rows="4", name="partner"
+                    ) {{ev.mail.partner}}
                 hr
                 p(style="clear:both")
                   a(

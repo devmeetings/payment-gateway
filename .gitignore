@@ -5,3 +5,4 @@ public/components
 .grunt
 data
 npm-debug.log
+.idea
