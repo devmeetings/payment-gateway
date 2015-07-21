@@ -49,8 +49,8 @@ router.post('/events/:ev', function (req, res, next) {
       eventStartDate: req.body.eventStartDate,
       eventEndDate: req.body.eventEndDate,
       description: req.body.description,
-      "mail.location": req.body.location,
-      "mail.partner": req.body.partner
+      'mail.location': req.body.location,
+      'mail.partner': req.body.partner
     }
   }, intercept(next, function (isUpdated) {
     res.redirect('/admin/events');
@@ -83,31 +83,31 @@ router.post('/events/:ev/tickets', function (req, res, next) {
 
 });
 
-router.post('/events/:ev/users/notify', function (req, res, next){
+router.post('/events/:ev/users/notify', function (req, res, next) {
 
-  function sendMailToUser(mailText,userTo, title){
+  function sendMailToUser (mailText, userTo, title) {
     var def = Q.defer();
-      Mailer.sendMail({
+    Mailer.sendMail({
         from: Mailer.from,
         to: userTo,
         subject: title,
         html: mailText
-      },intercept(next, function(){
+      }, intercept(next, function () {
         def.resolve();
       }));
 
     return def.promise;
- }
+  }
 
-    Claims.find({
+  Claims.find({
       event: req.params.ev,
       status: Claims.STATUS.PAYED
     }).populate('event').exec(intercept(next, function (claims) {
 
-      var isTestEmail = req.body.test,
-          event = claims[0].event,
-          mailTitle = 'Szczegóły DevMeetingu "ECMAScript 6" w Warszawie',//event.title + ', szczegóły organizacyjne',
-          eventDaysWeek = [
+      var isTestEmail = req.body.test;
+      var event = claims[0].event;
+      var mailTitle = 'Szczegóły DevMeetingu "ECMAScript 6" w Warszawie';
+      var eventDaysWeek = [
               'w najbliższą niedzielę',
               'w najbliższy poniedziałek',
               'w najbliższy wtorek',
@@ -115,34 +115,32 @@ router.post('/events/:ev/users/notify', function (req, res, next){
               'w najbliższy czwartek',
               'w najbliższy piątek',
               'w najbliższą sobotę'
-          ], verificationEmails = [];
-
-
+          ];
+      var verificationEmails = [];
 
       res.render('mails/event-location', {
-        eventDay:  eventDaysWeek[moment(event.eventStartDate).day()],
-        startDate:  moment(event.eventStartDate).format('DD. MMMM, [start] o H:mm'),
-        regDate:  moment(event.eventStartDate).subtract(15,'m').format('H:mm'),
-        endDate:  moment(event.eventEndDate).format('H:mm'),
+        eventDay: eventDaysWeek[moment(event.eventStartDate).day()],
+        startDate: moment(event.eventStartDate).format('DD. MMMM, [start] o H:mm'),
+        regDate: moment(event.eventStartDate).subtract(15, 'm').format('H:mm'),
+        endDate: moment(event.eventEndDate).format('H:mm'),
         event: event
-      } , intercept(next, function(mailText){
+      }, intercept(next, function (mailText) {
         if (isTestEmail) {
-          sendMailToUser(mailText, 'lukaszewczak@gmail.com', mailTitle + ' - TEST').then(function(){
+          sendMailToUser(mailText, 'lukaszewczak@gmail.com', mailTitle + ' - TEST').then(function () {
             res.send(200);
           });
-        }
-        else {
+        } else {
           verificationEmails.push(sendMailToUser(mailText, 'lukaszewczak@gmail.com', mailTitle));
 
-          if (config.env === 'production'){
+          if (config.env === 'production') {
             verificationEmails.push(sendMailToUser(mailText, Mailer.bcc, mailTitle));
           }
 
           Q.all(
-              claims.map(function(claim){
+              claims.map(function (claim) {
                 return sendMailToUser(mailText, claim.userData.email, mailTitle);
               }).concat(verificationEmails)
-          ).then(function(){
+          ).then(function () {
                 res.send(200);
               });
         }
@@ -150,7 +148,7 @@ router.post('/events/:ev/users/notify', function (req, res, next){
     }));
 });
 
-router.get('/events/:ev/users', function (req, res, next){
+router.get('/events/:ev/users', function (req, res, next) {
   Claims.find({
     event: req.params.ev,
     status: Claims.STATUS.PAYED
@@ -162,8 +160,6 @@ router.get('/events/:ev/users', function (req, res, next){
       });
   }));
 });
-
-
 
 router.get('/events/:ev/claims', function (req, res, next) {
   Claims.find({
