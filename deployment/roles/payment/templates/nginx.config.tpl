@@ -8,19 +8,19 @@ server {
   server_name {{ server_name }};
   
   location /components {
-    root /srv/{{ server_name }}/public/components;
+    root /srv/{{ server_name }}/public;
   }
 
   location /css {
-    root /srv/{{ server_name }}/public/css;
+    root /srv/{{ server_name }}/public;
   }
 
   location /js {
-    root /srv/{{ server_name }}/public/js;
+    root /srv/{{ server_name }}/public;
   }
 
   location /img {
-    root /srv/{{ server_name }}/public/img;
+    root /srv/{{ server_name }}/public;
   }
 
   location / {
