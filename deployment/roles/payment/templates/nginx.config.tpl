@@ -8,19 +8,19 @@ server {
   server_name registration.devmeetings.com;
   
   location /components {
-    root /srv/registration.devmeetings.com/public/components;
+    root /srv/registration.devmeetings.com/public;
   }
 
   location /css {
-    root /srv/registration.devmeetings.com/public/css;
+    root /srv/registration.devmeetings.com/public;
   }
 
   location /js {
-    root /srv/registration.devmeetings.com/public/js;
+    root /srv/registration.devmeetings.com/public;
   }
 
   location /img {
-    root /srv/registration.devmeetings.com/public/img;
+    root /srv/registration.devmeetings.com/public;
   }
 
   location / {
