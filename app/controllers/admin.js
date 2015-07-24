@@ -113,7 +113,8 @@ router.get('/events/:ev/users/diploma/render', function (req, res, next) {
 
   Claims.find({
     event: req.params.ev,
-    status: Claims.STATUS.PAYED
+    status: Claims.STATUS.PAYED,
+    amount: {$gte:100}
   }).populate('event').exec(intercept(next, function (users) {
     res.render('diploma/diploma', {
        users: JSON.stringify(users)
