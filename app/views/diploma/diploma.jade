@@ -86,6 +86,10 @@ html(ng-app='diploma')
                     margin-top: 18px;
                 }
 
+                .mt50x {
+                    margin-top: 50px;
+                }
+
                 .mt160 {
                     margin-top: 160px;
                 }
@@ -96,7 +100,7 @@ html(ng-app='diploma')
     body(ng-controller="UsersCtrl")
         .page(ng-repeat="user in users")
             .section
-                .row.mt18x
+                .row.mt50x
                     div
                         img.center-block(src="/img/logo.png")
                 .row
@@ -106,15 +110,15 @@ html(ng-app='diploma')
                     p.text-center.fb.f32x.fcolor(style="color: #000090;") {{user.userData.names}}
                     p.text-center.f14x.mt59x
                         strong Data:
-                        | 25 lipiec 2015
+                        | &nbsp;25 lipca 2015
                     p.text-center.fi.f14x.mt18x
                         span.ft4 Zawartość merytoryczna:
-                        | Zmienne, tablice i obiekty, funkcje, klasy, kolekcje, moduły, generatory i promises
+                        | &nbsp;Zmienne, tablice i obiekty, funkcje, klasy, kolekcje, moduły, generatory i promises
 
             .row.mt56x
                 div
                     img.center-block(src="/img/piotr_small_line.jpg", style="width:213px;")
-                p.text-center.f13x.mt18x 25 lipiec 2015, Piotr Zwoliński, Założyciel DevMeetings
+                p.text-center.f13x.mt18x 25 lipca 2015, Piotr Zwoliński, Założyciel DevMeetings
         append scripts
             script.
                 angular.module('diploma', []).controller('UsersCtrl', function ($scope) {
