@@ -1,73 +1,139 @@
 doctype html
 html(ng-app='diploma')
-   head
-      script(src="/components/angular/angular.js")
-      link(rel='stylesheet', href='/components/bootstrap/dist/css/bootstrap.css')
-      append css
-         style.
-            @media print {
-               @page {
-                  size: A4 landscape;
-               }
-            }
-            body {
-            margin-top: 0px;
-            margin-left: 0px;
-            }
-            .page {
-            padding: 0;
-            margin: 0 auto;
-            page-break-after: always;
-            font-family:'Calibri'
-            }
-            .fb {font-weight:bold;}
-            .fi {font-style:italic;}
-            .f14x {font-size:14px;}
-            .f16x {font-size:16px;}
-            .f32x {font-size:32px;}
-            .f13x {font-size:13px;}
-            .fcolor { color: #000090;}
+    head
+        script(src="/components/angular/angular.js")
+        append css
+            style.
+                @media print {
+                    @page {
+                        size: A4 landscape;
+                    }
+                }
 
-            @media print  {
-               .fcolor {
-                  color: #000090;
-                  -webkit-print-color-adjust: exact;
-               }
-            }
-            .mt167x{margin-top: 167px;}
-            .mt1x{margin-top: 1px;}
-            .mt56x{margin-top: 56px;}
-            .mt59x{margin-top: 59px;}
-            .mt96x{margin-top: 96px;}
-            .mt18x{margin-top: 18px;}
-            .mt160{margin-top: 160px;}
-            p {
-               margin-bottom:0;
-            }
-   body(ng-controller="UsersCtrl")
-      .page(ng-repeat="user in users")
-         .section
-            .row.mt18x
-               .span4
-                  img.center-block(src="/img/logo.png")
-            .row
-               p.text-center.f16x.mt96x Potwierdzamy uczestnictwo w DevMeetingu</p>
-               p.text-center.fb.f32x.fcolor EcmaScript 6
-               p.text-center.f16x.mt59x Uczestnik:
-               p.text-center.fb.f32x.fcolor(style="color: #000090;") {{user.userData.names}}
-               p.text-center.f14x.mt59x
-                  strong Data:
-                  | 25 lipiec 2015
-               p.text-center.fi.f14x.mt18x
-                  span.ft4 Zawartość merytoryczna:
-                  | Zmienne, tablice i obiekty, funkcje, klasy, kolekcje, moduły, generatory i promises
+                body {
+                    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+                    font-size: 14px;
+                    line-height: 1.42857143;
+                    color: #333;
+                    background-color: #fff;
+                    margin: 0;
+                }
 
-           .row.mt56x
-               .span4
-                  img.center-block(src="/img/piotr_small_line.jpg", style="width:213px;")
-               p.text-center.f13x.mt18x 25 lipiec 2015, Piotr Zwoliński, Założyciel DevMeetings
-      append scripts
-         script.
-            angular.module('diploma', []).controller('UsersCtrl', function ($scope) {
-               $scope.users = !{users};
-            })
+                .page {
+                    padding: 0;
+                    margin: 0 auto;
+                    page-break-after: always;
+                    font-family: 'Calibri'
+                }
+
+                .fb {
+                    font-weight: bold;
+                }
+
+                .fi {
+                    font-style: italic;
+                }
+
+                .f14x {
+                    font-size: 14px;
+                }
+
+                .f16x {
+                    font-size: 16px;
+                }
+
+                .f32x {
+                    font-size: 32px;
+                }
+
+                .f13x {
+                    font-size: 13px;
+                }
+
+                .fcolor {
+                    color: #000090;
+                    -webkit-print-color-adjust: exact;
+                }
+
+                .mt167x {
+                    margin-top: 167px;
+                }
+
+                .mt1x {
+                    margin-top: 1px;
+                }
+
+                .mt56x {
+                    margin-top: 56px;
+                }
+
+                .mt59x {
+                    margin-top: 59px;
+                }
+
+                .mt96x {
+                    margin-top: 96px;
+                }
+
+                .mt18x {
+                    margin-top: 18px;
+                }
+
+                .mt160 {
+                    margin-top: 160px;
+                }
+
+                p {
+                    margin-bottom: 0;
+                }
+
+                .row {
+                    margin-right: -15px;
+                    margin-left: -15px;
+                }
+
+                .text-center {
+                    text-align: center;
+                }
+
+                .center-block {
+                    display: block;
+                    margin-right: auto;
+                    margin-left: auto;
+                }
+
+                img {
+                    vertical-align: middle;
+                }
+
+                img {
+                    border: 0;
+                }
+
+    body(ng-controller="UsersCtrl")
+        .page(ng-repeat="user in users")
+            .section
+                .row.mt18x
+                    div
+                        img.center-block(src="/img/logo.png")
+                .row
+                    p.text-center.f16x.mt96x Potwierdzamy uczestnictwo w DevMeetingu</p>
+                    p.text-center.fb.f32x.fcolor EcmaScript 6
+                    p.text-center.f16x.mt59x Uczestnik:
+                    p.text-center.fb.f32x.fcolor(style="color: #000090;") {{user.userData.names}}
+                    p.text-center.f14x.mt59x
+                        strong Data:
+                        | 25 lipiec 2015
+                    p.text-center.fi.f14x.mt18x
+                        span.ft4 Zawartość merytoryczna:
+                        | Zmienne, tablice i obiekty, funkcje, klasy, kolekcje, moduły, generatory i promises
+
+            .row.mt56x
+                div
+                    img.center-block(src="/img/piotr_small_line.jpg", style="width:213px;")
+                p.text-center.f13x.mt18x 25 lipiec 2015, Piotr Zwoliński, Założyciel DevMeetings
+        append scripts
+            script.
+                angular.module('diploma', []).controller('UsersCtrl', function ($scope) {
+                    $scope.users = !{users};
+                })
