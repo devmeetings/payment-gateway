@@ -2,21 +2,22 @@ doctype html
 html(ng-app='diploma')
     head
         script(src="/components/angular/angular.js")
+        link(rel='stylesheet', href='/components/bootstrap/dist/css/bootstrap.css')
         append css
             style.
                 @media print {
                     @page {
                         size: A4 landscape;
                     }
+
+                    .fcolor {
+                        color: #000090 !important;
+                    }
                 }
 
                 body {
-                    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-                    font-size: 14px;
-                    line-height: 1.42857143;
-                    color: #333;
-                    background-color: #fff;
-                    margin: 0;
+                    margin-top: 0px;
+                    margin-left: 0px;
                 }
 
                 .page {
@@ -52,7 +53,13 @@ html(ng-app='diploma')
 
                 .fcolor {
                     color: #000090;
-                    -webkit-print-color-adjust: exact;
+                }
+
+                @media print {
+                    .fcolor {
+                        color: #000090;
+                        -webkit-print-color-adjust: exact;
+                    }
                 }
 
                 .mt167x {
@@ -86,30 +93,6 @@ html(ng-app='diploma')
                 p {
                     margin-bottom: 0;
                 }
-
-                .row {
-                    margin-right: -15px;
-                    margin-left: -15px;
-                }
-
-                .text-center {
-                    text-align: center;
-                }
-
-                .center-block {
-                    display: block;
-                    margin-right: auto;
-                    margin-left: auto;
-                }
-
-                img {
-                    vertical-align: middle;
-                }
-
-                img {
-                    border: 0;
-                }
-
     body(ng-controller="UsersCtrl")
         .page(ng-repeat="user in users")
             .section
