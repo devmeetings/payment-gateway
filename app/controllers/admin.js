@@ -14,12 +14,18 @@ module.exports = function (app) {
 };
 
 function checkIfAdmin (req, res, next) {
-  if (req.cookies.admin === 'Devmeetings1') {
+
+  if (req.cookies.admin === 'Devmeetings1' || checkIfPhantomJs(req)) {
     next();
   } else {
     res.send(403);
   }
 }
+
+function checkIfPhantomJs (req) {
+  return req.headers['user-agent'].indexOf('PhantomJS') >= 0;
+}
+
 module.exports.checkIfAdmin = checkIfAdmin;
 
 router.use(checkIfAdmin);
@@ -36,6 +42,22 @@ router.get('/events', function (req, res, next) {
     });
   }));
 });
+
+function getEvent (eventId) {
+  var def = Q.defer();
+
+  Event.findOne({
+    _id: eventId
+  }).exec(function (err, event) {
+    if (err) {
+      def.reject();
+    } else {
+      def.resolve(event);
+    }
+  });
+
+  return def.promise;
+}
 
 router.post('/events/:ev', function (req, res, next) {
   Event.update({
@@ -80,6 +102,49 @@ router.post('/events/:ev/tickets', function (req, res, next) {
     res.redirect('/admin/events');
 
   }));
+
+});
+
+router.get('/events/:ev/users/diploma/render', function (req, res, next) {
+ // if (!checkIfPhantomJs(req)){
+ //   res.redirect('/admin/events');
+ //   return;
+ // }
+
+  Claims.find({
+    event: req.params.ev,
+    status: Claims.STATUS.PAYED,
+    amount: {$gte:100}
+  }).populate('event').exec(intercept(next, function (users) {
+    res.render('diploma/diploma', {
+       users: JSON.stringify(users)
+    });
+  }));
+
+});
+
+router.post('/events/:ev/users/diploma', function (req, res, next) {
+
+  var fullUrl = req.protocol + '://' + req.get('host') + req.originalUrl;
+
+  var phantom = require('phantom');
+  phantom.create(function (ph) {
+      ph.createPage(function (page) {
+        page.cookies = [{
+          'name': 'admin',
+          'value': 'Devmeetings1'
+        }];
+        page.open(fullUrl + '/render', function (status) {
+          var file = 'diploma.pdf';
+          page.render(file, function () {
+            page.close();
+            page = null;
+
+            res.download('diploma.pdf');
+          });
+        });
+      });
+    });
 
 });
 
@@ -149,16 +214,20 @@ router.post('/events/:ev/users/notify', function (req, res, next) {
 });
 
 router.get('/events/:ev/users', function (req, res, next) {
-  Claims.find({
-    event: req.params.ev,
-    status: Claims.STATUS.PAYED
-  }).exec(intercept(next, function (users) {
-    res.render('admin/users', {
-      title: 'Users for ' + req.params.ev,
-      eventId: req.params.ev,
-      users: JSON.stringify(users)
+  getEvent(req.params.ev).then(function (event) {
+    Claims.find({
+      event: req.params.ev,
+      status: Claims.STATUS.PAYED
+    }).exec(intercept(next, function (users) {
+      res.render('admin/users', {
+        event: event,
+        title: 'Users for ' + req.params.ev,
+        eventId: req.params.ev,
+        users: JSON.stringify(users)
       });
-  }));
+    }));
+  });
+
 });
 
 router.get('/events/:ev/claims', function (req, res, next) {

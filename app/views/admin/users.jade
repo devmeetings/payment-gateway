@@ -7,39 +7,46 @@ block content
                 .form-group
                     input.form-control(type="text", ng-model="search.$", placeholder="Search")
             .row
-                table.table.table-striped.table-hover.table-condensed
-                    tr
-                        th
-                            a(ng-click="sortBy('userData.names')") Name
-                        th
-                            a(ng-click="sortBy('userData.email')") E-mail
-                    tr(
-                    ng-repeat="user in users | filter:search | orderBy:sort.by:sort.reverse"
+                p.lead !{event.title}
+
+                p
+                    | Lista użytkowników którzy opłacili rejestrację plus użytkownicy specjalni (np. od sponsora "TO DO")
+            .row
+                .col-md-9
+                    table.table.table-striped.table-hover.table-condensed
+                        tr
+                            th
+                                a(ng-click="sortBy('userData.names')") Name
+                            th
+                                a(ng-click="sortBy('userData.email')") E-mail
+                        tr(
+                        ng-repeat="user in users | filter:search | orderBy:sort.by:sort.reverse"
+                        )
+                            td {{user.userData.names}}
+                            td {{user.userData.email}}
+                .col-md-3(
+                    ng-controller="SendEmailCtrl"
                     )
-                        td {{user.userData.names}}
-                        td {{user.userData.email}}
-            .row.ng-cloak
-                .col-xs-12(
-                ng-controller="SendEmailCtrl"
-                )
-                    button.pull-right.btn.btn-primary(
-                    ng-disabled="sendMail"
-                    ng-click="sendLocationEmail()"
-                    )
-                        | {{mailBtnLabel}}
-                    br
-                    br
-            .row.ng-cloak
-                .col-xs-12(
-                ng-controller="SendEmailCtrl"
-                )
-                    button.pull-right.btn.btn-primary(
-                    ng-disabled="sendMail"
-                    ng-click="sendLocationTestEmail()"
-                    )
-                        | Wyślij maila testowego
-                    br
-                    br
+                        button.pull-right.btn.btn-primary.btn-block(
+                        ng-disabled="sendMail"
+                        ng-click="sendLocationEmail()"
+                        )
+                            | {{mailBtnLabel}}
+                        br
+                        br
+                        button.pull-right.btn.btn-primary.btn-block(
+                        ng-disabled="sendMail"
+                        ng-click="sendLocationTestEmail()"
+                        )
+                            | Wyślij maila testowego
+                        br
+                        br
+                        button.pull-right.btn.btn-primary.btn-block(
+                        ng-click="getDiploma()"
+                        )
+                            | Pobierz dyplomy
+                        br
+                        a(href="users/diploma/render") Pokaż dyplomy
 
 append scripts
     script.
@@ -47,6 +54,7 @@ append scripts
             $scope.users = !{users};
         })
         .controller('SendEmailCtrl', function ($scope, $http) {
+            var eventId = '!{eventId}';
 
             initMailBtn();
 
@@ -59,12 +67,14 @@ append scripts
                 $scope.sendLocationEmail({test:true});
             };
             $scope.sendLocationEmail = function (data) {
-                var eventId = '!{eventId}';
                 $scope.mailBtnLabel = "Trwa wysyłanie ..."
                 $scope.sendMail = true;
                 $http.post('/admin/events/' + eventId + '/users/notify', data).then(function(){
                     initMailBtn();
                 })
+            };
+            $scope.getDiploma = function () {
+                $http.post('/admin/events/' + eventId + '/users/diploma');
             };
 
         });
