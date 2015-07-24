@@ -5,7 +5,7 @@ upstream payments {
 
 server {
   listen 80;
-  server_name *.devmeetings.com *.devmeetings.pl *.devmeetings.org;
+  server_name devmeetings.com devmeetings.pl devmeetings.org *.devmeetings.com *.devmeetings.pl *.devmeetings.org;
 
   if ($http_host = devmeetings.com) {
     rewrite / http://devmeetings.com/en;
