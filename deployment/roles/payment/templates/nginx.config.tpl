@@ -5,7 +5,11 @@ upstream payments {
 
 server {
   listen 80;
-  server_name registration.devmeetings.com;
+  server_name *.devmeetings.com *.devmeetings.pl *.devmeetings.org;
+
+  if ($http_host = devmeetings.com) {
+    rewrite / http://devmeetings.com/en;
+  }
   
   location /components {
     root /srv/registration.devmeetings.com/public;
