@@ -17,4 +17,9 @@
 - name: Ensuring build essential
   apt: name=build-essential
 
+- name: NodeJS | PhantomJs
+  npm:
+    name: phantomjs
+    global: yes
+
 
