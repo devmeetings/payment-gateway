@@ -6,16 +6,7 @@ upstream {{ server_id }} {
 server {
   listen 80;
   server_name {{ server_name }} devmeetings.com devmeetings.pl devmeetings.org devmeetings.de *.devmeetings.com *.devmeetings.pl *.devmeetings.org *.devmeetings.de;
-
-  location = / {
-    if ($http_host = devmeetings.com) {
-      rewrite / http://devmeetings.com/en;
-    }
-    if ($http_host = devmeetings.de) {
-      rewrite / http://devmeetings.de/de;
-    }
-  }
-    
+   
   location /components {
     root /srv/{{ server_name }}/public;
   }
@@ -30,6 +21,19 @@ server {
 
   location /img {
     root /srv/{{ server_name }}/public;
+  }
+
+  location = / {
+    if ($http_host = devmeetings.com) {
+      rewrite / http://devmeetings.com/en;
+    }
+    if ($http_host = devmeetings.de) {
+      rewrite / http://devmeetings.de/de;
+    }
+
+    proxy_pass http://{{ server_id }};
+    proxy_set_header Host      $host;
+    proxy_set_header X-Real-IP $remote_addr;
   }
 
   location / {
