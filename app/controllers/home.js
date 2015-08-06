@@ -50,7 +50,8 @@ router.get('/events/:name', function (req, res, next) {
       },
       status: {
         // TODO [ToDr] Dont remove WAITING tickets automatically!
-        $in: [Claims.STATUS.ACTIVE /*, Claims.STATUS.WAITING*/ ]
+        // $in: [Claims.STATUS.ACTIVE #<{(|, Claims.STATUS.WAITING |)}>#]
+        $in: [Claims.STATUS.ACTIVE]
       }
     }, {
       $set: {

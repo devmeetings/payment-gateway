@@ -114,10 +114,12 @@ router.get('/events/:ev/users/diploma/render', function (req, res, next) {
   Claims.find({
     event: req.params.ev,
     status: Claims.STATUS.PAYED,
-    amount: {$gte:100}
+    amount: {
+      $gte: 100
+    }
   }).populate('event').exec(intercept(next, function (users) {
     res.render('diploma/diploma', {
-       users: JSON.stringify(users)
+      users: JSON.stringify(users)
     });
   }));
 
@@ -173,14 +175,14 @@ router.post('/events/:ev/users/notify', function (req, res, next) {
       var event = claims[0].event;
       var mailTitle = 'Szczegóły DevMeetingu "ECMAScript 6" w Warszawie';
       var eventDaysWeek = [
-              'w najbliższą niedzielę',
-              'w najbliższy poniedziałek',
-              'w najbliższy wtorek',
-              'w najbliższą środę',
-              'w najbliższy czwartek',
-              'w najbliższy piątek',
-              'w najbliższą sobotę'
-          ];
+        'w najbliższą niedzielę',
+        'w najbliższy poniedziałek',
+        'w najbliższy wtorek',
+        'w najbliższą środę',
+        'w najbliższy czwartek',
+        'w najbliższy piątek',
+        'w najbliższą sobotę'
+      ];
       var verificationEmails = [];
 
       res.render('mails/event-location', {
