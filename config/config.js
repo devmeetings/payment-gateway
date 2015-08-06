@@ -2,7 +2,7 @@ var path = require('path');
 var rootPath = path.normalize(__dirname + '/..');
 var env = process.env.NODE_ENV || 'development';
 
-var languages = ['pl', 'en'];
+var languages = ['pl', 'en', 'de'];
 
 var config = {
   development: {
