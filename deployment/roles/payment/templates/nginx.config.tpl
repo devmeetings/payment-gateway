@@ -1,34 +1,34 @@
-upstream payments {
+upstream {{ server_id }} {
   server localhost:{{payments_port}};
   keepalive 32;
 }
 
 server {
   listen 80;
-  server_name devmeetings.com devmeetings.pl devmeetings.org *.devmeetings.com *.devmeetings.pl *.devmeetings.org;
+  server_name {{ server_name }} devmeetings.com devmeetings.pl devmeetings.org *.devmeetings.com *.devmeetings.pl *.devmeetings.org;
 
   if ($http_host = devmeetings.com) {
     rewrite / http://devmeetings.com/en;
   }
   
   location /components {
-    root /srv/registration.devmeetings.com/public;
+    root /srv/{{ server_name }}/public;
   }
 
   location /css {
-    root /srv/registration.devmeetings.com/public;
+    root /srv/{{ server_name }}/public;
   }
 
   location /js {
-    root /srv/registration.devmeetings.com/public;
+    root /srv/{{ server_name }}/public;
   }
 
   location /img {
-    root /srv/registration.devmeetings.com/public;
+    root /srv/{{ server_name }}/public;
   }
 
   location / {
-    proxy_pass http://payments;
+    proxy_pass http://{{ server_id }};
     proxy_set_header Host      $host;
     proxy_set_header X-Real-IP $remote_addr;
   }
@@ -36,7 +36,7 @@ server {
   error_page 502 /offline.html;
   
   location = /offline.html {
-    root /srv/registration.devmeetings.com/;
+    root /srv/{{ server_name }}/;
   }
 
   location /nginx_status {

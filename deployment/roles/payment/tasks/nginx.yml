@@ -7,12 +7,12 @@
 - name: Nginx | Copying site
   template:
     src: nginx.config.tpl
-    dest: "/etc/nginx/sites-available/registration.devmeetings.com"
+    dest: "/etc/nginx/sites-available/{{ server_name }}"
 
 - name: Nginx | Enabling XPlatform
   file: 
-    src: "/etc/nginx/sites-available/registration.devmeetings.com"
-    dest: "/etc/nginx/sites-enabled/registration.devmeetings.com" 
+    src: "/etc/nginx/sites-available/{{ server_name }}"
+    dest: "/etc/nginx/sites-enabled/{{ server_name }}" 
     state: link
 
 - service: name=nginx state=restarted 
