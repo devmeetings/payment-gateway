@@ -5,12 +5,17 @@ upstream {{ server_id }} {
 
 server {
   listen 80;
-  server_name {{ server_name }} devmeetings.com devmeetings.pl devmeetings.org *.devmeetings.com *.devmeetings.pl *.devmeetings.org;
+  server_name {{ server_name }} devmeetings.com devmeetings.pl devmeetings.org devmeetings.de *.devmeetings.com *.devmeetings.pl *.devmeetings.org *.devmeetings.de;
 
-  if ($http_host = devmeetings.com) {
-    rewrite / http://devmeetings.com/en;
+  location = / {
+    if ($http_host = devmeetings.com) {
+      rewrite / http://devmeetings.com/en;
+    }
+    if ($http_host = devmeetings.de) {
+      rewrite / http://devmeetings.de/de;
+    }
   }
-  
+    
   location /components {
     root /srv/{{ server_name }}/public;
   }
