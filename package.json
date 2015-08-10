@@ -39,7 +39,7 @@
     "grunt-jasmine-node-coffee": "^0.1.4",
     "load-grunt-tasks": "~0.6.0",
     "request": "~2.36.0",
-    "semistandard": "^6.1.2",
+    "semistandard": "^7.0.2",
     "time-grunt": "~0.3.2"
   },
   "semistandard": {

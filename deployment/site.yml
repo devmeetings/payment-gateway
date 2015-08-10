@@ -1,7 +1,6 @@
 ---
 - hosts: payment
   vars:
-    payments_port: 6500
     payments_version: 'lastSuccessfulBuild'
   roles:
     - payment

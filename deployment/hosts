@@ -1,2 +1,2 @@
 [payment]
-root@xplatform.org
+root@xplatform.org server_name=registration.devmeetings.com server_id=payments payments_port=6500

@@ -16,7 +16,7 @@
 
 - name: Payments | Create directory for app
   file:
-    path: /srv/registration.devmeetings.com
+    path: /srv/{{ server_name }}
     state: directory
     mode: 0755
     owner: payments
@@ -35,18 +35,18 @@
 - name: Payments | Unpacking
   unarchive:
     copy: no
-    dest: "/srv/registration.devmeetings.com"
+    dest: "/srv/{{ server_name }}"
     src: "/srv/_packages/payments_{{payments_version}}.tar.gz"
 
 - name: Installing Modules
   npm: 
-    path: "/srv/registration.devmeetings.com/"
+    path: "/srv/{{ server_name }}/"
 
 - name: Run On Startup
-  command: pm2 startup -u payments && mv /etc/init.d/pm2-init.sh /etc/init.d/pm2-xplatform.sh
+  command: pm2 startup -u payments && mv /etc/init.d/pm2-init.sh /etc/init.d/pm2-{{ server_id }}.sh
   args:
-    creates: /etc/init.d/pm2-payments.sh
-    chdir: "/srv/registration.devmeetings.com"
+    creates: "/etc/init.d/pm2-{{ server_id }}.sh"
+    chdir: "/srv/{{ server_name }}"
 
 - name: delete existing pm2 processes if running
   command: "pm2 delete payments"
@@ -57,7 +57,7 @@
 - name: start pm2 process
   command: 'pm2 start --name "payments" app.js'
   args:
-    chdir: "/srv/registration.devmeetings.com"
+    chdir: "/srv/{{ server_name }}"
   sudo: yes
   sudo_user: payments
   environment:
