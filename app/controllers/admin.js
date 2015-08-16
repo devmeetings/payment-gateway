@@ -262,7 +262,8 @@ router.post('/claims/get/invoice', function (req, res, next) {
         'value': 'Devmeetings1'
       }];
 
-      page.setZoomFactor(1.3);
+      //page.setZoomFactor(1.3);
+      page.setZoomFactor(0.5);
 
       var settings = {
         operation: 'POST',
