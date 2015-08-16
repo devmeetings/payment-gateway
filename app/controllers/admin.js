@@ -151,21 +151,21 @@ router.post('/events/:ev/users/notify', function (req, res, next) {
   function sendMailToUser (mailText, userTo, title) {
     var def = Q.defer();
     Mailer.sendMail({
-        from: Mailer.from,
-        to: userTo,
-        subject: title,
-        html: mailText
-      }, intercept(next, function () {
-        def.resolve();
-      }));
+      from: Mailer.from,
+      to: userTo,
+      subject: title,
+      html: mailText
+    }, intercept(next, function () {
+      def.resolve();
+    }));
 
     return def.promise;
   }
 
   Claims.find({
-      event: req.params.ev,
-      status: Claims.STATUS.PAYED
-    }).populate('event').exec(intercept(next, function (claims) {
+    event: req.params.ev,
+    status: Claims.STATUS.PAYED
+  }).populate('event').exec(intercept(next, function (claims) {
 
       var isTestEmail = req.body.test;
       var event = claims[0].event;
@@ -241,10 +241,9 @@ router.get('/events/:ev/claims', function (req, res, next) {
 });
 
 router.post('/claims/get/invoice/render', function (req, res, next) {
-
-    res.render('invoice/invoice', {
-      data: req.body
-    });
+  res.render('invoice/invoice', {
+    data: req.body
+  });
 });
 
 router.post('/claims/get/invoice', function (req, res, next) {
@@ -254,7 +253,10 @@ router.post('/claims/get/invoice', function (req, res, next) {
   var phantom = require('phantom');
   phantom.create(function (ph) {
     ph.createPage(function (page) {
-      page.setPaperSize({  format: 'A4', margin: '20px'});
+      page.setPaperSize({
+        format: 'A4',
+        margin: '20px'
+      });
       page.cookies = [{
         'name': 'admin',
         'value': 'Devmeetings1'
@@ -263,14 +265,14 @@ router.post('/claims/get/invoice', function (req, res, next) {
       page.setZoomFactor(1.3);
 
       var settings = {
-        operation: "POST",
-        encoding: "utf8",
+        operation: 'POST',
+        encoding: 'utf8',
         headers: {
-          "Content-Type": "application/json"
+          'Content-Type': 'application/json'
         },
         data: JSON.stringify(req.body)
       };
-      page.open(fullUrl + '/render',settings, function (status) {
+      page.open(fullUrl + '/render', settings, function (status) {
         var file = 'tmp/invoice.pdf';
         page.render(file, function () {
           page.close();
@@ -284,68 +286,65 @@ router.post('/claims/get/invoice', function (req, res, next) {
 
 });
 
+function getInvoiceData (claim, order) {
+  var def = Q.defer();
 
-function getInvoiceData(claim, order){
-    var  def = Q.defer();
+  if (!order.buyer || !order.buyer.invoice) {
+    def.resolve({});
+    return def.promise;
+  }
 
-    if (!order.buyer || !order.buyer.invoice) {
-      def.resolve({});
-      return def.promise;
-    }
+  if (claim.invoice.invoiceNo) {
+    def.resolve({
+      invoiceNo: claim.invoice.invoiceNo,
+      deliveryDate: moment(claim.invoice.deliveryDate).format('YYYY-MM-DD'),
+      dateOfPayment: moment(claim.invoice.dateOfPayment).format('YYYY-MM-DD'),
+      dateOfInvoice: moment(claim.invoice.dateOfInvoice).format('YYYY-MM-DD'),
+      amountNet: claim.amountNet,
+      amountGross: claim.amount,
+      amountDiff: claim.amountDiff
+    });
+    return def.promise;
+  }
 
-    if (claim.invoice.invoiceNo) {
+  var date = new Date(),
+    year = date.getFullYear(),
+    month = date.getMonth() + 1,
+    invoiceNo = '/' + month + '/' + year,
+    conditions = {year: year, month: month},
+    update = {$inc: { no: 1 }},
+    options = {upsert: true, new: true};
+
+    InvoiceNo.findOneAndUpdate(conditions, update, options, function (err, updatedInvoiceNo) {
+      if (err){
+        def.reject();
+        return;
+      }
+
+      invoiceNo = updatedInvoiceNo.no + invoiceNo;
+
+      var deliveryDate = moment(order.orderCreateDate),
+          dateOfPayment = moment(deliveryDate).add(11, 'days'),
+          dateOfInvoice = moment().format('YYYY-MM-DD');
+
+      deliveryDate = deliveryDate.format('YYYY-MM-DD');
+      dateOfPayment = dateOfPayment.format('YYYY-MM-DD');
+
+      updateClaimInvoiceData(claim._id, invoiceNo, deliveryDate, dateOfPayment, dateOfInvoice);
+
       def.resolve({
-        invoiceNo: claim.invoice.invoiceNo,
-        deliveryDate: moment(claim.invoice.deliveryDate).format('YYYY-MM-DD'),
-        dateOfPayment: moment(claim.invoice.dateOfPayment).format('YYYY-MM-DD'),
-        dateOfInvoice: moment(claim.invoice.dateOfInvoice).format('YYYY-MM-DD'),
-        amountNet: claim.amountNet,
+        invoiceNo: invoiceNo,
+        deliveryDate: deliveryDate,
+        dateOfPayment: dateOfPayment,
+        dateOfInvoice: dateOfInvoice,
+        amountNet:claim.amountNet,
         amountGross:claim.amount,
         amountDiff:claim.amountDiff
       });
-      return def.promise;
-    };
+    });
 
 
-    var date = new Date(),
-        year = date.getFullYear(),
-        month = date.getMonth() + 1,
-        invoiceNo = '/' + month + '/' + year,
-        conditions = { year: year, month: month},
-        update = { $inc: { no: 1 }},
-        options =  { upsert : true, new: true};
-
-
-        InvoiceNo.findOneAndUpdate(conditions, update, options, function (err, updatedInvoiceNo){
-          if (err){
-            def.reject();
-            return;
-          }
-
-          invoiceNo = updatedInvoiceNo.no + invoiceNo;
-
-          var deliveryDate = moment(order.orderCreateDate),
-              dateOfPayment = moment(deliveryDate).add(11, 'days'),
-              dateOfInvoice = moment().format('YYYY-MM-DD');
-
-          deliveryDate = deliveryDate.format('YYYY-MM-DD');
-          dateOfPayment = dateOfPayment.format('YYYY-MM-DD');
-
-          updateClaimInvoiceData(claim._id, invoiceNo, deliveryDate, dateOfPayment, dateOfInvoice);
-
-          def.resolve({
-            invoiceNo: invoiceNo,
-            deliveryDate: deliveryDate,
-            dateOfPayment: dateOfPayment,
-            dateOfInvoice: dateOfInvoice,
-            amountNet:claim.amountNet,
-            amountGross:claim.amount,
-            amountDiff:claim.amountDiff
-          });
-        });
-
-
-    return def.promise;
+  return def.promise;
 }
 
 function updateClaimInvoiceData(id, invoiceNo, deliveryDate, dateOfPayment, dateOfInvoice){
