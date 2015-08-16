@@ -15,7 +15,14 @@ var ClaimSchema = new Schema({
     type: String,
     enum: ['active', 'waiting', 'payed', 'expired']
   },
+
   amount: Number,
+  invoice: {
+    invoiceNo: String,
+    deliveryDate: Date,
+    dateOfPayment: Date,
+    dateOfInvoice: Date
+  },
   payment: {
     id: String,
     url: String
@@ -30,6 +37,16 @@ ClaimSchema.virtual('date')
   .get(function () {
     return this._id.getTimestamp();
   });
+
+ClaimSchema.virtual('amountNet')
+    .get(function () {
+      return (this.amount/1.23).toFixed(2);
+    });
+
+ClaimSchema.virtual('amountDiff')
+    .get(function () {
+      return (this.amount - this.amountNet).toFixed(2);
+    });
 
 module.exports = mongoose.model('claim', ClaimSchema);
 
