@@ -45,7 +45,8 @@
   "semistandard": {
     "ignore": [
       "node_modules/**",
-      "public/components/**"
+      "public/components/**",
+      "public/js/download/**"
     ]
   }
 }

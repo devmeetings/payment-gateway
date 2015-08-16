@@ -9,39 +9,102 @@ block content
           )
           | Show Order Id
         h1 Invoices
-        table.table.table-striped.table-hover
-          thead
-            tr
-              th(ng-show="showOrder") OrderId
-              th Amount
-              th Name / Email
-              th eInvoice
-              th Invoice Recipient
-              th Invoice NIP
-              th Invoice Address
-
-          tbody
-            tr(ng-repeat="in in invoices")
-              td(ng-show="showOrder") {{ in.orderId }}
-              td 
-                | {{ in.totalAmount / 100 | currency }}
-                br
-                | {{ in.status }}
-              td {{ in.buyer.firstName }} {{ in.buyer.lastName }}<br>{{ in.buyer.email}}
-
-              td {{ in.buyer.invoice.eInvoiceRequested }}
-
-              td {{ in.buyer.invoice.recipientName }}
-              td {{ in.buyer.invoice.tin }}
-
-              td 
-                | {{ in.buyer.invoice.street }}
-                br
-                | {{ in.buyer.invoice.postalCode }} {{ in.buyer.invoice.city }} ({{ in.buyer.invoice.countryCode }})
-
-
+        .well.clearfix(ng-repeat="in in invoices")
+          form.invoices.form-horizontal
+            .row
+              .col-xs-6
+                .form-group(ng-show="showOrder")
+                  label.col-sm-4.control-label OrderId:
+                  .col-sm-8
+                      p.form-control-static {{ in.orderId }}
+                .form-group
+                  label.col-sm-4.control-label Amount / Status:
+                  .col-sm-8
+                    p.form-control-static {{ in.totalAmount / 100 | currency: '' }} {{in.currencyCode}} / {{ in.status }}
+                .form-group
+                  label.col-sm-4.control-label Name / Email:
+                  .col-sm-8
+                    p.form-control-static {{ in.buyer.firstName }} {{ in.buyer.lastName }} / {{ in.buyer.email}}
+                .form-group
+                  label.col-sm-4.control-label Invoice:
+                  .col-sm-8
+                    p.form-control-static {{ in.buyer.invoice.recipientName }}
+                      br
+                      | {{ in.buyer.invoice.street }}
+                      br
+                      | {{ in.buyer.invoice.postalCode }} {{ in.buyer.invoice.city }} ({{ in.buyer.invoice.countryCode }})
+                      br
+                      | NIP: {{ in.buyer.invoice.tin }}
+              .col-xs-6(on-change-invoice-data="{{in.orderId}}")
+                .form-group
+                  label.col-sm-5.control-label Invoice No:
+                  .col-sm-7
+                    input.form-control(type="text",name="invoiceNo",ng-model="in.invoice.invoiceNo")
+                .form-group
+                  label.col-sm-5.control-label Date of invoice:
+                  .col-sm-7
+                    input.form-control(ng-model="in.invoice.dateOfInvoice", name="dateOfInvoice", type="text")
+                .form-group
+                  label.col-sm-5.control-label Delivery date:
+                  .col-sm-7
+                    input.form-control(ng-model="in.invoice.deliveryDate", name="deliveryDate", type="text")
+                .form-group
+                  label.col-sm-5.control-label Date of payment:
+                  .col-sm-7
+                    input.form-control(ng-model="in.invoice.dateOfPayment",name="dateOfPayment", type="text")
+                .form-group
+                  .col-sm-7.col-sm-offset-5
+                    button.btn.btn-primary(download-invoice) Get invoice
 append scripts
   script.
-    angular.module('invoices', []).controller('InvoicesCtrl', function($scope) {
-      $scope.invoices = !{invoices};
+    angular.module('invoices', []).factory('InvoiceService',function($http){
+      return {
+        updateInvoice: updateInvoice,
+        getInvoice: getInvoice
+      };
+
+      function getInvoice(data) {
+        $http.post('/admin/claims/get/invoice', data, {responseType: 'blob'}).success(function (data) {
+          download(data, 'invoice.pdf', 'application/pdf');
+        });
+      }
+
+      function updateInvoice (data) {
+            $http.post('/admin/claims/invoice/', data);
+      };
+    }).directive('downloadInvoice', function (InvoiceService){
+      return {
+        restrict: 'A',
+        link: function (scope, element, attrs) {
+            element.on('click', function (){
+                var data = {};
+
+                InvoiceService.getInvoice(scope.in);
+            });
+        }
+      };
+    }).directive('onChangeInvoiceData',function(InvoiceService){
+        return {
+          restrict: 'A',
+          link: function(scope, el, attr) {
+            el.find('input').on('blur', function () {
+
+              var invoiceData = {
+                payment: attr['onChangeInvoiceData']
+              };
+              el.find('input').each(function(idx, input) {
+                var $input = $(input);
+                invoiceData[$input.attr('name')] = $input.val();
+              });
+
+              InvoiceService.updateInvoice(invoiceData);
+            })
+        }
+      };
+    }).controller('InvoicesCtrl', function($scope) {
+      $scope.invoices =!{invoices};
+
+      $scope.updateInvoiceData = function(invoice){
+        console.log(invoice);
+      }
     });

@@ -304,3 +304,7 @@ color: #2c3e50;
   transition: all 0.2s ease;
   text-transform: uppercase;
 }
+
+.invoices .form-group{
+  margin-bottom: 2px;
+}
