@@ -263,7 +263,7 @@ router.post('/claims/get/invoice', function (req, res, next) {
       }];
 
       //page.setZoomFactor(1.3);
-      page.setZoomFactor(0.9);
+      page.setZoomFactor(0.8);
 
       var settings = {
         operation: 'POST',
