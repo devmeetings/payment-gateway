@@ -64,8 +64,10 @@ append scripts
       };
 
       function getInvoice(data) {
-        $http.post('/admin/claims/get/invoice', data, {responseType: 'blob'}).success(function (data) {
-          download(data, 'invoice.pdf', 'application/pdf');
+        $http.post('/admin/claims/get/invoice', data, {responseType: 'blob'}).then(function (response) {
+          var regEx = response.headers('Content-Disposition').match(/filename="([^"]*)"/);
+          var fileName = regEx[1];
+          download(response.data, fileName, 'application/pdf');
         });
       }
 

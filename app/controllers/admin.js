@@ -271,8 +271,6 @@ router.post('/claims/get/invoice', function (req, res, next) {
         page.setZoomFactor(0.8);
       }
 
-
-
       var settings = {
         operation: 'POST',
         encoding: 'utf8',
@@ -281,14 +279,23 @@ router.post('/claims/get/invoice', function (req, res, next) {
         },
         data: JSON.stringify(req.body)
       };
-      page.open(fullUrl + '/render', settings, function (status) {
-        var file = 'tmp/invoice.pdf';
-        page.render(file, function () {
-          page.close();
-          page = null;
 
-          res.download('tmp/invoice.pdf');
-        });
+      page.open(fullUrl + '/render', settings, function (status) {
+
+        page.evaluate(function(className) {
+          return document.querySelector(className).innerText.replace(/\//g,'_');
+        }, renderPage, '.invoice-no');
+
+        function renderPage(invoiceNo) {
+          var file = 'tmp/invoice_' + invoiceNo + '.pdf';
+          page.render(file, function () {
+            page.close();
+            page = null;
+
+            res.download(file);
+          });
+        }
+
       });
     });
   });
