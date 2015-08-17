@@ -262,8 +262,16 @@ router.post('/claims/get/invoice', function (req, res, next) {
         'value': 'Devmeetings1'
       }];
 
-      //page.setZoomFactor(1.3);
-      page.setZoomFactor(0.8);
+
+      //change zoom factor based on environment,becouse on windows machine zoom factor differs from linux machine
+      if (config.env === 'development') {
+        page.setZoomFactor(1.3);
+      }
+      else {
+        page.setZoomFactor(0.8);
+      }
+
+
 
       var settings = {
         operation: 'POST',
