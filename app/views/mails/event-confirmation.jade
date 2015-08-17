@@ -14,7 +14,9 @@ block content
     | najpóźniej do <strong>#{endDate}</strong>.
 
   strong Link do płatności:<br/>
-    a(href="#{claim.payment.url}") Płatność z PayU
+    a(
+      href="#{appUrl}/events/#{claim.event._id}/tickets/#{claim._id}"
+      ) Płatność z PayU
   p
     strong Faktura?<br/>
     | Jesli życzysz sobie fakturę, prześlij proszę dane łącznie z NIPem na adres info@devmeetings.pl.

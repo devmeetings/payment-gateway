@@ -91,7 +91,7 @@ router.get('/events/:id/tickets/:claim', function (req, res, next) {
     _id: req.params.claim,
     event: req.params.id,
     status: {
-      $in: [Claims.STATUS.ACTIVE, Claims.STATUS.WAITING, Claims.STATUS.PENDING, Claims.STATUS.PAYED]
+      $in: [Claims.STATUS.ACTIVE, Claims.STATUS.WAITING, Claims.STATUS.CREATING_PAYMENT, Claims.STATUS.PENDING, Claims.STATUS.PAYED]
     }
   }).populate('event').exec(intercept(next, function (claim) {
     if (!claim) {
@@ -103,11 +103,14 @@ router.get('/events/:id/tickets/:claim', function (req, res, next) {
         claim: claim,
         claim_json: JSON.stringify(claim)
       });
-    } else if (claim.status === Claims.STATUS.WAITING) {
-      res.redirect(claim.payment.url);
-    } else {
+    } else if (claim.status === Claims.STATUS.PAYED) {
       res.render('event-ok', {
         claim: claim
+      });
+    } else {
+      res.render('event-ticket_inprogress', {
+        claim: claim,
+        STATUS: Claims.STATUS
       });
     }
   }));
