@@ -323,7 +323,7 @@ function getInvoiceData (claim, order) {
     return def.promise;
   }
 
-  var date = new Date(),
+  var date = order.orderCreateDate,
     year = date.getFullYear(),
     month = date.getMonth() + 1,
     invoiceNo = '/' + month + '/' + year,
