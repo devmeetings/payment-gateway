@@ -1,0 +1,48 @@
+extends layout
+
+block content
+  
+  .container.vertical-padding-s
+    .row
+      .col-md-8.col-md-offset-2.col-sm-10.col-sm-offset-1
+        .vertical-space-l
+        h4.noHeaderMargins
+          | Zarejestrowałeś się na DevMeeting #{claim.event.title}.
+
+        if claim.status === STATUS.CREATING_PAYMENT
+          p.text-danger Status płatności: Wystąpił błąd podczas tworzenia płatności.
+
+        if claim.status === STATUS.WAITING
+          p Status płatności: Oczekujemy na potwierdzenie płatności od operatora.
+
+        if claim.status === STATUS.PENDING
+          p Status płatności: Oczekujemy na potwierdzenie z banku.
+
+        if claim.payment && claim.payment.url
+          .vertical-space-s
+          .text-center
+            a.btn.btn-lg.btn-danger(
+                href=claim.payment.url
+              )
+              | Przejdź do płatności z PayU
+              span.fa.fa-fw.fa-chevron-circle-right
+
+        .vertical-space-m
+        form(
+          method="post"
+          action="/events/#{claim.event._id}/tickets/#{claim._id}/payment"
+          )
+          p 
+            | W przypadku problemów z dokończeniem płatności 
+            button.btn.btn-link(type="submit", style="padding-left:0")
+              | anuluj aktualną płatność i wygeneruj nową
+
+
+        .vertical-space-xl
+        hr
+        h5.text-muted.noHeaderMargins W razie jakichkolwiek problemów skontaktuj się z nami pod adresem <code>info@devmeetings.pl</code>        
+        h5.text-muted.noHeaderMargins
+          | Id twojego biletu: 
+          code #{claim._id}
+        
+        .vertical-space-xl

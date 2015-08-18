@@ -74,6 +74,21 @@ router.post('/tickets/:claim/notify', function (req, res, next) {
   }
 });
 
+// Regenerate payment - user action
+// TODO [ToDr] I think that some more security is necessary here
+router.post('/events/:id/tickets/:claim/payment', function (req, res, next) {
+
+  Claims.findOne({
+    _id: req.params.claim,
+    event: req.params.id
+  }).populate('event').exec(intercept(next, function (claim) {
+    console.log(claim);
+    var num = Math.random() * 100;
+    createPaymentForClaim(req, res, next, claim, '_' + num.toFixed(0)[0]);
+  }));
+
+});
+
 // Regenerate payment
 router.post('/admin/events/:id/tickets/:claim/payment', checkIfAdmin, function (req, res, next) {
   Claims.findOne({
@@ -106,9 +121,11 @@ function createPaymentForClaim (req, res, next, claim, postfix) {
   function sendMailAndRenderResponse (claim) {
     res.render('mails/event-confirmation', {
       claim: claim,
+      appUrl: config.app.url,
       endDate: moment(new Date(Date.now() + 1000 * timeToPayInSeconds)).format('LLL'),
       eventDate: moment(claim.event.eventStartDate).format('LLL')
     }, intercept(next, function (mailText) {
+
       Mailer.sendMail({
         from: Mailer.from,
         to: claim.userData.email,
@@ -117,7 +134,6 @@ function createPaymentForClaim (req, res, next, claim, postfix) {
         html: mailText
       }, intercept(next, function (info) {
         res.redirect(claim.payment.url);
-
       }));
 
     }));

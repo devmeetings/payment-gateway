@@ -51,10 +51,16 @@ ClaimSchema.virtual('amountDiff')
 module.exports = mongoose.model('claim', ClaimSchema);
 
 module.exports.STATUS = {
+  /* Bilet zajety - w trakcie wypelniania */
   ACTIVE: 'active',
+  /* Przed wyslaniem do PayU */
   CREATING_PAYMENT: 'creatingPayment',
+  /* Oczekiwanie na potwierdzenie z PayU */
   WAITING: 'waiting',
+  /* PayU oczekuje na potwierdzenie z banku */
   PENDING: 'pending',
+  /* Zaplacone */
   PAYED: 'payed',
+  /* Czas na wypelnienie wygasl */
   EXPIRED: 'expired'
 };
