@@ -393,11 +393,11 @@ function updateClaimInvoiceData (id, invoiceNo, deliveryDate, dateOfPayment, dat
 
 function resetInvoiceNo (req, res, next) {
   var conditions = {
-      event: req.params.ev,
-      'payment.id': {
-        $exists: true
-      }
-    };
+    event: req.params.ev,
+    'payment.id': {
+      $exists: true
+    }
+  };
   var update = {$set: {'invoice.invoiceNo': null}};
   var options = { multi: true };
 
