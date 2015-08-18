@@ -5,8 +5,12 @@ upstream {{ server_id }} {
 
 server {
   listen 80;
+  {% if server_name == 'registration.devmeetings.com' %}
   server_name {{ server_name }} devmeetings.com devmeetings.pl devmeetings.org devmeetings.de *.devmeetings.com *.devmeetings.pl *.devmeetings.org *.devmeetings.de;
-   
+  {% else %}
+  server_name {{ server_name }};
+  {% endif %}
+
   location /components {
     root /srv/{{ server_name }}/public;
   }
