@@ -5,6 +5,7 @@ var Event = require('../models/event');
 var moment = require('moment');
 var Mailer = require('../utils/mailer');
 var Claims = require('../models/claims');
+var Settings = require('../models/settings');
 var InvoiceNo = require('../models/invoiceNo');
 var Q = require('q');
 var Payu = require('../../config/payu');
@@ -302,7 +303,7 @@ router.post('/claims/get/invoice', function (req, res, next) {
 
 });
 
-function getInvoiceData (claim, order) {
+function getInvoiceData (claim, order, setting) {
   var def = Q.defer();
 
   if (!order.buyer || !order.buyer.invoice) {
@@ -311,8 +312,27 @@ function getInvoiceData (claim, order) {
   }
 
   if (claim.invoice.invoiceNo) {
+
+    var invoiceNo = claim.invoice.invoiceNo, invoicePrefix = '';
+
+    if (setting && setting.value) {
+      invoicePrefix = setting.value;
+
+      if (invoiceNo.indexOf(invoicePrefix) < 0 ) {
+        var parts = invoiceNo.split('/');
+        if (parts.length == 3) { // no prefix
+          invoiceNo = invoicePrefix + invoiceNo;
+        }
+        else {
+          invoiceNo = invoiceNo.replace(parts[0], invoicePrefix.slice(0,-1));
+        }
+
+        updateClaimInvoiceNo(claim._id, invoiceNo);
+      }
+    }
+
     def.resolve({
-      invoiceNo: claim.invoice.invoiceNo,
+      invoiceNo: invoiceNo,
       deliveryDate: moment(claim.invoice.deliveryDate).format('YYYY-MM-DD'),
       dateOfPayment: moment(claim.invoice.dateOfPayment).format('YYYY-MM-DD'),
       dateOfInvoice: moment(claim.invoice.dateOfInvoice).format('YYYY-MM-DD'),
@@ -323,10 +343,9 @@ function getInvoiceData (claim, order) {
     return def.promise;
   }
 
-  var date = order.orderCreateDate,
-    year = date.getFullYear(),
-    month = date.getMonth() + 1,
-    invoiceNo = '/' + month + '/' + year,
+  var invoiceNo = moment(order.orderCreateDate).format('/M/YYYY'),
+    year = moment(order.orderCreateDate).format('YYYY'),
+    month = moment(order.orderCreateDate).format('M'),
     conditions = {year: year, month: month},
     update = {$inc: { no: 1 }},
     options = {upsert: true, new: true};
@@ -338,6 +357,10 @@ function getInvoiceData (claim, order) {
       }
 
       invoiceNo = updatedInvoiceNo.no + invoiceNo;
+
+      if (setting && setting.value) {
+        invoiceNo = setting.value + invoiceNo;
+      }
 
       var deliveryDate = moment(order.orderCreateDate),
           dateOfPayment = moment(deliveryDate).add(11, 'days'),
@@ -363,6 +386,11 @@ function getInvoiceData (claim, order) {
   return def.promise;
 }
 
+function updateClaimInvoiceNo(id, invoiceNo){
+  Claims.update({_id: id},{$set: {
+    'invoice.invoiceNo': invoiceNo}}).exec();
+}
+
 function updateClaimInvoiceData(id, invoiceNo, deliveryDate, dateOfPayment, dateOfInvoice){
   Claims.update({_id: id},{$set: {
     'invoice.invoiceNo': invoiceNo,
@@ -371,59 +399,123 @@ function updateClaimInvoiceData(id, invoiceNo, deliveryDate, dateOfPayment, date
     'invoice.dateOfInvoice': dateOfInvoice}}).exec();
 }
 
+function resetInvoiceNo (req, res, next){
+  var conditions = {
+        event: req.params.ev,
+        'payment.id': {
+          $exists: true
+        }
+      },
+      update = {$set : {'invoice.invoiceNo': null}},
+      options = { multi: true }
+
+   Claims.update(conditions, update, options).exec();
+
+   getInvoices(req, res, next);
+}
+
+function setUpInvoicePrefix (req, res, next){
+
+  var invoicePrefix = req.body.invoicePrefix;
+
+  if (invoicePrefix.slice(-1) !== '/') {
+    invoicePrefix += '/';
+  }
+
+  var conditions = {key: 'INVOICE_PREFIX'},
+      update = {$set : {value: invoicePrefix}},
+      options = {upset: true, new: true};
+
+  Settings.findOneAndUpdate(conditions, update, options, function (err, updatedSetting) {
+    if (err) {
+      return;
+    }
+
+    getInvoices(req, res, next);
+  });
+
+}
+
+router.post('/events/:ev/invoices', function (req, res, next) {
+  if (req.body.hasOwnProperty('reset')) {
+    resetInvoiceNo(req, res, next);
+  }
+  else if (req.body.hasOwnProperty('prefix')) {
+    setUpInvoicePrefix(req, res, next);
+  }
+  else {
+    getInvoices(req, res, next);
+  }
+});
+
 
 router.get('/events/:ev/invoices', function (req, res, next) {
+
+  //for now only
+
+  Settings.findOneAndUpdate({key: 'INVOICE_PREFIX'}, {$set: {value: 'RDG/'}}, {upset: true});
+
+  getInvoices(req, res, next);
+});
+
+
+function getInvoices(req, res, next) {
   Claims.find({
     event: req.params.ev,
     'payment.id': {
       $exists: true
     }
-  }).exec(intercept(next, function (claims) {
+  }).populate('event').exec(intercept(next, function (claims) {
     Q.all(
-      claims.map(function (claim) {
-        var def = Q.defer();
+        claims.map(function (claim) {
+          var def = Q.defer();
 
-        Payu.getOrderInfo(claim.payment.id).on('error', function (err) {
-          def.reject(err);
-        }).end(function (resp) {
-          if (!resp.ok) {
-            def.reject(resp.body);
-            return;
-          }
+          Payu.getOrderInfo(claim.payment.id).on('error', function (err) {
+            def.reject(err);
+          }).end(function (resp) {
+            if (!resp.ok) {
+              def.reject(resp.body);
+              return;
+            }
 
-          var order = resp.body.orders[0];
+            var order = resp.body.orders[0];
 
-          getInvoiceData(claim, order).then(function(invoiceData){
-            order.invoice = invoiceData;
 
-           Object.keys(invoiceData).forEach(function(key){
-             order.invoice[key] = invoiceData[key];
-           });
+            Settings.findOne({key: 'INVOICE_PREFIX'}, function (err, setting) {
+              getInvoiceData(claim, order, setting).then(function(invoiceData){
+                order.invoice = invoiceData;
 
-            def.resolve(order);
+                Object.keys(invoiceData).forEach(function(key){
+                  order.invoice[key] = invoiceData[key];
+                });
+
+                def.resolve(order);
+              });
+            });
+
+          });
+
+          return def.promise;
+        })
+
+    ).then(function (responses) {
+          return responses.filter(function (resp) {
+            return resp.buyer && resp.buyer.invoice;
+          });
+
+        }).done(function (invoices) {
+          res.render('admin/invoices', {
+            title: 'Invoices for ' + req.params.ev,
+            invoices: JSON.stringify(invoices)
           });
 
         });
-
-        return def.promise;
-      })
-
-    ).then(function (responses) {
-      return responses.filter(function (resp) {
-        return resp.buyer && resp.buyer.invoice;
-      });
-
-    }).done(function (invoices) {
-      res.render('admin/invoices', {
-        title: 'Invoices for ' + req.params.ev,
-        invoices: JSON.stringify(invoices)
-      });
-
-    });
   }));
 
 
-});
+}
+
+
 router.post('/claims/invoice', function (req, res, next) {
   var conditions = {
     'payment.id': req.body.payment
