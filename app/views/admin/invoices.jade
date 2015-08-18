@@ -9,6 +9,14 @@ block content
           )
           | Show Order Id
         h1 Invoices
+        .well.clearfix
+          form.pull-left(action, method="POST")
+            .form-group
+              label(for="prefix") Set invoiceNo prefix for invoices for current event (prefix should end with / char, if not it will be added)
+              input.form-control(type="text", id="prefix", name="invoicePrefix", required)
+            button.btn.btn-default(type="submit", name="prefix") Save prefix
+          form.pull-right(action, method="POST")
+            button.btn.btn-primary(type="submit", name="reset") Reset numbers in invoices for current event
         .well.clearfix(ng-repeat="in in invoices")
           form.invoices.form-horizontal
             .row
