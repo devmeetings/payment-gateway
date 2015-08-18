@@ -1,5 +1,6 @@
 node_modules/
 public/components
+public/version
 .sass-cache
 *.swp
 .grunt
