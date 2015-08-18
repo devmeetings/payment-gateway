@@ -28,7 +28,7 @@
   when: payments_version == 'lastSuccessfulBuild'
 
 - name: Payments | Fetching app
-  command: "wget http://applejack.todr.me:8080/job/Payments/{{payments_version}}/artifact/payments.tar.gz --user builder --password 123Builder --auth-no-challenge -O /srv/_packages/payments_{{payments_version}}.tar.gz"
+  command: "wget http://applejack.todr.me:8080/job/{{payments_job}}/{{payments_version}}/artifact/payments.tar.gz --user builder --password 123Builder --auth-no-challenge -O /srv/_packages/payments_{{payments_version}}.tar.gz"
   args:
     creates: /srv/_packages/payments_{{payments_version}}.tar.gz
 
