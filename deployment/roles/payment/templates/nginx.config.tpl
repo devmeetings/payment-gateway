@@ -28,12 +28,15 @@ server {
   }
 
   location = / {
+
+    {% if server_name == 'registration.devmeetings.com' %}
     if ($http_host = devmeetings.com) {
       rewrite / http://devmeetings.com/en;
     }
     if ($http_host = devmeetings.de) {
       rewrite / http://devmeetings.de/de;
     }
+    {% endif %}
 
     proxy_pass http://{{ server_id }};
     proxy_set_header Host      $host;
