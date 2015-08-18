@@ -40,7 +40,7 @@ ClaimSchema.virtual('date')
 
 ClaimSchema.virtual('amountNet')
     .get(function () {
-      return (this.amount/1.23).toFixed(2);
+      return (this.amount / 1.23).toFixed(2);
     });
 
 ClaimSchema.virtual('amountDiff')

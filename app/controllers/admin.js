@@ -16,7 +16,6 @@ module.exports = function (app) {
 };
 
 function checkIfAdmin (req, res, next) {
-
   if (req.cookies.admin === 'Devmeetings1' || checkIfPhantomJs(req)) {
     next();
   } else {
@@ -123,32 +122,30 @@ router.get('/events/:ev/users/diploma/render', function (req, res, next) {
 });
 
 router.post('/events/:ev/users/diploma', function (req, res, next) {
-
   var fullUrl = req.protocol + '://' + req.get('host') + req.originalUrl;
 
   var phantom = require('phantom');
   phantom.create(function (ph) {
-      ph.createPage(function (page) {
-        page.cookies = [{
-          'name': 'admin',
-          'value': 'Devmeetings1'
-        }];
-        page.open(fullUrl + '/render', function (status) {
-          var file = 'diploma.pdf';
-          page.render(file, function () {
-            page.close();
-            page = null;
+    ph.createPage(function (page) {
+      page.cookies = [{
+        'name': 'admin',
+        'value': 'Devmeetings1'
+      }];
+      page.open(fullUrl + '/render', function (status) {
+        var file = 'diploma.pdf';
+        page.render(file, function () {
+          page.close();
+          page = null;
 
-            res.download('diploma.pdf');
-          });
+          res.download('diploma.pdf');
         });
       });
     });
+  });
 
 });
 
 router.post('/events/:ev/users/notify', function (req, res, next) {
-
   function sendMailToUser (mailText, userTo, title) {
     var def = Q.defer();
     Mailer.sendMail({
@@ -167,49 +164,48 @@ router.post('/events/:ev/users/notify', function (req, res, next) {
     event: req.params.ev,
     status: Claims.STATUS.PAYED
   }).populate('event').exec(intercept(next, function (claims) {
+    var isTestEmail = req.body.test;
+    var event = claims[0].event;
+    var mailTitle = 'Szczegóły DevMeetingu "ECMAScript 6" w Warszawie';
+    var eventDaysWeek = [
+      'w najbliższą niedzielę',
+      'w najbliższy poniedziałek',
+      'w najbliższy wtorek',
+      'w najbliższą środę',
+      'w najbliższy czwartek',
+      'w najbliższy piątek',
+      'w najbliższą sobotę'
+    ];
+    var verificationEmails = [];
 
-      var isTestEmail = req.body.test;
-      var event = claims[0].event;
-      var mailTitle = 'Szczegóły DevMeetingu "ECMAScript 6" w Warszawie';
-      var eventDaysWeek = [
-        'w najbliższą niedzielę',
-        'w najbliższy poniedziałek',
-        'w najbliższy wtorek',
-        'w najbliższą środę',
-        'w najbliższy czwartek',
-        'w najbliższy piątek',
-        'w najbliższą sobotę'
-      ];
-      var verificationEmails = [];
+    res.render('mails/event-location', {
+      eventDay: eventDaysWeek[moment(event.eventStartDate).day()],
+      startDate: moment(event.eventStartDate).format('DD. MMMM, [start] o H:mm'),
+      regDate: moment(event.eventStartDate).subtract(15, 'm').format('H:mm'),
+      endDate: moment(event.eventEndDate).format('H:mm'),
+      event: event
+    }, intercept(next, function (mailText) {
+      if (isTestEmail) {
+        sendMailToUser(mailText, 'lukaszewczak@gmail.com', mailTitle + ' - TEST').then(function () {
+          res.send(200);
+        });
+      } else {
+        verificationEmails.push(sendMailToUser(mailText, 'lukaszewczak@gmail.com', mailTitle));
 
-      res.render('mails/event-location', {
-        eventDay: eventDaysWeek[moment(event.eventStartDate).day()],
-        startDate: moment(event.eventStartDate).format('DD. MMMM, [start] o H:mm'),
-        regDate: moment(event.eventStartDate).subtract(15, 'm').format('H:mm'),
-        endDate: moment(event.eventEndDate).format('H:mm'),
-        event: event
-      }, intercept(next, function (mailText) {
-        if (isTestEmail) {
-          sendMailToUser(mailText, 'lukaszewczak@gmail.com', mailTitle + ' - TEST').then(function () {
-            res.send(200);
-          });
-        } else {
-          verificationEmails.push(sendMailToUser(mailText, 'lukaszewczak@gmail.com', mailTitle));
-
-          if (config.env === 'production') {
-            verificationEmails.push(sendMailToUser(mailText, Mailer.bcc, mailTitle));
-          }
-
-          Q.all(
-              claims.map(function (claim) {
-                return sendMailToUser(mailText, claim.userData.email, mailTitle);
-              }).concat(verificationEmails)
-          ).then(function () {
-                res.send(200);
-              });
+        if (config.env === 'production') {
+          verificationEmails.push(sendMailToUser(mailText, Mailer.bcc, mailTitle));
         }
-      }));
+
+        Q.all(
+          claims.map(function (claim) {
+            return sendMailToUser(mailText, claim.userData.email, mailTitle);
+          }).concat(verificationEmails)
+        ).then(function () {
+          res.send(200);
+        });
+      }
     }));
+  }));
 });
 
 router.get('/events/:ev/users', function (req, res, next) {
@@ -248,7 +244,6 @@ router.post('/claims/get/invoice/render', function (req, res, next) {
 });
 
 router.post('/claims/get/invoice', function (req, res, next) {
-
   var fullUrl = req.protocol + '://' + req.get('host') + req.originalUrl;
 
   var phantom = require('phantom');
@@ -263,12 +258,10 @@ router.post('/claims/get/invoice', function (req, res, next) {
         'value': 'Devmeetings1'
       }];
 
-
-      //change zoom factor based on environment,becouse on windows machine zoom factor differs from linux machine
+      // change zoom factor based on environment,becouse on windows machine zoom factor differs from linux machine
       if (config.env === 'development') {
         page.setZoomFactor(1.3);
-      }
-      else {
+      } else {
         page.setZoomFactor(0.8);
       }
 
@@ -282,12 +275,11 @@ router.post('/claims/get/invoice', function (req, res, next) {
       };
 
       page.open(fullUrl + '/render', settings, function (status) {
-
-        page.evaluate(function(className) {
-          return document.querySelector(className).innerText.replace(/\//g,'_');
+        page.evaluate(function (className) {
+          return document.querySelector(className).innerText.replace(/\//g, '_');
         }, renderPage, '.invoice-no');
 
-        function renderPage(invoiceNo) {
+        function renderPage (invoiceNo) {
           var file = 'tmp/invoice_' + invoiceNo + '.pdf';
           page.render(file, function () {
             page.close();
@@ -312,19 +304,18 @@ function getInvoiceData (claim, order, setting) {
   }
 
   if (claim.invoice.invoiceNo) {
-
-    var invoiceNo = claim.invoice.invoiceNo, invoicePrefix = '';
+    var invoiceNo = claim.invoice.invoiceNo;
+    var invoicePrefix = '';
 
     if (setting && setting.value) {
       invoicePrefix = setting.value;
 
-      if (invoiceNo.indexOf(invoicePrefix) < 0 ) {
+      if (invoiceNo.indexOf(invoicePrefix) < 0) {
         var parts = invoiceNo.split('/');
-        if (parts.length == 3) { // no prefix
+        if (parts.length === 3) { // no prefix
           invoiceNo = invoicePrefix + invoiceNo;
-        }
-        else {
-          invoiceNo = invoiceNo.replace(parts[0], invoicePrefix.slice(0,-1));
+        } else {
+          invoiceNo = invoiceNo.replace(parts[0], invoicePrefix.slice(0, -1));
         }
 
         updateClaimInvoiceNo(claim._id, invoiceNo);
@@ -343,88 +334,88 @@ function getInvoiceData (claim, order, setting) {
     return def.promise;
   }
 
-  var invoiceNo = moment(order.orderCreateDate).format('/M/YYYY'),
-    year = moment(order.orderCreateDate).format('YYYY'),
-    month = moment(order.orderCreateDate).format('M'),
-    conditions = {year: year, month: month},
-    update = {$inc: { no: 1 }},
-    options = {upsert: true, new: true};
+  invoiceNo = moment(order.orderCreateDate).format('/M/YYYY');
+  var year = moment(order.orderCreateDate).format('YYYY');
+  var month = moment(order.orderCreateDate).format('M');
+  var conditions = {year: year, month: month};
+  var update = {$inc: { no: 1 }};
+  var options = {upsert: true, new: true};
 
-    InvoiceNo.findOneAndUpdate(conditions, update, options, function (err, updatedInvoiceNo) {
-      if (err){
-        def.reject();
-        return;
-      }
+  InvoiceNo.findOneAndUpdate(conditions, update, options, function (err, updatedInvoiceNo) {
+    if (err) {
+      def.reject();
+      return;
+    }
 
-      invoiceNo = updatedInvoiceNo.no + invoiceNo;
+    invoiceNo = updatedInvoiceNo.no + invoiceNo;
 
-      if (setting && setting.value) {
-        invoiceNo = setting.value + invoiceNo;
-      }
+    if (setting && setting.value) {
+      invoiceNo = setting.value + invoiceNo;
+    }
 
-      var deliveryDate = moment(order.orderCreateDate),
-          dateOfPayment = moment(deliveryDate).add(11, 'days'),
-          dateOfInvoice = moment().format('YYYY-MM-DD');
+    var deliveryDate = moment(order.orderCreateDate);
+    var dateOfPayment = moment(deliveryDate).add(11, 'days');
+    var dateOfInvoice = moment().format('YYYY-MM-DD');
 
-      deliveryDate = deliveryDate.format('YYYY-MM-DD');
-      dateOfPayment = dateOfPayment.format('YYYY-MM-DD');
+    deliveryDate = deliveryDate.format('YYYY-MM-DD');
+    dateOfPayment = dateOfPayment.format('YYYY-MM-DD');
 
-      updateClaimInvoiceData(claim._id, invoiceNo, deliveryDate, dateOfPayment, dateOfInvoice);
+    updateClaimInvoiceData(claim._id, invoiceNo, deliveryDate, dateOfPayment, dateOfInvoice);
 
-      def.resolve({
-        invoiceNo: invoiceNo,
-        deliveryDate: deliveryDate,
-        dateOfPayment: dateOfPayment,
-        dateOfInvoice: dateOfInvoice,
-        amountNet:claim.amountNet,
-        amountGross:claim.amount,
-        amountDiff:claim.amountDiff
-      });
+    def.resolve({
+      invoiceNo: invoiceNo,
+      deliveryDate: deliveryDate,
+      dateOfPayment: dateOfPayment,
+      dateOfInvoice: dateOfInvoice,
+      amountNet: claim.amountNet,
+      amountGross: claim.amount,
+      amountDiff: claim.amountDiff
     });
-
+  });
 
   return def.promise;
 }
 
-function updateClaimInvoiceNo(id, invoiceNo){
-  Claims.update({_id: id},{$set: {
-    'invoice.invoiceNo': invoiceNo}}).exec();
+function updateClaimInvoiceNo (id, invoiceNo) {
+  Claims.update({_id: id}, {$set: {
+    'invoice.invoiceNo': invoiceNo
+  }}).exec();
 }
 
-function updateClaimInvoiceData(id, invoiceNo, deliveryDate, dateOfPayment, dateOfInvoice){
-  Claims.update({_id: id},{$set: {
+function updateClaimInvoiceData (id, invoiceNo, deliveryDate, dateOfPayment, dateOfInvoice) {
+  Claims.update({_id: id}, {$set: {
     'invoice.invoiceNo': invoiceNo,
-    'invoice.deliveryDate':deliveryDate,
+    'invoice.deliveryDate': deliveryDate,
     'invoice.dateOfPayment': dateOfPayment,
-    'invoice.dateOfInvoice': dateOfInvoice}}).exec();
+    'invoice.dateOfInvoice': dateOfInvoice
+  }}).exec();
 }
 
-function resetInvoiceNo (req, res, next){
+function resetInvoiceNo (req, res, next) {
   var conditions = {
-        event: req.params.ev,
-        'payment.id': {
-          $exists: true
-        }
-      },
-      update = {$set : {'invoice.invoiceNo': null}},
-      options = { multi: true }
+      event: req.params.ev,
+      'payment.id': {
+        $exists: true
+      }
+    };
+  var update = {$set: {'invoice.invoiceNo': null}};
+  var options = { multi: true };
 
-   Claims.update(conditions, update, options).exec();
+  Claims.update(conditions, update, options).exec();
 
-   getInvoices(req, res, next);
+  getInvoices(req, res, next);
 }
 
-function setUpInvoicePrefix (req, res, next){
-
+function setUpInvoicePrefix (req, res, next) {
   var invoicePrefix = req.body.invoicePrefix;
 
   if (invoicePrefix.slice(-1) !== '/') {
     invoicePrefix += '/';
   }
 
-  var conditions = {key: 'INVOICE_PREFIX'},
-      update = {$set : {value: invoicePrefix}},
-      options = {upsert: true, new: true};
+  var conditions = {key: 'INVOICE_PREFIX'};
+  var update = {$set: {value: invoicePrefix}};
+  var options = {upsert: true, new: true};
 
   Settings.findOneAndUpdate(conditions, update, options, function (err, updatedSetting) {
     if (err) {
@@ -439,19 +430,15 @@ function setUpInvoicePrefix (req, res, next){
 router.post('/events/:ev/invoices', function (req, res, next) {
   if (req.body.hasOwnProperty('reset')) {
     resetInvoiceNo(req, res, next);
-  }
-  else if (req.body.hasOwnProperty('prefix')) {
+  } else if (req.body.hasOwnProperty('prefix')) {
     setUpInvoicePrefix(req, res, next);
-  }
-  else {
+  } else {
     getInvoices(req, res, next);
   }
 });
 
-
 router.get('/events/:ev/invoices', function (req, res, next) {
-
-  createDefaultInvoicePrefixIfNotExist().then(function (){
+  createDefaultInvoicePrefixIfNotExist().then(function () {
     getInvoices(req, res, next);
   });
 
@@ -473,8 +460,7 @@ function createDefaultInvoicePrefixIfNotExist () {
 
         defer.resolve();
       });
-    }
-    else {
+    } else {
       defer.resolve();
     }
 
@@ -483,8 +469,7 @@ function createDefaultInvoicePrefixIfNotExist () {
   return defer.promise;
 }
 
-
-function getInvoices(req, res, next) {
+function getInvoices (req, res, next) {
   Claims.find({
     event: req.params.ev,
     'payment.id': {
@@ -492,65 +477,67 @@ function getInvoices(req, res, next) {
     }
   }).populate('event').exec(intercept(next, function (claims) {
     Q.all(
-        claims.map(function (claim) {
-          var def = Q.defer();
+      claims.map(function (claim) {
+        var def = Q.defer();
 
-          Payu.getOrderInfo(claim.payment.id).on('error', function (err) {
-            def.reject(err);
-          }).end(function (resp) {
-            if (!resp.ok) {
-              def.reject(resp.body);
+        Payu.getOrderInfo(claim.payment.id).on('error', function (err) {
+          def.reject(err);
+        }).end(function (resp) {
+          if (!resp.ok) {
+            def.reject(resp.body);
+            return;
+          }
+
+          var order = resp.body.orders[0];
+
+          Settings.findOne({key: 'INVOICE_PREFIX'}, function (err, setting) {
+            if (err) {
+              def.reject(err);
               return;
             }
+            getInvoiceData(claim, order, setting).then(function (invoiceData) {
+              order.invoice = invoiceData;
 
-            var order = resp.body.orders[0];
-
-
-            Settings.findOne({key: 'INVOICE_PREFIX'}, function (err, setting) {
-              getInvoiceData(claim, order, setting).then(function(invoiceData){
-                order.invoice = invoiceData;
-
-                Object.keys(invoiceData).forEach(function(key){
-                  order.invoice[key] = invoiceData[key];
-                });
-
-                def.resolve(order);
+              Object.keys(invoiceData).forEach(function (key) {
+                order.invoice[key] = invoiceData[key];
               });
+
+              def.resolve(order);
             });
-
-          });
-
-          return def.promise;
-        })
-
-    ).then(function (responses) {
-          return responses.filter(function (resp) {
-            return resp.buyer && resp.buyer.invoice;
-          });
-
-        }).done(function (invoices) {
-          res.render('admin/invoices', {
-            title: 'Invoices for ' + req.params.ev,
-            invoices: JSON.stringify(invoices)
           });
 
         });
+
+        return def.promise;
+      })
+
+    ).then(function (responses) {
+      return responses.filter(function (resp) {
+        return resp.buyer && resp.buyer.invoice;
+      });
+
+    }).done(function (invoices) {
+      res.render('admin/invoices', {
+        title: 'Invoices for ' + req.params.ev,
+        invoices: JSON.stringify(invoices)
+      });
+
+    });
   }));
 
-
 }
-
 
 router.post('/claims/invoice', function (req, res, next) {
   var conditions = {
     'payment.id': req.body.payment
-  }, update = {$set: {
+  };
+  var update = {$set: {
     'invoice.invoiceNo': req.body.invoiceNo,
     'invoice.deliveryDate': new Date(req.body.deliveryDate),
     'invoice.dateOfPayment': new Date(req.body.dateOfPayment),
-    'invoice.dateOfInvoice': new Date(req.body.dateOfInvoice),
+    'invoice.dateOfInvoice': new Date(req.body.dateOfInvoice)
   }};
-  Claims.update(conditions,update).exec();
+  Claims.update(conditions, update).exec();
 
   res.send('ok');
 });
