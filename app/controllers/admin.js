@@ -424,7 +424,7 @@ function setUpInvoicePrefix (req, res, next){
 
   var conditions = {key: 'INVOICE_PREFIX'},
       update = {$set : {value: invoicePrefix}},
-      options = {upset: true, new: true};
+      options = {upsert: true, new: true};
 
   Settings.findOneAndUpdate(conditions, update, options, function (err, updatedSetting) {
     if (err) {
@@ -451,12 +451,37 @@ router.post('/events/:ev/invoices', function (req, res, next) {
 
 router.get('/events/:ev/invoices', function (req, res, next) {
 
-  //for now only
+  createDefaultInvoicePrefixIfNotExist().then(function (){
+    getInvoices(req, res, next);
+  });
 
-  Settings.findOneAndUpdate({key: 'INVOICE_PREFIX'}, {$set: {value: 'RDG/'}}, {upset: true});
-
-  getInvoices(req, res, next);
 });
+
+function createDefaultInvoicePrefixIfNotExist () {
+  var defer = Q.defer();
+
+  Settings.findOne({key: 'INVOICE_PREFIX'}, function (err, setting) {
+    if (err) {
+      defer.reject();
+    }
+
+    if (!setting) {
+      Settings.create({key: 'INVOICE_PREFIX', value: 'RDG/'}, function (err) {
+        if (err) {
+          defer.reject();
+        }
+
+        defer.resolve();
+      });
+    }
+    else {
+      defer.resolve();
+    }
+
+  });
+
+  return defer.promise;
+}
 
 
 function getInvoices(req, res, next) {
