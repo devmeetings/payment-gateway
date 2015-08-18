@@ -6,4 +6,4 @@ var SettingsSchema = new Schema({
 	value: String
 });
 
-module.exports = mongoose.model('settings', SettingsSchema);
+module.exports = mongoose.model('setting', SettingsSchema);
