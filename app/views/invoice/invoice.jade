@@ -71,7 +71,7 @@ body
                            | Termin płatności:
                         .col-xs-6
                            | #{data.invoice.deliveryDate} <br/>
-                           | PayU <br/>
+                           | #{data.paymentMethod} <br/>
                            | #{data.invoice.dateOfPayment}
 
                .row
@@ -109,7 +109,7 @@ body
                           th Wartość brutto
                        tr
                           td 1
-                          td #{data.products[0].name}
+                          td #{data.serviceName}
                           td 1
                           td szt.
                           td #{data.invoice.amountNet}
@@ -125,12 +125,12 @@ body
                              .col-xs-6
                                 | Zapłacono:
                              .col-xs-6
-                                strong #{data.invoice.amountGross}
+                                strong #{data.invoice.amountPayed}
                           .row
                              .col-xs-6
                                 | Pozostało do zapłaty:
                              .col-xs-6
-                                strong 0,00
+                                strong #{data.invoice.amountStillToPay}
                           .row
                              .col-xs-6
                                 | Konto bankowe:
