@@ -54,6 +54,7 @@ block content
                 ng-click='search.$=claim._id; view.detailed=true'
                 )
                 | More
+              button.btn.btn-link.btn-xs(ng-click="setAsPaid(claim)") Set as paid (No PayU)
 
       .row(ng-if="view.detailed")
         .col-sm-12
@@ -99,7 +100,7 @@ block content
 
 append scripts
   script.
-    angular.module("claims", ['angularMoment']).controller("ClaimsCtrl", function($scope, $sce) {
+    angular.module("claims", ['angularMoment']).controller("ClaimsCtrl", function($scope, $sce, $http, $window) {
       $scope.hideExpired = true;
       $scope.search = {};
       $scope.claims = !{claims};
@@ -121,5 +122,11 @@ append scripts
       $scope.sortBy = function(by) {
         $scope.sort.by = by;
         $scope.sort.reverse = !$scope.sort.reverse;
+      };
+
+      $scope.setAsPaid = function(claim){
+          $http.post('/admin/events/' + claim.event +'/payed/' + claim._id).then(function(){
+            $window.location.reload();
+          });
       };
     });
