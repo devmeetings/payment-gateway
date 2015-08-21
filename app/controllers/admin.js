@@ -269,7 +269,7 @@ router.post('/claims/get/invoice', function (req, res, next) {
         page.setZoomFactor(1.3);
       }
       else {
-        page.setZoomFactor(0.8);
+        page.setZoomFactor(0.75);
       }
 
       var settings = {
