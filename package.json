@@ -5,7 +5,7 @@
   "scripts": {
     "postinstall": "bower install",
     "lint": "semistandard",
-    "build": "npm run lin",
+    "build": "echo ${BUILD_TAG:-$(date +%y-%m-%d.%H.%M)} > public/version && npm run lint",
     "start": "node app.js"
   },
   "dependencies": {

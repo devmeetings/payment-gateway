@@ -128,22 +128,22 @@ router.post('/events/:ev/users/diploma', function (req, res, next) {
 
   var phantom = require('phantom');
   phantom.create(function (ph) {
-      ph.createPage(function (page) {
-        page.cookies = [{
-          'name': 'admin',
-          'value': 'Devmeetings1'
-        }];
-        page.open(fullUrl + '/render', function (status) {
-          var file = 'diploma.pdf';
-          page.render(file, function () {
-            page.close();
-            page = null;
+    ph.createPage(function (page) {
+      page.cookies = [{
+        'name': 'admin',
+        'value': 'Devmeetings1'
+      }];
+      page.open(fullUrl + '/render', function (status) {
+        var file = 'diploma.pdf';
+        page.render(file, function () {
+          page.close();
+          page = null;
 
-            res.download('diploma.pdf');
-          });
+          res.download('diploma.pdf');
         });
       });
     });
+  });
 
 });
 
@@ -168,48 +168,48 @@ router.post('/events/:ev/users/notify', function (req, res, next) {
     status: Claims.STATUS.PAYED
   }).populate('event').exec(intercept(next, function (claims) {
 
-      var isTestEmail = req.body.test;
-      var event = claims[0].event;
-      var mailTitle = 'Szczegóły DevMeetingu "ECMAScript 6" w Warszawie';
-      var eventDaysWeek = [
-        'w najbliższą niedzielę',
-        'w najbliższy poniedziałek',
-        'w najbliższy wtorek',
-        'w najbliższą środę',
-        'w najbliższy czwartek',
-        'w najbliższy piątek',
-        'w najbliższą sobotę'
-      ];
-      var verificationEmails = [];
+    var isTestEmail = req.body.test;
+    var event = claims[0].event;
+    var mailTitle = 'Szczegóły DevMeetingu "ECMAScript 6" w Warszawie';
+    var eventDaysWeek = [
+      'w najbliższą niedzielę',
+      'w najbliższy poniedziałek',
+      'w najbliższy wtorek',
+      'w najbliższą środę',
+      'w najbliższy czwartek',
+      'w najbliższy piątek',
+      'w najbliższą sobotę'
+    ];
+    var verificationEmails = [];
 
-      res.render('mails/event-location', {
-        eventDay: eventDaysWeek[moment(event.eventStartDate).day()],
-        startDate: moment(event.eventStartDate).format('DD. MMMM, [start] o H:mm'),
-        regDate: moment(event.eventStartDate).subtract(15, 'm').format('H:mm'),
-        endDate: moment(event.eventEndDate).format('H:mm'),
-        event: event
-      }, intercept(next, function (mailText) {
-        if (isTestEmail) {
-          sendMailToUser(mailText, 'lukaszewczak@gmail.com', mailTitle + ' - TEST').then(function () {
+    res.render('mails/event-location', {
+      eventDay: eventDaysWeek[moment(event.eventStartDate).day()],
+      startDate: moment(event.eventStartDate).format('DD. MMMM, [start] o H:mm'),
+      regDate: moment(event.eventStartDate).subtract(15, 'm').format('H:mm'),
+      endDate: moment(event.eventEndDate).format('H:mm'),
+      event: event
+    }, intercept(next, function (mailText) {
+      if (isTestEmail) {
+        sendMailToUser(mailText, 'lukaszewczak@gmail.com', mailTitle + ' - TEST').then(function () {
+          res.send(200);
+        });
+      } else {
+        verificationEmails.push(sendMailToUser(mailText, 'lukaszewczak@gmail.com', mailTitle));
+
+        if (config.env === 'production') {
+          verificationEmails.push(sendMailToUser(mailText, Mailer.bcc, mailTitle));
+        }
+
+        Q.all(
+          claims.map(function (claim) {
+            return sendMailToUser(mailText, claim.userData.email, mailTitle);
+          }).concat(verificationEmails)
+        ).then(function () {
             res.send(200);
           });
-        } else {
-          verificationEmails.push(sendMailToUser(mailText, 'lukaszewczak@gmail.com', mailTitle));
-
-          if (config.env === 'production') {
-            verificationEmails.push(sendMailToUser(mailText, Mailer.bcc, mailTitle));
-          }
-
-          Q.all(
-              claims.map(function (claim) {
-                return sendMailToUser(mailText, claim.userData.email, mailTitle);
-              }).concat(verificationEmails)
-          ).then(function () {
-                res.send(200);
-              });
-        }
-      }));
+      }
     }));
+  }));
 });
 
 router.get('/events/:ev/users', function (req, res, next) {
@@ -263,13 +263,11 @@ router.post('/claims/get/invoice', function (req, res, next) {
         'value': 'Devmeetings1'
       }];
 
-
-      //change zoom factor based on environment,becouse on windows machine zoom factor differs from linux machine
+      // change zoom factor based on environment,becouse on windows machine zoom factor differs from linux machine
       if (config.env === 'development') {
         page.setZoomFactor(1.3);
-      }
-      else {
-        page.setZoomFactor(0.8);
+      } else {
+        page.setZoomFactor(0.75);
       }
 
       var settings = {
@@ -283,11 +281,11 @@ router.post('/claims/get/invoice', function (req, res, next) {
 
       page.open(fullUrl + '/render', settings, function (status) {
 
-        page.evaluate(function(className) {
-          return document.querySelector(className).innerText.replace(/\//g,'_');
+        page.evaluate(function (className) {
+          return document.querySelector(className).innerText.replace(/\//g, '_');
         }, renderPage, '.invoice-no');
 
-        function renderPage(invoiceNo) {
+        function renderPage (invoiceNo) {
           var file = 'tmp/invoice_' + invoiceNo + '.pdf';
           page.render(file, function () {
             page.close();
@@ -305,6 +303,8 @@ router.post('/claims/get/invoice', function (req, res, next) {
 
 function getInvoiceData (claim, order, setting) {
   var def = Q.defer();
+  var invoiceNo = '';
+  var invoicePrefix = '';
 
   if (!order.buyer || !order.buyer.invoice) {
     def.resolve({});
@@ -313,18 +313,18 @@ function getInvoiceData (claim, order, setting) {
 
   if (claim.invoice.invoiceNo) {
 
-    var invoiceNo = claim.invoice.invoiceNo, invoicePrefix = '';
+    invoiceNo = claim.invoice.invoiceNo;
 
     if (setting && setting.value) {
       invoicePrefix = setting.value;
 
-      if (invoiceNo.indexOf(invoicePrefix) < 0 ) {
+      if (invoiceNo.indexOf(invoicePrefix) < 0) {
         var parts = invoiceNo.split('/');
-        if (parts.length == 3) { // no prefix
+
+        if (parts.length === 3) { // no prefix
           invoiceNo = invoicePrefix + invoiceNo;
-        }
-        else {
-          invoiceNo = invoiceNo.replace(parts[0], invoicePrefix.slice(0,-1));
+        } else {
+          invoiceNo = invoiceNo.replace(parts[0], invoicePrefix.slice(0, -1));
         }
 
         updateClaimInvoiceNo(claim._id, invoiceNo);
@@ -337,84 +337,94 @@ function getInvoiceData (claim, order, setting) {
       dateOfPayment: moment(claim.invoice.dateOfPayment).format('YYYY-MM-DD'),
       dateOfInvoice: moment(claim.invoice.dateOfInvoice).format('YYYY-MM-DD'),
       amountNet: claim.amountNet,
-      amountGross: claim.amount,
-      amountDiff: claim.amountDiff
+      amountGross: claim.amountFormat,
+      amountDiff: claim.amountDiff,
+      amountPayed: claim.amountPayed,
+      amountStillToPay: claim.amountStillToPay
     });
     return def.promise;
   }
 
-  var invoiceNo = moment(order.orderCreateDate).format('/M/YYYY'),
-    year = moment(order.orderCreateDate).format('YYYY'),
-    month = moment(order.orderCreateDate).format('M'),
-    conditions = {year: year, month: month},
-    update = {$inc: { no: 1 }},
-    options = {upsert: true, new: true};
+  invoiceNo = moment(order.orderCreateDate).format('/M/YYYY');
 
-    InvoiceNo.findOneAndUpdate(conditions, update, options, function (err, updatedInvoiceNo) {
-      if (err){
-        def.reject();
-        return;
-      }
+  var year = moment(order.orderCreateDate).format('YYYY');
+  var month = moment(order.orderCreateDate).format('M');
+  var conditions = {year: year, month: month};
+  var update = {$inc: {no: 1}};
+  var options = {upsert: true, new: true};
 
-      invoiceNo = updatedInvoiceNo.no + invoiceNo;
+  InvoiceNo.findOneAndUpdate(conditions, update, options, function (err, updatedInvoiceNo) {
+    if (err) {
+      def.reject();
+      return;
+    }
 
-      if (setting && setting.value) {
-        invoiceNo = setting.value + invoiceNo;
-      }
+    invoiceNo = updatedInvoiceNo.no + invoiceNo;
 
-      var deliveryDate = moment(order.orderCreateDate),
-          dateOfPayment = moment(deliveryDate).add(11, 'days'),
-          dateOfInvoice = moment().format('YYYY-MM-DD');
+    if (setting && setting.value) {
+      invoiceNo = setting.value + invoiceNo;
+    }
 
-      deliveryDate = deliveryDate.format('YYYY-MM-DD');
-      dateOfPayment = dateOfPayment.format('YYYY-MM-DD');
+    var deliveryDate = moment(order.orderCreateDate);
+    var dateOfPayment = moment(deliveryDate).add(11, 'days');
+    var dateOfInvoice = moment().format('YYYY-MM-DD');
 
-      updateClaimInvoiceData(claim._id, invoiceNo, deliveryDate, dateOfPayment, dateOfInvoice);
+    deliveryDate = deliveryDate.format('YYYY-MM-DD');
+    dateOfPayment = dateOfPayment.format('YYYY-MM-DD');
 
-      def.resolve({
-        invoiceNo: invoiceNo,
-        deliveryDate: deliveryDate,
-        dateOfPayment: dateOfPayment,
-        dateOfInvoice: dateOfInvoice,
-        amountNet:claim.amountNet,
-        amountGross:claim.amount,
-        amountDiff:claim.amountDiff
-      });
+    updateClaimInvoiceData(claim._id, invoiceNo, deliveryDate, dateOfPayment, dateOfInvoice);
+
+    def.resolve({
+      invoiceNo: invoiceNo,
+      deliveryDate: deliveryDate,
+      dateOfPayment: dateOfPayment,
+      dateOfInvoice: dateOfInvoice,
+      amountNet: claim.amountNet,
+      amountGross: claim.amountFormat,
+      amountDiff: claim.amountDiff,
+      amountPayed: claim.amountPayed,
+      amountStillToPay: claim.amountStillToPay
     });
-
+  });
 
   return def.promise;
 }
 
-function updateClaimInvoiceNo(id, invoiceNo){
-  Claims.update({_id: id},{$set: {
-    'invoice.invoiceNo': invoiceNo}}).exec();
+function updateClaimInvoiceNo (id, invoiceNo) {
+  Claims.update({_id: id}, {
+    $set: {
+      'invoice.invoiceNo': invoiceNo
+    }
+  }).exec();
 }
 
-function updateClaimInvoiceData(id, invoiceNo, deliveryDate, dateOfPayment, dateOfInvoice){
-  Claims.update({_id: id},{$set: {
-    'invoice.invoiceNo': invoiceNo,
-    'invoice.deliveryDate':deliveryDate,
-    'invoice.dateOfPayment': dateOfPayment,
-    'invoice.dateOfInvoice': dateOfInvoice}}).exec();
+function updateClaimInvoiceData (id, invoiceNo, deliveryDate, dateOfPayment, dateOfInvoice) {
+  Claims.update({_id: id}, {
+    $set: {
+      'invoice.invoiceNo': invoiceNo,
+      'invoice.deliveryDate': deliveryDate,
+      'invoice.dateOfPayment': dateOfPayment,
+      'invoice.dateOfInvoice': dateOfInvoice
+    }
+  }).exec();
 }
 
-function resetInvoiceNo (req, res, next){
+function resetInvoiceNo (req, res, next) {
   var conditions = {
-        event: req.params.ev,
-        'payment.id': {
-          $exists: true
-        }
-      },
-      update = {$set : {'invoice.invoiceNo': null}},
-      options = { multi: true }
+    event: req.params.ev,
+    'payment.id': {
+      $exists: true
+    }
+  };
+  var update = {$set: {'invoice.invoiceNo': null}};
+  var options = {multi: true};
 
-   Claims.update(conditions, update, options).exec();
+  Claims.update(conditions, update, options).exec();
 
-   getInvoices(req, res, next);
+  getInvoices(req, res, next);
 }
 
-function setUpInvoicePrefix (req, res, next){
+function setUpInvoicePrefix (req, res, next) {
 
   var invoicePrefix = req.body.invoicePrefix;
 
@@ -422,9 +432,9 @@ function setUpInvoicePrefix (req, res, next){
     invoicePrefix += '/';
   }
 
-  var conditions = {key: 'INVOICE_PREFIX'},
-      update = {$set : {value: invoicePrefix}},
-      options = {upsert: true, new: true};
+  var conditions = {key: 'INVOICE_PREFIX'};
+  var update = {$set: {value: invoicePrefix}};
+  var options = {upsert: true, new: true};
 
   Settings.findOneAndUpdate(conditions, update, options, function (err, updatedSetting) {
     if (err) {
@@ -439,19 +449,16 @@ function setUpInvoicePrefix (req, res, next){
 router.post('/events/:ev/invoices', function (req, res, next) {
   if (req.body.hasOwnProperty('reset')) {
     resetInvoiceNo(req, res, next);
-  }
-  else if (req.body.hasOwnProperty('prefix')) {
+  } else if (req.body.hasOwnProperty('prefix')) {
     setUpInvoicePrefix(req, res, next);
-  }
-  else {
+  } else {
     getInvoices(req, res, next);
   }
 });
 
-
 router.get('/events/:ev/invoices', function (req, res, next) {
 
-  createDefaultInvoicePrefixIfNotExist().then(function (){
+  createDefaultInvoicePrefixIfNotExist().then(function () {
     getInvoices(req, res, next);
   });
 
@@ -473,8 +480,7 @@ function createDefaultInvoicePrefixIfNotExist () {
 
         defer.resolve();
       });
-    }
-    else {
+    } else {
       defer.resolve();
     }
 
@@ -483,77 +489,148 @@ function createDefaultInvoicePrefixIfNotExist () {
   return defer.promise;
 }
 
-
-function getInvoices(req, res, next) {
+function getInvoices (req, res, next) {
   Claims.find({
     event: req.params.ev,
-    'payment.id': {
-      $exists: true
-    }
+    $or: [
+      {
+        'payment.id': {
+          $exists: true
+        }
+      },
+      {paidWithoutPayu: true}
+    ]
   }).populate('event').exec(intercept(next, function (claims) {
     Q.all(
-        claims.map(function (claim) {
-          var def = Q.defer();
+      claims.map(function (claim) {
+        var def = Q.defer();
 
-          Payu.getOrderInfo(claim.payment.id).on('error', function (err) {
-            def.reject(err);
-          }).end(function (resp) {
-            if (!resp.ok) {
-              def.reject(resp.body);
-              return;
-            }
+        Payu.getOrderInfo(claim.payment.id).on('error', function (err) {
+          def.reject(err);
+        }).end(function (resp) {
+          if (!resp.ok) {
+            def.reject(resp.body);
 
-            var order = resp.body.orders[0];
+            return;
+          }
 
+          var order = resp.body.orders[0];
+          var serviceName = 'Udział w DevMeetingu ' + claim.event.name;
+
+          if (claim.paidWithoutPayu && order.status !== 'COMPLETED') {
+
+            // create new order
+            order = {
+              paymentMethod: 'Przelew',
+              paidWithoutPayu: true,
+              orderId: claim.payment.id,
+              buyer: {
+                names: claim.userData.names,
+                email: claim.userData.email,
+                invoice: {
+                  recipientName: claim.invoice.recipientName,
+                  street: claim.invoice.street,
+                  postalCode: claim.invoice.postalCode,
+                  city: claim.invoice.city,
+                  countryCode: claim.invoice.countryCode,
+                  tin: claim.invoice.tin,
+                  serviceName: serviceName
+                }
+              },
+              totalAmount: claim.amount * 100,
+              currencyCode: 'PLN',
+              orderCreateDate: claim.claimedTime
+            };
+          } else {
+            order.paymentMethod = 'Payu';
+          }
+
+          order.claim = claim;
+          order.serviceName = serviceName;
+          def.resolve(order);
+        });
+
+        return def.promise;
+      })
+    ).then(function (orders) {
+        return Q.all(
+          orders.map(function (order) {
+            var def = Q.defer();
 
             Settings.findOne({key: 'INVOICE_PREFIX'}, function (err, setting) {
-              getInvoiceData(claim, order, setting).then(function(invoiceData){
+              if (err) {
+                def.resolve({});
+                return;
+              }
+              getInvoiceData(order.claim, order, setting).then(function (invoiceData) {
                 order.invoice = invoiceData;
 
-                Object.keys(invoiceData).forEach(function(key){
+                Object.keys(invoiceData).forEach(function (key) {
                   order.invoice[key] = invoiceData[key];
                 });
+
+                if (order.paidWithoutPayu) {
+
+                  order.payed = '0,00';
+                  order.stillToPay = '0,00';
+                }
 
                 def.resolve(order);
               });
             });
 
-          });
-
-          return def.promise;
-        })
-
-    ).then(function (responses) {
-          return responses.filter(function (resp) {
-            return resp.buyer && resp.buyer.invoice;
-          });
-
-        }).done(function (invoices) {
-          res.render('admin/invoices', {
-            title: 'Invoices for ' + req.params.ev,
-            invoices: JSON.stringify(invoices)
-          });
-
+            return def.promise;
+          })
+        );
+      }).then(function (responses) {
+        return responses.filter(function (resp) {
+          return resp.buyer && resp.buyer.invoice;
         });
+
+      }).done(function (invoices) {
+        res.render('admin/invoices', {
+          title: 'Invoices for ' + req.params.ev,
+          invoices: JSON.stringify(invoices)
+        });
+
+      });
   }));
-
-
 }
-
 
 router.post('/claims/invoice', function (req, res, next) {
   var conditions = {
     'payment.id': req.body.payment
-  }, update = {$set: {
-    'invoice.invoiceNo': req.body.invoiceNo,
-    'invoice.deliveryDate': new Date(req.body.deliveryDate),
-    'invoice.dateOfPayment': new Date(req.body.dateOfPayment),
-    'invoice.dateOfInvoice': new Date(req.body.dateOfInvoice),
-  }};
-  Claims.update(conditions,update).exec();
-
+  };
+  var update = {
+    $set: {
+      'invoice.invoiceNo': req.body.invoiceNo,
+      'invoice.deliveryDate': new Date(req.body.deliveryDate),
+      'invoice.dateOfPayment': new Date(req.body.dateOfPayment),
+      'invoice.dateOfInvoice': new Date(req.body.dateOfInvoice),
+      'invoice.recipientName': req.body.recipientName,
+      'invoice.street': req.body.street,
+      'invoice.postalCode': req.body.postalCode,
+      'invoice.city': req.body.city,
+      'invoice.tin': req.body.tin
+    }
+  };
+  Claims.update(conditions, update).exec();
   res.send('ok');
 });
+
+router.post('/events/:ev/payed/:claimId', function (req, res, next) {
+    Claims.findOneAndUpdate({
+      _id: req.params.claimId
+    }, {
+      $set: {
+        status: 'payed',
+        paidWithoutPayu: true
+      }
+    }).exec(intercept(next, function () {
+      res.send('ok');
+    }));
+  }
+);
 
 router.get('/claims/:claimId/payment', function (req, res, next) {
   Claims.findOne({

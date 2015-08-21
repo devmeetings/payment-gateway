@@ -32,8 +32,8 @@ block content
                 .form-group
                   label.col-sm-4.control-label Name / Email:
                   .col-sm-8
-                    p.form-control-static {{ in.buyer.firstName }} {{ in.buyer.lastName }} / {{ in.buyer.email}}
-                .form-group
+                    p.form-control-static {{ in.buyer.firstName }} {{ in.buyer.lastName }} {{ in.buyer.names }} / {{ in.buyer.email}}
+                .form-group(ng-show="!in.paidWithoutPayu")
                   label.col-sm-4.control-label Invoice:
                   .col-sm-8
                     p.form-control-static {{ in.buyer.invoice.recipientName }}
@@ -60,6 +60,26 @@ block content
                   label.col-sm-5.control-label Date of payment:
                   .col-sm-7
                     input.form-control(ng-model="in.invoice.dateOfPayment",name="dateOfPayment", type="text")
+                .form-group(ng-show="in.paidWithoutPayu")
+                  label.col-sm-5.control-label Recipient name:
+                  .col-sm-7
+                    input.form-control(ng-model="in.buyer.invoice.recipientName",name="recipientName", type="text")
+                .form-group(ng-show="in.paidWithoutPayu")
+                  label.col-sm-5.control-label Street:
+                  .col-sm-7
+                    input.form-control(ng-model="in.buyer.invoice.street",name="street", type="text")
+                .form-group(ng-show="in.paidWithoutPayu")
+                  label.col-sm-5.control-label Postal code:
+                  .col-sm-7
+                    input.form-control(ng-model="in.buyer.invoice.postalCode",name="postalCode", type="text")
+                .form-group(ng-show="in.paidWithoutPayu")
+                  label.col-sm-5.control-label City:
+                  .col-sm-7
+                    input.form-control(ng-model="in.buyer.invoice.city",name="city", type="text")
+                 .form-group(ng-show="in.paidWithoutPayu")
+                  label.col-sm-5.control-label TIN:
+                  .col-sm-7
+                    input.form-control(ng-model="in.buyer.invoice.tin",name="tin", type="text")
                 .form-group
                   .col-sm-7.col-sm-offset-5
                     button.btn.btn-primary(download-invoice) Get invoice
