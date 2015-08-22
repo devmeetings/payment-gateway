@@ -44,30 +44,29 @@ ClaimSchema.virtual('date')
   });
 
 ClaimSchema.virtual('amountNet')
-    .get(function () {
-      return (this.amount / 1.23).toFixed(2).replace('.',',');
-    });
+  .get(function () {
+    return (this.amount / 1.23).toFixed(2).replace('.', ',');
+  });
 
 ClaimSchema.virtual('amountDiff')
-    .get(function () {
-      return (this.amount - this.amountNet.replace(',','.')).toFixed(2).replace('.',',');
-    });
+  .get(function () {
+    return (this.amount - this.amountNet.replace(',', '.')).toFixed(2).replace('.', ',');
+  });
 
 ClaimSchema.virtual('amountFormat')
-    .get(function () {
-      return this.amount.toFixed(2).replace('.',',');
-    });
+  .get(function () {
+    return this.amount.toFixed(2).replace('.', ',');
+  });
 
 ClaimSchema.virtual('amountPayed')
-    .get(function () {
-      return this.paidWithoutPayu === true ? 0 : this.amount.toFixed(2).replace('.',',');
-    });
-
+  .get(function () {
+    return this.paidWithoutPayu === true ? 0 : this.amount.toFixed(2).replace('.', ',');
+  });
 
 ClaimSchema.virtual('amountStillToPay')
-    .get(function () {
-      return this.paidWithoutPayu === true ? this.amount.toFixed(2).replace('.',',') : 0;
-    });
+  .get(function () {
+    return this.paidWithoutPayu === true ? this.amount.toFixed(2).replace('.', ',') : 0;
+  });
 
 module.exports = mongoose.model('claim', ClaimSchema);
 
