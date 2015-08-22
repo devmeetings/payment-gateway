@@ -515,7 +515,7 @@ function getInvoices (req, res, next) {
           }
 
           var order = resp.body.orders[0];
-          var serviceName = 'Udział w DevMeetingu ' + claim.event.name;
+          var serviceName = 'Udział w DevMeetingu ' + claim.event.title;
 
           if (claim.paidWithoutPayu && order.status !== 'COMPLETED') {
 
