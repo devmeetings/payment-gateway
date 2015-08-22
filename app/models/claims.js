@@ -1,5 +1,4 @@
 // Example model
-
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
@@ -15,13 +14,19 @@ var ClaimSchema = new Schema({
     type: String,
     enum: ['active', 'waiting', 'payed', 'expired']
   },
-
+  paidWithoutPayu: Boolean,
   amount: Number,
   invoice: {
     invoiceNo: String,
     deliveryDate: Date,
     dateOfPayment: Date,
-    dateOfInvoice: Date
+    dateOfInvoice: Date,
+    recipientName: String,
+    street: String,
+    postalCode: String,
+    city: String,
+    tin: String,
+    serviceName: String
   },
   payment: {
     id: String,
@@ -40,12 +45,28 @@ ClaimSchema.virtual('date')
 
 ClaimSchema.virtual('amountNet')
     .get(function () {
-      return (this.amount / 1.23).toFixed(2);
+      return (this.amount / 1.23).toFixed(2).replace('.',',');
     });
 
 ClaimSchema.virtual('amountDiff')
     .get(function () {
-      return (this.amount - this.amountNet).toFixed(2);
+      return (this.amount - this.amountNet.replace(',','.')).toFixed(2).replace('.',',');
+    });
+
+ClaimSchema.virtual('amountFormat')
+    .get(function () {
+      return this.amount.toFixed(2).replace('.',',');
+    });
+
+ClaimSchema.virtual('amountPayed')
+    .get(function () {
+      return this.paidWithoutPayu === true ? 0 : this.amount.toFixed(2).replace('.',',');
+    });
+
+
+ClaimSchema.virtual('amountStillToPay')
+    .get(function () {
+      return this.paidWithoutPayu === true ? this.amount.toFixed(2).replace('.',',') : 0;
     });
 
 module.exports = mongoose.model('claim', ClaimSchema);
