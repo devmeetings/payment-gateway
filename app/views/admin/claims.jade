@@ -21,7 +21,10 @@ block content
             ng-click="hideExpired = !hideExpired") Hide Expired
         .form-group
           input.form-control(type="text", ng-model="search.$", placeholder="Search")
-
+      .row
+        p.lead !{event.title}
+        p
+        | Claims list. Payed claims: <strong>!{payedCount}</strong>. Pending claims: <strong>!{pendingCount}</strong>
       .row(ng-if="!view.detailed")
         table.table.table-striped.table-hover.table-condensed
           tr
