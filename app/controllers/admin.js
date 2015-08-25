@@ -37,13 +37,27 @@ router.get('/', function (req, res) {
 });
 
 router.get('/events', function (req, res, next) {
-  Event.find(intercept(next, function (events) {
+  Event.find().sort({eventStartDate: 'desc'}).exec(intercept(next, function (events) {
     res.render('admin/events', {
       title: 'Events',
       events: JSON.stringify(events)
     });
   }));
 });
+
+function countEventsByStatus (envId, status) {
+  var def = Q.defer();
+  Claims.find({event: envId, status: status}).count(function (err, count) {
+    if (err) {
+      def.reject();
+      return;
+    }
+
+    def.resolve(count);
+  });
+
+  return def.promise;
+}
 
 function getEvent (eventId) {
   var def = Q.defer();
@@ -230,15 +244,31 @@ router.get('/events/:ev/users', function (req, res, next) {
 });
 
 router.get('/events/:ev/claims', function (req, res, next) {
+  var event = null;
+
   Claims.find({
     event: req.params.ev
-  }).exec(intercept(next, function (claims) {
-    res.render('admin/claims', {
-      title: 'Claims for ' + req.params.ev,
-      eventId: req.params.ev,
-      claims: JSON.stringify(claims)
+  }).populate('event').sort({claimedTime: 'desc'}).exec(intercept(next, function (claims) {
+
+    if (event === null) {
+      event = claims[0].event;
+    }
+
+    Q.all([
+      countEventsByStatus(req.params.ev, Claims.STATUS.PAYED),
+      countEventsByStatus(req.params.ev, Claims.STATUS.PENDING)
+    ]).then(function (counter) {
+      res.render('admin/claims', {
+        title: 'Claims for ' + req.params.ev,
+        event: event,
+        eventId: req.params.ev,
+        payedCount: counter[0],
+        pendingCount: counter[1],
+        claims: JSON.stringify(claims)
+      });
     });
   }));
+
 });
 
 router.post('/claims/get/invoice/render', function (req, res, next) {
