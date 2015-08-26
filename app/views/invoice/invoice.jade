@@ -117,6 +117,16 @@ body
                           td 23%
                           td #{data.invoice.amountDiff} PLN
                           td #{data.invoice.amountGross} PLN
+                       tr
+                          td.text-right(colspan=4)
+                              strong
+                                | Razem:
+                          td #{data.invoice.amountNet} PLN
+                          td #{data.invoice.amountNet} PLN
+                          td
+                          td #{data.invoice.amountDiff} PLN
+                          td #{data.invoice.amountGross} PLN
+
               .row
                  .col-xs-9
                     .panel.panel-default
