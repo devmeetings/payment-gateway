@@ -57,7 +57,11 @@ block content
                 ng-click='search.$=claim._id; view.detailed=true'
                 )
                 | More
-              button.btn.btn-link.btn-xs(ng-click="setAsPaid(claim)") Set as paid (No PayU)
+              button.btn.btn-link.btn-xs(ng-click="setAsOffline(claim)",
+                ng-if="claim.status !== 'offlinePending' && claim.status !== 'payed'") Offline pending
+              button.btn.btn-link.btn-xs(ng-click="setAsPaid(claim)", ng-if=" claim.status !== 'payed'") Paid (No PayU)
+              button.btn.btn-link.btn-xs(ng-click="needInvoice(claim)", ng-if="!claim.needInvoice") Need invoice
+
 
       .row(ng-if="view.detailed")
         .col-sm-12
@@ -132,4 +136,16 @@ append scripts
             $window.location.reload();
           });
       };
+
+        $scope.setAsOffline = function(claim){
+            $http.post('/admin/events/' + claim.event +'/offline/' + claim._id).then(function(){
+                $window.location.reload();
+            });
+        };
+
+        $scope.needInvoice = function(claim){
+            $http.post('/admin/events/' + claim.event +'/invoice/' + claim._id).then(function(){
+                $window.location.reload();
+            });
+        };
     });

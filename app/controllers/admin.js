@@ -256,14 +256,15 @@ router.get('/events/:ev/claims', function (req, res, next) {
 
     Q.all([
       countEventsByStatus(req.params.ev, Claims.STATUS.PAYED),
-      countEventsByStatus(req.params.ev, Claims.STATUS.PENDING)
+      countEventsByStatus(req.params.ev, Claims.STATUS.PENDING),
+      countEventsByStatus(req.params.ev, Claims.STATUS.OFFLINE_PENDING)
     ]).then(function (counter) {
       res.render('admin/claims', {
         title: 'Claims for ' + req.params.ev,
         event: event,
         eventId: req.params.ev,
         payedCount: counter[0],
-        pendingCount: counter[1],
+        pendingCount: counter[1] + counter[2],
         claims: JSON.stringify(claims)
       });
     });
@@ -494,6 +495,14 @@ router.get('/events/:ev/invoices', function (req, res, next) {
 
 });
 
+router.get('/invoices', function (req, res, next) {
+
+  createDefaultInvoicePrefixIfNotExist().then(function () {
+    getAllInvoices(req, res, next);
+  });
+
+});
+
 function createDefaultInvoicePrefixIfNotExist () {
   var defer = Q.defer();
 
@@ -519,8 +528,25 @@ function createDefaultInvoicePrefixIfNotExist () {
   return defer.promise;
 }
 
-function getInvoices (req, res, next) {
-  Claims.find({
+function getAllInvoices (req, res, next) {
+  var conditions = {
+    $or: [
+      {
+        'payment.id': {
+          $exists: true
+        }
+      },
+      {paidWithoutPayu: true},
+      {needInvoice: true}
+    ]
+  };
+
+  return getInvoices(req, res, next, conditions);
+}
+
+function getInvoices (req, res, next, newConditions) {
+  var conditions;
+  var defaultConditions = {
     event: req.params.ev,
     $or: [
       {
@@ -528,9 +554,14 @@ function getInvoices (req, res, next) {
           $exists: true
         }
       },
-      {paidWithoutPayu: true}
+      {paidWithoutPayu: true},
+      {needInvoice: true}
     ]
-  }).populate('event').exec(intercept(next, function (claims) {
+  };
+
+  conditions = newConditions || defaultConditions;
+
+  Claims.find(conditions).populate('event').exec(intercept(next, function (claims) {
     Q.all(
       claims.map(function (claim) {
         var def = Q.defer();
@@ -539,7 +570,7 @@ function getInvoices (req, res, next) {
           def.reject(err);
         }).end(function (resp) {
           if (!resp.ok) {
-            def.reject(resp.body);
+            def.resolve({});
 
             return;
           }
@@ -653,8 +684,34 @@ router.post('/events/:ev/payed/:claimId', function (req, res, next) {
       _id: req.params.claimId
     }, {
       $set: {
-        status: 'payed',
+        status: Claims.STATUS.PAYED,
         paidWithoutPayu: true
+      }
+    }).exec(intercept(next, function () {
+      res.send('ok');
+    }));
+  }
+);
+
+router.post('/events/:ev/offline/:claimId', function (req, res, next) {
+    Claims.findOneAndUpdate({
+      _id: req.params.claimId
+    }, {
+      $set: {
+        status: Claims.STATUS.OFFLINE_PENDING
+      }
+    }).exec(intercept(next, function () {
+      res.send('ok');
+    }));
+  }
+);
+
+router.post('/events/:ev/invoice/:claimId', function (req, res, next) {
+    Claims.findOneAndUpdate({
+      _id: req.params.claimId
+    }, {
+      $set: {
+        needInvoice: true
       }
     }).exec(intercept(next, function () {
       res.send('ok');

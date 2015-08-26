@@ -95,7 +95,7 @@ body
                            | NIP #{data.buyer.invoice.tin}
            .container
               .row
-                 .col-xs-11
+                 .col-xs-12
                     table.table
                        tr
                           th Lp.
@@ -112,11 +112,21 @@ body
                           td #{data.serviceName}
                           td 1
                           td szt.
-                          td #{data.invoice.amountNet}
-                          td #{data.invoice.amountNet}
+                          td #{data.invoice.amountNet} PLN
+                          td #{data.invoice.amountNet} PLN
                           td 23%
-                          td #{data.invoice.amountDiff}
-                          td #{data.invoice.amountGross}
+                          td #{data.invoice.amountDiff} PLN
+                          td #{data.invoice.amountGross} PLN
+                       tr
+                          td.text-right(colspan=4)
+                              strong
+                                | Razem:
+                          td #{data.invoice.amountNet} PLN
+                          td #{data.invoice.amountNet} PLN
+                          td
+                          td #{data.invoice.amountDiff} PLN
+                          td #{data.invoice.amountGross} PLN
+
               .row
                  .col-xs-9
                     .panel.panel-default
@@ -125,12 +135,12 @@ body
                              .col-xs-6
                                 | Zapłacono:
                              .col-xs-6
-                                strong #{data.invoice.amountPayed}
+                                strong #{data.invoice.amountPayed} PLN
                           .row
                              .col-xs-6
                                 | Pozostało do zapłaty:
                              .col-xs-6
-                                strong #{data.invoice.amountStillToPay}
+                                strong #{data.invoice.amountStillToPay} PLN
                           .row
                              .col-xs-6
                                 | Konto bankowe:
