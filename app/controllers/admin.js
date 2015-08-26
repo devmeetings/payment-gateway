@@ -494,6 +494,14 @@ router.get('/events/:ev/invoices', function (req, res, next) {
 
 });
 
+router.get('/invoices', function (req, res, next) {
+
+  createDefaultInvoicePrefixIfNotExist().then(function () {
+    getAllInvoices(req, res, next);
+  });
+
+});
+
 function createDefaultInvoicePrefixIfNotExist () {
   var defer = Q.defer();
 
@@ -519,8 +527,25 @@ function createDefaultInvoicePrefixIfNotExist () {
   return defer.promise;
 }
 
-function getInvoices (req, res, next) {
-  Claims.find({
+
+function getAllInvoices(req, res, next){
+  var conditions = {
+      $or: [
+        {
+          'payment.id': {
+            $exists: true
+          }
+        },
+        {paidWithoutPayu: true}
+      ]
+  };
+
+  return getInvoices (req, res, next, conditions);
+}
+
+function getInvoices (req, res, next, newConditions) {
+  var conditions;
+  var defaultConditions = {
     event: req.params.ev,
     $or: [
       {
@@ -530,7 +555,13 @@ function getInvoices (req, res, next) {
       },
       {paidWithoutPayu: true}
     ]
-  }).populate('event').exec(intercept(next, function (claims) {
+  };
+
+
+  conditions = newConditions || defaultConditions;
+
+
+  Claims.find(conditions).populate('event').exec(intercept(next, function (claims) {
     Q.all(
       claims.map(function (claim) {
         var def = Q.defer();
@@ -539,7 +570,7 @@ function getInvoices (req, res, next) {
           def.reject(err);
         }).end(function (resp) {
           if (!resp.ok) {
-            def.reject(resp.body);
+            def.resolve({});
 
             return;
           }

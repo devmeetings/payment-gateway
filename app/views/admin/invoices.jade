@@ -17,7 +17,29 @@ block content
             button.btn.btn-default(type="submit", name="prefix") Save prefix
           form.pull-right(action, method="POST")
             button.btn.btn-primary(type="submit", name="reset") Reset numbers in invoices for current event
-        .well.clearfix(ng-repeat="in in invoices")
+        .well.clearfix
+          .form-group
+            .pull-right
+              a(ng-click="view.detailed = !view.detailed") Toggle Detailed View
+          .form-group
+            input.form-control(type="text", ng-model="search.$", placeholder="Search")
+        .row(ng-if="!view.detailed")
+          table.table
+            tr
+              th Date of invoice
+              th Invoice No
+              th Buyer name
+              th Recipient name
+              th Event name
+              th Amount
+            tr(ng-repeat="in in invoices | filter:search | orderBy:in.invoice.dateOfInvoice:true")
+              td {{in.invoice.dateOfInvoice}}
+              td {{in.invoice.invoiceNo}}
+              td {{in.buyer.firstName }} {{ in.buyer.lastName }} {{ in.buyer.names }}
+              td {{in.buyer.invoice.recipientName }}
+              td {{in.claim.event.title}}
+              td {{ in.totalAmount / 100 | currency: '' }} {{in.currencyCode}}
+        .well.clearfix(ng-repeat="in in invoices", ng-if="view.detailed")
           form.invoices.form-horizontal
             .row
               .col-xs-6
