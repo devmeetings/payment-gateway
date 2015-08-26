@@ -32,7 +32,7 @@ block content
               th Recipient name
               th Event name
               th Amount
-            tr(ng-repeat="in in invoices | filter:search | orderBy:in.invoice.dateOfInvoice:true")
+            tr(ng-repeat="in in invoices | filter:search | orderBy:[in.invoice.deliveryDate, in.claim.event.title]:true")
               td {{in.invoice.dateOfInvoice}}
               td {{in.invoice.invoiceNo}}
               td {{in.buyer.firstName }} {{ in.buyer.lastName }} {{ in.buyer.names }}
