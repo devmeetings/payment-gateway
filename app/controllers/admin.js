@@ -256,14 +256,15 @@ router.get('/events/:ev/claims', function (req, res, next) {
 
     Q.all([
       countEventsByStatus(req.params.ev, Claims.STATUS.PAYED),
-      countEventsByStatus(req.params.ev, Claims.STATUS.PENDING)
+      countEventsByStatus(req.params.ev, Claims.STATUS.PENDING),
+      countEventsByStatus(req.params.ev, Claims.STATUS.OFFLINE_PENDING)
     ]).then(function (counter) {
       res.render('admin/claims', {
         title: 'Claims for ' + req.params.ev,
         event: event,
         eventId: req.params.ev,
         payedCount: counter[0],
-        pendingCount: counter[1],
+        pendingCount: counter[1] + counter[2],
         claims: JSON.stringify(claims)
       });
     });
@@ -536,7 +537,8 @@ function getAllInvoices(req, res, next){
             $exists: true
           }
         },
-        {paidWithoutPayu: true}
+        {paidWithoutPayu: true},
+        {needInvoice: true}
       ]
   };
 
@@ -553,7 +555,8 @@ function getInvoices (req, res, next, newConditions) {
           $exists: true
         }
       },
-      {paidWithoutPayu: true}
+      {paidWithoutPayu: true},
+      {needInvoice: true}
     ]
   };
 
@@ -684,7 +687,7 @@ router.post('/events/:ev/payed/:claimId', function (req, res, next) {
       _id: req.params.claimId
     }, {
       $set: {
-        status: 'payed',
+        status: Claims.STATUS.PAYED,
         paidWithoutPayu: true
       }
     }).exec(intercept(next, function () {
@@ -692,6 +695,34 @@ router.post('/events/:ev/payed/:claimId', function (req, res, next) {
     }));
   }
 );
+
+router.post('/events/:ev/offline/:claimId', function (req, res, next) {
+    Claims.findOneAndUpdate({
+      _id: req.params.claimId
+    }, {
+      $set: {
+        status: Claims.STATUS.OFFLINE_PENDING
+      }
+    }).exec(intercept(next, function () {
+      res.send('ok');
+    }));
+  }
+);
+
+
+router.post('/events/:ev/invoice/:claimId', function (req, res, next) {
+    Claims.findOneAndUpdate({
+      _id: req.params.claimId
+    }, {
+      $set: {
+        needInvoice: true
+      }
+    }).exec(intercept(next, function () {
+      res.send('ok');
+    }));
+  }
+);
+
 
 router.get('/claims/:claimId/payment', function (req, res, next) {
   Claims.findOne({

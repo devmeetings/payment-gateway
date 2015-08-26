@@ -15,6 +15,7 @@ var ClaimSchema = new Schema({
     enum: ['active', 'waiting', 'payed', 'expired']
   },
   paidWithoutPayu: Boolean,
+  needInvoice: Boolean,
   amount: Number,
   invoice: {
     invoiceNo: String,
@@ -79,6 +80,8 @@ module.exports.STATUS = {
   WAITING: 'waiting',
   /* PayU oczekuje na potwierdzenie z banku */
   PENDING: 'pending',
+  /* Platnosc zostanie wykonana bez uzycia PayU*/
+  OFFLINE_PENDING: 'offlinePending',
   /* Zaplacone */
   PAYED: 'payed',
   /* Czas na wypelnienie wygasl */
