@@ -578,7 +578,8 @@ function getInvoices (req, res, next, newConditions) {
           var order = resp.body.orders[0];
           var serviceName = 'Udział w DevMeetingu ' + claim.event.title;
 
-          if (claim.paidWithoutPayu && order.status !== 'COMPLETED') {
+          if ((claim.paidWithoutPayu && order.status !== 'COMPLETED') ||
+            (claim.needInvoice && (!order.buyer || !order.buyer.invoice))) {
 
             // create new order
             order = {
