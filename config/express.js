@@ -1,7 +1,9 @@
 var express = require('express');
 var glob = require('glob');
 
+var raven = require('raven');
 var logger = require('morgan');
+var favicon = require('serve-favicon');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var compress = require('compression');
@@ -11,7 +13,8 @@ module.exports = function (app, config) {
   app.set('views', config.root + '/app/views');
   app.set('view engine', 'jade');
 
-  // app.use(favicon(config.root + '/public/img/favicon.ico'));
+  app.use(raven.middleware.express.requestHandler(config.sentryDsn));
+  app.use(favicon(config.root + '/public/img/favicon.ico'));
   app.use(logger('dev'));
   app.use(bodyParser.json());
   app.use(bodyParser.urlencoded({
@@ -26,6 +29,8 @@ module.exports = function (app, config) {
   controllers.forEach(function (controller) {
     require(controller)(app);
   });
+
+  app.use(raven.middleware.express.errorHandler(config.sentryDsn));
 
   app.use(function (req, res, next) {
     var err = new Error('Not Found');

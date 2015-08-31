@@ -13,8 +13,8 @@ var config = {
     },
     payu: null,
     port: 3000,
-    db: 'mongodb://localhost/payment-gateway-development'
-
+    db: 'mongodb://localhost/payment-gateway-development',
+    sentryDsn: false
   },
 
   test: {
@@ -25,8 +25,8 @@ var config = {
     },
     payu: null,
     port: 3000,
-    db: 'mongodb://localhost/payment-gateway-test'
-
+    db: 'mongodb://localhost/payment-gateway-test',
+    sentryDsn: false
   },
 
   production: {
@@ -40,8 +40,8 @@ var config = {
       key: '8da6d279e0b48992aa164b5a431a78b7'
     },
     port: 3000,
-    db: 'mongodb://localhost/payment-gateway-production'
-
+    db: 'mongodb://localhost/payment-gateway-production',
+    sentryDsn: 'https://08525662ea9f4e4a9aaaec77999ae3cb:21f7694047b84f868e44a0baa0d81b3a@app.getsentry.com/51486'
   }
 };
 
