@@ -45,9 +45,37 @@ router.get('/events', function (req, res, next) {
   }));
 });
 
-function countEventsByStatus (envId, status) {
+function countClaimsByStatus (envId, status) {
   var def = Q.defer();
   Claims.find({event: envId, status: status}).count(function (err, count) {
+    if (err) {
+      def.reject();
+      return;
+    }
+
+    def.resolve(count);
+  });
+
+  return def.promise;
+}
+
+function countClaimsForVIP (envId) {
+  var def = Q.defer();
+  Claims.find({event: envId, "extra.vip": true}).count(function (err, count) {
+    if (err) {
+      def.reject();
+      return;
+    }
+
+    def.resolve(count);
+  });
+
+  return def.promise;
+}
+
+function countClaimsForSponsor (envId) {
+  var def = Q.defer();
+  Claims.find({event: envId, "extra.sponsor": true}).count(function (err, count) {
     if (err) {
       def.reject();
       return;
@@ -124,10 +152,21 @@ router.post('/events/:ev/tickets', function (req, res, next) {
 router.get('/events/:ev/users/diploma/render', function (req, res, next) {
   Claims.find({
     event: req.params.ev,
-    status: Claims.STATUS.PAYED,
-    amount: {
-      $gte: 100
-    }
+    $or: [
+      {
+        status: Claims.STATUS.PAYED,
+        amount: {
+          $gte: 100
+        }
+      },
+      {
+        "extra.sponsor": true
+      },
+      {
+        "extra.vip": true
+      }
+    ]
+
   }).populate('event').exec(intercept(next, function (users) {
     res.render('diploma/diploma', {
       users: JSON.stringify(users)
@@ -255,9 +294,11 @@ router.get('/events/:ev/claims', function (req, res, next) {
     }
 
     Q.all([
-      countEventsByStatus(req.params.ev, Claims.STATUS.PAYED),
-      countEventsByStatus(req.params.ev, Claims.STATUS.PENDING),
-      countEventsByStatus(req.params.ev, Claims.STATUS.OFFLINE_PENDING)
+      countClaimsByStatus(req.params.ev, Claims.STATUS.PAYED),
+      countClaimsByStatus(req.params.ev, Claims.STATUS.PENDING),
+      countClaimsByStatus(req.params.ev, Claims.STATUS.OFFLINE_PENDING),
+      countClaimsForSponsor(req.params.ev),
+      countClaimsForVIP(req.params.ev)
     ]).then(function (counter) {
       res.render('admin/claims', {
         title: 'Claims for ' + req.params.ev,
@@ -265,6 +306,8 @@ router.get('/events/:ev/claims', function (req, res, next) {
         eventId: req.params.ev,
         payedCount: counter[0],
         pendingCount: counter[1] + counter[2],
+        sponsor: counter[3],
+        vip: counter[4],
         claims: JSON.stringify(claims)
       });
     });
@@ -694,6 +737,42 @@ router.post('/events/:ev/payed/:claimId', function (req, res, next) {
   }
 );
 
+router.post('/events/:ev/vip/:claimId', function (req, res, next) {
+    Claims.findOneAndUpdate({
+      _id: req.params.claimId
+    }, {
+      $set: {
+        "extra.vip": true
+      }
+    }).exec(intercept(next, function () {
+      res.send('ok');
+    }));
+  }
+);
+
+router.post('/events/:ev/sponsor/:claimId', function (req, res, next) {
+    Claims.findOneAndUpdate({
+      _id: req.params.claimId
+    }, {
+      $set: {
+        "extra.sponsor": true
+      }
+    }).exec(intercept(next, function () {
+      res.send('ok');
+    }));
+  }
+);
+
+
+router.post('/events/:ev/cancel/:claimId', function (req, res, next) {
+    Claims.remove({
+      _id: req.params.claimId
+    }).exec(intercept(next, function () {
+      res.send('ok');
+    }));
+  }
+);
+
 router.post('/events/:ev/offline/:claimId', function (req, res, next) {
     Claims.findOneAndUpdate({
       _id: req.params.claimId
@@ -719,6 +798,43 @@ router.post('/events/:ev/invoice/:claimId', function (req, res, next) {
     }));
   }
 );
+
+router.post('/events/:ev/add/claim/offline', function (req, res, next){
+  var CLAIM_TIME = 15 * 60 * 1000;
+
+  var now = new Date(), claim = req.body;
+
+  var invoice = {
+    recipientName: claim.invoice.recipientName,
+      street: claim.invoice.street,
+      postalCode: claim.invoice.postalCode,
+      city: claim.invoice.city,
+      tin: claim.invoice.tin
+  };
+
+  var newClaim= {
+    event: req.params.ev,
+    claimedTime: new Date(),
+    validTill: new Date(now.getTime() + CLAIM_TIME),
+    status: claim.status,
+    extra: {
+      vip: claim.extra.vip,
+      sponsor: claim.extra.sponsor },
+    userData: {
+      email:claim.user.email,
+      names: claim.user.names
+    }
+  };
+
+  if (claim.userNeedInvoice) {
+    newClaim.invoice = invoice;
+  }
+
+  Claims.create(newClaim, intercept(next, function (claim) {
+    res.send('ok');
+
+  }));
+});
 
 router.get('/claims/:claimId/payment', function (req, res, next) {
   Claims.findOne({

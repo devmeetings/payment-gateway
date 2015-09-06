@@ -1,151 +1,321 @@
 extends ../angular-layout
 
 block content
-  .container(ng-app="claims")
-    div(ng-controller="ClaimsCtrl")
-      .well.clearfix
-        .form-group
-          .pull-right
-            a(
-                ng-click="view.detailed = !view.detailed"
-              )
-                | Toggle Detailed View
-            br
-            a(
-              ng-href="/admin/events/#{eventId}/invoices"
-              )
-              | Invoices
+    .container(ng-app="claims")
+        div(ng-controller="ClaimsCtrl")
+            .well.clearfix
+                .form-group
+                    .pull-right
+                        a(
+                        ng-click="view.detailed = !view.detailed"
+                        )
+                            | Toggle Detailed View
+                        br
+                        a(
+                        ng-click="view.offlineRegistration = !view.offlineRegistration"
+                        )
+                            | Toggle add user without registrtation
+                        br
+                        a(
+                        ng-href="/admin/events/#{eventId}/invoices"
+                        )
+                            | Invoices
 
-          button.btn.btn-primary(
-            ng-class="{active: hideExpired}"
-            ng-click="hideExpired = !hideExpired") Hide Expired
-        .form-group
-          input.form-control(type="text", ng-model="search.$", placeholder="Search")
-      .row
-        p.lead !{event.title}
-        p
-        | Claims list. Payed claims: <strong>!{payedCount}</strong>. Pending claims: <strong>!{pendingCount}</strong>
-      .row(ng-if="!view.detailed")
-        table.table.table-striped.table-hover.table-condensed
-          tr
-            th
-              a(ng-click="sortBy('userData.names')") Name
-            th 
-              a(ng-click="sortBy('userData.email')") E-mail
-            th 
-              a(ng-click="sortBy('claimedTime')") Claimed Time
-            th 
-              a(ng-click="sortBy('validTill')") Valid Till
-            th 
-              a(ng-click="sortBy('status')") Status
-            th 
-              a(ng-click="sortBy('amount')") Amount
-            th 
+                    button.btn.btn-primary(
+                    ng-class="{active: hideExpired}"
+                    ng-click="hideExpired = !hideExpired") Hide Expired
+                .form-group
+                    input.form-control(type="text", ng-model="search.$", placeholder="Search")
+            .row
+                p.lead !{event.title}
+                h4
+                    | Claims list.
+                .center-block
+                    ul.list-group
+                        li.list-group-item.list-group-item-info
+                            span.badge !{payedCount}
+                            | Payed claims
+                        li.list-group-item
+                            span.badge !{pendingCount}
+                            | Pending claims
+                        li.list-group-item.list-group-item-success
+                            span.badge !{vip}
+                            | VIP claims
+                        li.list-group-item.list-group-item-success
+                            span.badge !{sponsor}
+                            | Sponsor claims
+            .well.clearfix(ng-if="view.offlineRegistration")
+                h4 Add user without registration
+                form.invoices.form-horizontal(ng-controller="OfflineClaimCtrl", ng-submit="addOfflineClaim()")
+                    .row
+                        .col-xs-12
+                            .form-group
+                                label.col-sm-2.control-label Email:
+                                .col-sm-7
+                                    input.form-control(ng-model="newClaim.user.email",name="email", type="text", required)
+                            .form-group
+                                label.col-sm-2.control-label Amount:
+                                .col-sm-7
+                                    input.form-control(ng-model="newClaim.amount",name="email", type="text", required)
+                            .form-group
+                                label.col-sm-2.control-label User name
+                                .col-sm-7
+                                    input.form-control(ng-model="newClaim.user.names",name="street", type="text")
+                            .form-group
+                                label.col-sm-2.control-label Payment status
+                                .col-sm-7
+                                    select(ng-model="newClaim.status")
+                                        option(value="pending") PENDING
+                                        option(value="offlinePending") OFFLINE_PENDING
+                                        option(value="payed") PAYED
 
-          tr(
-            ng-repeat="claim in claims | filter:search | orderBy:sort.by:sort.reverse"
-            ng-if="!hideExpired || claim.status !== 'expired'"
-            )
-            td {{claim.userData.names}}
-            td {{claim.userData.email}}
-            td {{claim.claimedTime | date:'short'}}
-            td {{claim.validTill | date:'short' }}
-            td {{claim.status }}
-            td {{claim.amount }}
-            td
-              a(
-                ng-click='search.$=claim._id; view.detailed=true'
-                )
-                | More
-              button.btn.btn-link.btn-xs(ng-click="setAsOffline(claim)",
-                ng-if="claim.status !== 'offlinePending' && claim.status !== 'payed'") Offline pending
-              button.btn.btn-link.btn-xs(ng-click="setAsPaid(claim)", ng-if=" claim.status !== 'payed'") Paid (No PayU)
-              button.btn.btn-link.btn-xs(ng-click="needInvoice(claim)", ng-if="!claim.needInvoice") Need invoice
+                            .form-group
+                                .checkbox
+                                    label.col-sm-2.control-label
+                                        input(ng-model="newClaim.extra.sponsor", type="checkbox")
+                                        | From sponsor?
+                            .form-group
+                                .checkbox
+                                    label.col-sm-2.control-label
+                                        input(ng-model="newClaim.extra.vip", type="checkbox")
+                                        | VIP?
+                            .form-group
+                                .checkbox
+                                    label.col-sm-2.control-label
+                                        input(ng-model="newClaim.userNeedInvoice", type="checkbox")
+                                        | Need invoice?
+                            .form-group(ng-if="newClaim.userNeedInvoice")
+                                label.col-sm-2.control-label Recipient name:
+                                .col-sm-7
+                                    input.form-control(ng-model="newClaim.invoice.recipientName",name="recipientName", type="text")
+                            .form-group(ng-if="newClaim.userNeedInvoice")
+                                label.col-sm-2.control-label Street:
+                                .col-sm-7
+                                    input.form-control(ng-model="newClaim.invoice.street",name="street", type="text")
+                            .form-group(ng-if="newClaim.userNeedInvoice")
+                                label.col-sm-2.control-label Postal code:
+                                .col-sm-7
+                                    input.form-control(ng-model="newClaim.invoice.postalCode",name="postalCode", type="text")
+                            .form-group(ng-if="newClaim.userNeedInvoice")
+                                label.col-sm-2.control-label City:
+                                .col-sm-7
+                                    input.form-control(ng-model="newClaim.invoice.city",name="city", type="text")
+                            .form-group(ng-if="newClaim.userNeedInvoice")
+                                label.col-sm-2.control-label TIN:
+                                .col-sm-7
+                                    input.form-control(ng-model="newClaim.invoice.tin",name="tin", type="text")
+                            .form-group
+                                .col-sm-7.col-sm-offset-5
+                                    button.btn.btn-primary(type="submit") Add user
+            .row(ng-if="!view.detailed")
+                table.table.table-striped.table-hover.table-condensed
+                    tr
+                        th
+                            a(ng-click="sortBy('userData.names')") Name
+                        th
+                            a(ng-click="sortBy('userData.email')") E-mail
+                        th
+                            a(ng-click="sortBy('claimedTime')") Claimed Time
+                        th
+                            a(ng-click="sortBy('validTill')") Valid Till
+                        th
+                            a(ng-click="sortBy('status')") Status
+                        th
+                            a(ng-click="sortBy('amount')") Amount
+                        th
 
+                    tr(
+                    ng-repeat="claim in claims | filter:search | orderBy:sort.by:sort.reverse"
+                    ng-if="!hideExpired || claim.status !== 'expired'"
+                    )
+                        td {{claim.userData.names}}
+                            strong(ng-if="claim.extra.vip")  (VIP)
+                            strong(ng-if="claim.extra.sponsor")  (Sponsor)
+                        td {{claim.userData.email}}
+                        td {{claim.claimedTime | date:'short'}}
+                        td {{claim.validTill | date:'short' }}
+                        td {{claim.status }}
+                        td {{claim.amount }}
+                        td(ng-init="row.confirmCancel=false")
+                            | {{view.confirmCancel}}
+                            div(ng-if="row.confirmCancel")
+                                p Cancel this claim?
+                                button.btn.btn-default(ng-click="row.confirmCancel=false") No
+                                | &nbsp;
+                                button.btn.btn-primary(ng-click="row.confirmCancel=false; cancelClaim(claim)") Yes
 
-      .row(ng-if="view.detailed")
-        .col-sm-12
-          a(
-            ng-click='search.$=""; view.detailed.false'
-            )
-            | &lArr; Back
-        .col-sm-6(
-          ng-repeat="claim in claims | filter:search | orderBy:sort.by:sort.reverse" 
-          ng-if="!hideExpired || claim.status !== 'expired'")
-          .well
-            h1.pull-right {{claim.amount}}
-            h1 {{claim.userData.names}}
-            h2 {{claim.userData.email}}
-      
-            h4 
-              | Claimed: 
-              span(am-time-ago="claim.claimedTime")
-              span.text-muted  ({{claim.claimedTime | amCalendar}})
-            h4
-              | Status: 
-              span {{claim.status}}
-            h4 
-              | Valid till: 
-              span {{claim.validTill | amCalendar}}
+                            .btn-group(ng-if="!row.confirmCancel")
+                                button.btn.btn-default.dropdown-toggle(type="button", data-toggle="dropdown")
+                                    | Action <span class="caret"></span>
+                                ul.dropdown-menu
+                                    li
+                                        a(
+                                        ng-click='search.$=claim._id; view.detailed=true'
+                                        )
+                                            | More
+                                    li
+                                        a(
+                                        ng-click='setAsOffline(claim)', ng-if="claim.status !== 'offlinePending' && claim.status !== 'payed'"
+                                        )
+                                            | Offline pending
+                                    li
+                                        a(
+                                        ng-click='setAsPaid(claim)', ng-if=" claim.status !== 'payed'"
+                                        )
+                                            | Paid (No PayU)
+                                    li
+                                        a(
+                                        ng-click='needInvoice(claim)', ng-if="!claim.needInvoice"
+                                        )
+                                            | Need invoice
+                                    li
+                                        a(
+                                        ng-click='setAsVIP(claim)'
+                                        )
+                                            | Set as a VIP
+                                    li
+                                        a(
+                                        ng-click='setAsSponsor(claim)'
+                                        )
+                                            | From sponsor
+                                    li
+                                        a(
+                                        ng-click='row.confirmCancel=true'
+                                        )
+                                            | Cancel claim
 
-            button.btn.btn-link.btn-xs(ng-click="showMore = !showMore") More
-            pre(ng-if="showMore"): code(ng-bind="claim | json")
-            
-            p
-              a.btn.btn-primary(
-                href="{{getPaymentDetailsUrl(claim._id)}}"
-                ng-if="claim.payment.id"
-                  )
-                | Payment Details
-            form(
-              method="post" 
-              action="{{getPostUrl(claim.event, claim._id)}}"
-              ng-if="claim.status !== 'payed'"
-              )
-              button.btn.btn-primary(type="submit")
-                | Recreate Payment
+            .row(ng-if="view.detailed")
+                .col-sm-12
+                    a(
+                    ng-click='search.$=""; view.detailed.false'
+                    )
+                        | &lArr; Back
+                .col-sm-6(
+                ng-repeat="claim in claims | filter:search | orderBy:sort.by:sort.reverse"
+                ng-if="!hideExpired || claim.status !== 'expired'")
+                    .well
+                        h1.pull-right {{claim.amount}}
+                        h1 {{claim.userData.names}}
+                        h2 {{claim.userData.email}}
+
+                        h4
+                            | Claimed:
+                            span(am-time-ago="claim.claimedTime")
+                            span.text-muted  ({{claim.claimedTime | amCalendar}})
+                        h4
+                            | Status:
+                            span {{claim.status}}
+                        h4
+                            | Valid till:
+                            span {{claim.validTill | amCalendar}}
+
+                        button.btn.btn-link.btn-xs(ng-click="showMore = !showMore") More
+                        pre(ng-if="showMore"): code(ng-bind="claim | json")
+
+                        p
+                            a.btn.btn-primary(
+                            href="{{getPaymentDetailsUrl(claim._id)}}"
+                            ng-if="claim.payment.id"
+                            )
+                                | Payment Details
+                        form(
+                        method="post"
+                        action="{{getPostUrl(claim.event, claim._id)}}"
+                        ng-if="claim.status !== 'payed'"
+                        )
+                            button.btn.btn-primary(type="submit")
+                                | Recreate Payment
 
 append scripts
-  script.
-    angular.module("claims", ['angularMoment']).controller("ClaimsCtrl", function($scope, $sce, $http, $window) {
-      $scope.hideExpired = true;
-      $scope.search = {};
-      $scope.claims = !{claims};
-      $scope.view = {};
+    script.
+        angular.module("claims", ['angularMoment'])
+                .controller("OfflineClaimCtrl", function ($scope, $http, $window) {
+                    $scope.newClaim = {
+                        status: 'payed',
+                        amount: 0,
+                        extra: {
+                            vip: false,
+                            sponsor: false
+                        },
+                        paidWithoutPayu: true,
+                        user: {
+                            email: '',
+                            names: ''
+                        },
+                        userNeedInvoice: false,
+                        invoice: {
+                            recipientName: '',
+                            street: '',
+                            postalCode: '',
+                            city: '',
+                            tin: ''
+                        }
+                    };
 
-      $scope.getPostUrl = function(evId, claimId) {
-        var name = '/admin/events/' + evId + '/tickets/' + claimId + '/payment';
-        $sce.trustAsUrl(name);
-        return name;
-      };
+                    $scope.addOfflineClaim = function () {
+                        var evId = '!{eventId}';
+                        $http.post('/admin/events/' + evId + '/add/claim/offline', $scope.newClaim).then(function () {
+                            $window.location.reload();
+                        });
+                    }
+                })
+                .controller("ClaimsCtrl", function ($scope, $sce, $http, $window) {
+                    $scope.hideExpired = true;
+                    $scope.search = {};
+                    $scope.claims = !{claims};
+                    $scope.view = {};
 
-      $scope.getPaymentDetailsUrl = function(claimId) {
-        var name = '/admin/claims/' + claimId + '/payment';
-        $sce.trustAsUrl(name);
-        return name;
-      };
+                    $scope.getPostUrl = function (evId, claimId) {
+                        var name = '/admin/events/' + evId + '/tickets/' + claimId + '/payment';
+                        $sce.trustAsUrl(name);
+                        return name;
+                    };
 
-      $scope.sort = {};
-      $scope.sortBy = function(by) {
-        $scope.sort.by = by;
-        $scope.sort.reverse = !$scope.sort.reverse;
-      };
+                    $scope.getPaymentDetailsUrl = function (claimId) {
+                        var name = '/admin/claims/' + claimId + '/payment';
+                        $sce.trustAsUrl(name);
+                        return name;
+                    };
 
-      $scope.setAsPaid = function(claim){
-          $http.post('/admin/events/' + claim.event +'/payed/' + claim._id).then(function(){
-            $window.location.reload();
-          });
-      };
+                    $scope.sort = {};
+                    $scope.sortBy = function (by) {
+                        $scope.sort.by = by;
+                        $scope.sort.reverse = !$scope.sort.reverse;
+                    };
 
-        $scope.setAsOffline = function(claim){
-            $http.post('/admin/events/' + claim.event +'/offline/' + claim._id).then(function(){
-                $window.location.reload();
-            });
-        };
+                    $scope.setAsPaid = function (claim) {
+                        $http.post('/admin/events/' + claim.event + '/payed/' + claim._id).then(function () {
+                            $window.location.reload();
+                        });
+                    };
 
-        $scope.needInvoice = function(claim){
-            $http.post('/admin/events/' + claim.event +'/invoice/' + claim._id).then(function(){
-                $window.location.reload();
-            });
-        };
-    });
+                    $scope.setAsVIP = function (claim) {
+                        $http.post('/admin/events/' + claim.event + '/vip/' + claim._id).then(function () {
+                            $window.location.reload();
+                        });
+                    };
+
+                    $scope.setAsSponsor = function (claim) {
+                        $http.post('/admin/events/' + claim.event + '/sponsor/' + claim._id).then(function () {
+                            $window.location.reload();
+                        });
+                    };
+
+                    $scope.cancelClaim = function (claim){
+                        $http.post('/admin/events/' + claim.event + '/cancel/' + claim._id).then(function () {
+                        $window.location.reload();
+                        });
+                    };
+
+                    $scope.setAsOffline = function (claim) {
+                        $http.post('/admin/events/' + claim.event + '/offline/' + claim._id).then(function () {
+                            $window.location.reload();
+                        });
+                    };
+
+                    $scope.needInvoice = function (claim) {
+                        $http.post('/admin/events/' + claim.event + '/invoice/' + claim._id).then(function () {
+                            $window.location.reload();
+                        });
+                    };
+                });
