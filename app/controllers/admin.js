@@ -61,7 +61,7 @@ function countClaimsByStatus (envId, status) {
 
 function countClaimsForVIP (envId) {
   var def = Q.defer();
-  Claims.find({event: envId, "extra.vip": true}).count(function (err, count) {
+  Claims.find({event: envId, 'extra.vip': true}).count(function (err, count) {
     if (err) {
       def.reject();
       return;
@@ -75,7 +75,7 @@ function countClaimsForVIP (envId) {
 
 function countClaimsForSponsor (envId) {
   var def = Q.defer();
-  Claims.find({event: envId, "extra.sponsor": true}).count(function (err, count) {
+  Claims.find({event: envId, 'extra.sponsor': true}).count(function (err, count) {
     if (err) {
       def.reject();
       return;
@@ -160,10 +160,10 @@ router.get('/events/:ev/users/diploma/render', function (req, res, next) {
         }
       },
       {
-        "extra.sponsor": true
+        'extra.sponsor': true
       },
       {
-        "extra.vip": true
+        'extra.vip': true
       }
     ]
 
@@ -271,8 +271,8 @@ router.get('/events/:ev/users', function (req, res, next) {
       event: req.params.ev,
       $or: [
         {status: Claims.STATUS.PAYED},
-        {'extra.vip' : true},
-        {'extra.sponsor' : true}
+        {'extra.vip': true},
+        {'extra.sponsor': true}
       ]
     }).exec(intercept(next, function (users) {
       res.render('admin/users', {
@@ -746,7 +746,7 @@ router.post('/events/:ev/vip/:claimId', function (req, res, next) {
       _id: req.params.claimId
     }, {
       $set: {
-        "extra.vip": true
+        'extra.vip': true
       }
     }).exec(intercept(next, function () {
       res.send('ok');
@@ -759,14 +759,13 @@ router.post('/events/:ev/sponsor/:claimId', function (req, res, next) {
       _id: req.params.claimId
     }, {
       $set: {
-        "extra.sponsor": true
+        'extra.sponsor': true
       }
     }).exec(intercept(next, function () {
       res.send('ok');
     }));
   }
 );
-
 
 router.post('/events/:ev/cancel/:claimId', function (req, res, next) {
     Claims.remove({
@@ -803,29 +802,31 @@ router.post('/events/:ev/invoice/:claimId', function (req, res, next) {
   }
 );
 
-router.post('/events/:ev/add/claim/offline', function (req, res, next){
+router.post('/events/:ev/add/claim/offline', function (req, res, next) {
   var CLAIM_TIME = 15 * 60 * 1000;
 
-  var now = new Date(), claim = req.body;
+  var now = new Date();
+  var claim = req.body;
 
   var invoice = {
     recipientName: claim.invoice.recipientName,
-      street: claim.invoice.street,
-      postalCode: claim.invoice.postalCode,
-      city: claim.invoice.city,
-      tin: claim.invoice.tin
+    street: claim.invoice.street,
+    postalCode: claim.invoice.postalCode,
+    city: claim.invoice.city,
+    tin: claim.invoice.tin
   };
 
-  var newClaim= {
+  var newClaim = {
     event: req.params.ev,
     claimedTime: new Date(),
     validTill: new Date(now.getTime() + CLAIM_TIME),
     status: claim.status,
     extra: {
       vip: claim.extra.vip,
-      sponsor: claim.extra.sponsor },
+      sponsor: claim.extra.sponsor
+    },
     userData: {
-      email:claim.user.email,
+      email: claim.user.email,
       names: claim.user.names
     }
   };
