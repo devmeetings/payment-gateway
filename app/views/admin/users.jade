@@ -23,6 +23,8 @@ block content
                         ng-repeat="user in users | filter:search | orderBy:sort.by:sort.reverse"
                         )
                             td {{user.userData.names}}
+                                strong(ng-if="user.extra.vip")  (VIP)
+                                strong(ng-if="user.extra.sponsor")  (Sponsor)
                             td {{user.userData.email}}
                 .col-md-3(
                     ng-controller="SendEmailCtrl"

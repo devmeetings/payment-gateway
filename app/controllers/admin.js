@@ -269,7 +269,11 @@ router.get('/events/:ev/users', function (req, res, next) {
   getEvent(req.params.ev).then(function (event) {
     Claims.find({
       event: req.params.ev,
-      status: Claims.STATUS.PAYED
+      $or: [
+        {status: Claims.STATUS.PAYED},
+        {'extra.vip' : true},
+        {'extra.sponsor' : true}
+      ]
     }).exec(intercept(next, function (users) {
       res.render('admin/users', {
         event: event,
