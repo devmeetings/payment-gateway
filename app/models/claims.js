@@ -16,6 +16,10 @@ var ClaimSchema = new Schema({
   },
   paidWithoutPayu: Boolean,
   needInvoice: Boolean,
+  extra: {
+    vip: Boolean,
+    sponsor: Boolean
+  },
   amount: Number,
   invoice: {
     invoiceNo: String,
