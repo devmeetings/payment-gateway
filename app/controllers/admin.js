@@ -223,7 +223,7 @@ router.post('/events/:ev/users/notify', function (req, res, next) {
 
     var isTestEmail = req.body.test;
     var event = claims[0].event;
-    var mailTitle = 'Szczegóły DevMeetingu "ECMAScript 6" w Warszawie';
+    var mailTitle = 'Szczegóły DevMeetingu ' + event.title;
     var eventDaysWeek = [
       'w najbliższą niedzielę',
       'w najbliższy poniedziałek',
