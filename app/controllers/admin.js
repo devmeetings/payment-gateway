@@ -146,7 +146,6 @@ router.post('/events/:ev/tickets', function (req, res, next) {
     res.redirect('/admin/events');
 
   }));
-
 });
 
 router.get('/events/:ev/users/diploma/render', function (req, res, next) {
