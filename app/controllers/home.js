@@ -31,7 +31,6 @@ router.get('/events', function (req, res, next) {
       })
     });
   }));
-
 });
 
 router.get('/events/:name', function (req, res, next) {
@@ -79,10 +78,8 @@ router.get('/events/:name', function (req, res, next) {
           title: ev.title,
           event: JSON.stringify(ev)
         });
-
       }));
   }));
-
 });
 
 router.get('/events/:id/tickets/:claim', function (req, res, next) {
@@ -114,7 +111,6 @@ router.get('/events/:id/tickets/:claim', function (req, res, next) {
       });
     }
   }));
-
 });
 
 router.post('/events/:name/tickets', function (req, res, next) {
@@ -129,7 +125,6 @@ router.post('/events/:name/tickets', function (req, res, next) {
       status: Claims.STATUS.ACTIVE
     }, intercept(next, function (claim) {
       res.redirect('/events/' + ev._id + '/tickets/' + claim._id);
-
     }));
   }
 

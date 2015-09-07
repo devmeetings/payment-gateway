@@ -164,5 +164,4 @@
     <TicketComponent claim={claim} />,
     document.querySelector('.ticket')
   );
-
 }(React, React.DOM));

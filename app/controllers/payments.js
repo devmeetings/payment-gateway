@@ -25,7 +25,6 @@ router.post('/tickets/:claim/notify', function (req, res, next) {
         subject: 'Potwierdzenie płatności: ' + claim.amount + ' zł',
         html: mailText
       }, intercept(next, cb));
-
     }));
   }
   var order = req.body.order;
@@ -54,7 +53,6 @@ router.post('/tickets/:claim/notify', function (req, res, next) {
         });
       }));
     }));
-
   } else if (order.status === 'PENDING') {
     // Updating status to pending
     Claims.update({
@@ -77,7 +75,6 @@ router.post('/tickets/:claim/notify', function (req, res, next) {
 // Regenerate payment - user action
 // TODO [ToDr] I think that some more security is necessary here
 router.post('/events/:id/tickets/:claim/payment', function (req, res, next) {
-
   Claims.findOne({
     _id: req.params.claim,
     event: req.params.id
@@ -86,7 +83,6 @@ router.post('/events/:id/tickets/:claim/payment', function (req, res, next) {
     var num = Math.random() * 100;
     createPaymentForClaim(req, res, next, claim, '_' + num.toFixed(0)[0]);
   }));
-
 });
 
 // Regenerate payment
@@ -99,7 +95,6 @@ router.post('/admin/events/:id/tickets/:claim/payment', checkIfAdmin, function (
     var num = Math.random() * 100;
     createPaymentForClaim(req, res, next, claim, '_' + num.toFixed(0)[0]);
   }));
-
 });
 
 function extractNames (name) {
@@ -125,7 +120,6 @@ function createPaymentForClaim (req, res, next, claim, postfix) {
       endDate: moment(new Date(Date.now() + 1000 * timeToPayInSeconds)).format('LLL'),
       eventDate: moment(claim.event.eventStartDate).format('LLL')
     }, intercept(next, function (mailText) {
-
       Mailer.sendMail({
         from: Mailer.from,
         to: claim.userData.email,
@@ -135,7 +129,6 @@ function createPaymentForClaim (req, res, next, claim, postfix) {
       }, intercept(next, function (info) {
         res.redirect(claim.payment.url);
       }));
-
     }));
   }
 

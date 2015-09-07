@@ -17,7 +17,6 @@ require('../../config/config').languages.map(function (lang) {
       router.get('/' + staticPage, function (req, res) {
         res.render('info/' + lang + '/' + staticPage);
       });
-
     });
   });
 

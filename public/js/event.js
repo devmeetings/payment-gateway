@@ -222,5 +222,4 @@ window.Event = (function (R, D) {
     <EventComponent event={currentEvent} />,
     document.querySelector('.event')
   );
-
 }(React, React.DOM));

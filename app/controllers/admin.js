@@ -16,7 +16,6 @@ module.exports = function (app) {
 };
 
 function checkIfAdmin (req, res, next) {
-
   if (req.cookies.admin === 'Devmeetings1' || checkIfPhantomJs(req)) {
     next();
   } else {
@@ -45,9 +44,37 @@ router.get('/events', function (req, res, next) {
   }));
 });
 
-function countEventsByStatus (envId, status) {
+function countClaimsByStatus (envId, status) {
   var def = Q.defer();
   Claims.find({event: envId, status: status}).count(function (err, count) {
+    if (err) {
+      def.reject();
+      return;
+    }
+
+    def.resolve(count);
+  });
+
+  return def.promise;
+}
+
+function countClaimsForVIP (envId) {
+  var def = Q.defer();
+  Claims.find({event: envId, 'extra.vip': true}).count(function (err, count) {
+    if (err) {
+      def.reject();
+      return;
+    }
+
+    def.resolve(count);
+  });
+
+  return def.promise;
+}
+
+function countClaimsForSponsor (envId) {
+  var def = Q.defer();
+  Claims.find({event: envId, 'extra.sponsor': true}).count(function (err, count) {
     if (err) {
       def.reject();
       return;
@@ -116,28 +143,35 @@ router.post('/events/:ev/tickets', function (req, res, next) {
       return;
     }
     res.redirect('/admin/events');
-
   }));
-
 });
 
 router.get('/events/:ev/users/diploma/render', function (req, res, next) {
   Claims.find({
     event: req.params.ev,
-    status: Claims.STATUS.PAYED,
-    amount: {
-      $gte: 100
-    }
+    $or: [
+      {
+        status: Claims.STATUS.PAYED,
+        amount: {
+          $gte: 100
+        }
+      },
+      {
+        'extra.sponsor': true
+      },
+      {
+        'extra.vip': true
+      }
+    ]
+
   }).populate('event').exec(intercept(next, function (users) {
     res.render('diploma/diploma', {
       users: JSON.stringify(users)
     });
   }));
-
 });
 
 router.post('/events/:ev/users/diploma', function (req, res, next) {
-
   var fullUrl = req.protocol + '://' + req.get('host') + req.originalUrl;
 
   var phantom = require('phantom');
@@ -158,11 +192,9 @@ router.post('/events/:ev/users/diploma', function (req, res, next) {
       });
     });
   });
-
 });
 
 router.post('/events/:ev/users/notify', function (req, res, next) {
-
   function sendMailToUser (mailText, userTo, title) {
     var def = Q.defer();
     Mailer.sendMail({
@@ -181,10 +213,9 @@ router.post('/events/:ev/users/notify', function (req, res, next) {
     event: req.params.ev,
     status: Claims.STATUS.PAYED
   }).populate('event').exec(intercept(next, function (claims) {
-
     var isTestEmail = req.body.test;
     var event = claims[0].event;
-    var mailTitle = 'Szczegóły DevMeetingu "ECMAScript 6" w Warszawie';
+    var mailTitle = 'Szczegóły DevMeetingu ' + event.title;
     var eventDaysWeek = [
       'w najbliższą niedzielę',
       'w najbliższy poniedziałek',
@@ -230,7 +261,11 @@ router.get('/events/:ev/users', function (req, res, next) {
   getEvent(req.params.ev).then(function (event) {
     Claims.find({
       event: req.params.ev,
-      status: Claims.STATUS.PAYED
+      $or: [
+        {status: Claims.STATUS.PAYED},
+        {'extra.vip': true},
+        {'extra.sponsor': true}
+      ]
     }).exec(intercept(next, function (users) {
       res.render('admin/users', {
         event: event,
@@ -240,7 +275,6 @@ router.get('/events/:ev/users', function (req, res, next) {
       });
     }));
   });
-
 });
 
 router.get('/events/:ev/claims', function (req, res, next) {
@@ -249,15 +283,16 @@ router.get('/events/:ev/claims', function (req, res, next) {
   Claims.find({
     event: req.params.ev
   }).populate('event').sort({claimedTime: 'desc'}).exec(intercept(next, function (claims) {
-
     if (event === null) {
       event = claims[0].event;
     }
 
     Q.all([
-      countEventsByStatus(req.params.ev, Claims.STATUS.PAYED),
-      countEventsByStatus(req.params.ev, Claims.STATUS.PENDING),
-      countEventsByStatus(req.params.ev, Claims.STATUS.OFFLINE_PENDING)
+      countClaimsByStatus(req.params.ev, Claims.STATUS.PAYED),
+      countClaimsByStatus(req.params.ev, Claims.STATUS.PENDING),
+      countClaimsByStatus(req.params.ev, Claims.STATUS.OFFLINE_PENDING),
+      countClaimsForSponsor(req.params.ev),
+      countClaimsForVIP(req.params.ev)
     ]).then(function (counter) {
       res.render('admin/claims', {
         title: 'Claims for ' + req.params.ev,
@@ -265,11 +300,12 @@ router.get('/events/:ev/claims', function (req, res, next) {
         eventId: req.params.ev,
         payedCount: counter[0],
         pendingCount: counter[1] + counter[2],
+        sponsor: counter[3],
+        vip: counter[4],
         claims: JSON.stringify(claims)
       });
     });
   }));
-
 });
 
 router.post('/claims/get/invoice/render', function (req, res, next) {
@@ -279,7 +315,6 @@ router.post('/claims/get/invoice/render', function (req, res, next) {
 });
 
 router.post('/claims/get/invoice', function (req, res, next) {
-
   var fullUrl = req.protocol + '://' + req.get('host') + req.originalUrl;
 
   var phantom = require('phantom');
@@ -311,7 +346,6 @@ router.post('/claims/get/invoice', function (req, res, next) {
       };
 
       page.open(fullUrl + '/render', settings, function (status) {
-
         page.evaluate(function (className) {
           return document.querySelector(className).innerText.replace(/\//g, '_');
         }, renderPage, '.invoice-no');
@@ -325,11 +359,9 @@ router.post('/claims/get/invoice', function (req, res, next) {
             res.download(file);
           });
         }
-
       });
     });
   });
-
 });
 
 function getInvoiceData (claim, order, setting) {
@@ -343,7 +375,6 @@ function getInvoiceData (claim, order, setting) {
   }
 
   if (claim.invoice.invoiceNo) {
-
     invoiceNo = claim.invoice.invoiceNo;
 
     if (setting && setting.value) {
@@ -456,7 +487,6 @@ function resetInvoiceNo (req, res, next) {
 }
 
 function setUpInvoicePrefix (req, res, next) {
-
   var invoicePrefix = req.body.invoicePrefix;
 
   if (invoicePrefix.slice(-1) !== '/') {
@@ -474,7 +504,6 @@ function setUpInvoicePrefix (req, res, next) {
 
     getInvoices(req, res, next);
   });
-
 }
 
 router.post('/events/:ev/invoices', function (req, res, next) {
@@ -488,19 +517,15 @@ router.post('/events/:ev/invoices', function (req, res, next) {
 });
 
 router.get('/events/:ev/invoices', function (req, res, next) {
-
   createDefaultInvoicePrefixIfNotExist().then(function () {
     getInvoices(req, res, next);
   });
-
 });
 
 router.get('/invoices', function (req, res, next) {
-
   createDefaultInvoicePrefixIfNotExist().then(function () {
     getAllInvoices(req, res, next);
   });
-
 });
 
 function createDefaultInvoicePrefixIfNotExist () {
@@ -522,7 +547,6 @@ function createDefaultInvoicePrefixIfNotExist () {
     } else {
       defer.resolve();
     }
-
   });
 
   return defer.promise;
@@ -580,7 +604,6 @@ function getInvoices (req, res, next, newConditions) {
 
           if ((claim.paidWithoutPayu && order.status !== 'COMPLETED') ||
             (claim.needInvoice && (!order.buyer || !order.buyer.invoice))) {
-
             // create new order
             order = {
               paymentMethod: 'Przelew',
@@ -632,7 +655,6 @@ function getInvoices (req, res, next, newConditions) {
                 });
 
                 if (order.paidWithoutPayu) {
-
                   order.payed = '0,00';
                   order.stillToPay = '0,00';
                 }
@@ -648,13 +670,11 @@ function getInvoices (req, res, next, newConditions) {
         return responses.filter(function (resp) {
           return resp.buyer && resp.buyer.invoice;
         });
-
       }).done(function (invoices) {
         res.render('admin/invoices', {
           title: 'Invoices for ' + req.params.ev,
           invoices: JSON.stringify(invoices)
         });
-
       });
   }));
 }
@@ -694,6 +714,41 @@ router.post('/events/:ev/payed/:claimId', function (req, res, next) {
   }
 );
 
+router.post('/events/:ev/vip/:claimId', function (req, res, next) {
+    Claims.findOneAndUpdate({
+      _id: req.params.claimId
+    }, {
+      $set: {
+        'extra.vip': true
+      }
+    }).exec(intercept(next, function () {
+      res.send('ok');
+    }));
+  }
+);
+
+router.post('/events/:ev/sponsor/:claimId', function (req, res, next) {
+    Claims.findOneAndUpdate({
+      _id: req.params.claimId
+    }, {
+      $set: {
+        'extra.sponsor': true
+      }
+    }).exec(intercept(next, function () {
+      res.send('ok');
+    }));
+  }
+);
+
+router.post('/events/:ev/cancel/:claimId', function (req, res, next) {
+    Claims.remove({
+      _id: req.params.claimId
+    }).exec(intercept(next, function () {
+      res.send('ok');
+    }));
+  }
+);
+
 router.post('/events/:ev/offline/:claimId', function (req, res, next) {
     Claims.findOneAndUpdate({
       _id: req.params.claimId
@@ -719,6 +774,44 @@ router.post('/events/:ev/invoice/:claimId', function (req, res, next) {
     }));
   }
 );
+
+router.post('/events/:ev/add/claim/offline', function (req, res, next) {
+  var CLAIM_TIME = 15 * 60 * 1000;
+
+  var now = new Date();
+  var claim = req.body;
+
+  var invoice = {
+    recipientName: claim.invoice.recipientName,
+    street: claim.invoice.street,
+    postalCode: claim.invoice.postalCode,
+    city: claim.invoice.city,
+    tin: claim.invoice.tin
+  };
+
+  var newClaim = {
+    event: req.params.ev,
+    claimedTime: new Date(),
+    validTill: new Date(now.getTime() + CLAIM_TIME),
+    status: claim.status,
+    extra: {
+      vip: claim.extra.vip,
+      sponsor: claim.extra.sponsor
+    },
+    userData: {
+      email: claim.user.email,
+      names: claim.user.names
+    }
+  };
+
+  if (claim.userNeedInvoice) {
+    newClaim.invoice = invoice;
+  }
+
+  Claims.create(newClaim, intercept(next, function (claim) {
+    res.send('ok');
+  }));
+});
 
 router.get('/claims/:claimId/payment', function (req, res, next) {
   Claims.findOne({
@@ -746,8 +839,6 @@ router.get('/claims/:claimId/payment', function (req, res, next) {
         claim: claim,
         payment: JSON.stringify(resp.body, null, 2)
       });
-
     });
   }));
-
 });
