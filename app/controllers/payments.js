@@ -34,7 +34,7 @@ router.post('/tickets/:claim/notify', function (req, res, next) {
   if (order.status === 'COMPLETED') {
     // Update status of claim
     Claims.update({
-      _id: order.extOrderId,
+      _id: claimId,
       'payment.id': order.orderId
     }, {
       $set: {
@@ -47,7 +47,7 @@ router.post('/tickets/:claim/notify', function (req, res, next) {
         return;
       }
       // send mail with confirmation
-      Claims.findById(order.extOrderId).populate('event').exec(intercept(next, function (claim) {
+      Claims.findById(claimId).populate('event').exec(intercept(next, function (claim) {
         sendMailWithPaymentConfirmation(claim, function () {
           res.send(200);
         });
