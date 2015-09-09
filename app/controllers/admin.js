@@ -614,11 +614,11 @@ function getInvoices (req, res, next, newConditions) {
               serviceName: serviceName
             }
           };
-          //if user need invoice but didn't put invoice data on order
-          if ((claim.needInvoice && (!order.buyer || !order.buyer.invoice))){
+          // if user need invoice but didn't put invoice data on order
+          if (claim.needInvoice && (!order.buyer || !order.buyer.invoice)) {
             order.buyer = buyer;
           }
-          //if user pay withou payu
+          // if user pay withou payu
           if (claim.paidWithoutPayu && order.status !== 'COMPLETED') {
             // create new order
             order = {
