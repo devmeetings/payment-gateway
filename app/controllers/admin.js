@@ -606,6 +606,7 @@ function getInvoices (req, res, next, newConditions) {
             (claim.needInvoice && (!order.buyer || !order.buyer.invoice))) {
             // create new order
             order = {
+              status: order.status,
               paymentMethod: 'Przelew',
               paidWithoutPayu: true,
               orderId: claim.payment.id,
