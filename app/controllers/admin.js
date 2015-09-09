@@ -601,28 +601,32 @@ function getInvoices (req, res, next, newConditions) {
 
           var order = resp.body.orders[0];
           var serviceName = 'Udział w DevMeetingu ' + claim.event.title;
-
-          if ((claim.paidWithoutPayu && order.status !== 'COMPLETED') ||
-            (claim.needInvoice && (!order.buyer || !order.buyer.invoice))) {
+          var buyer = {
+            names: claim.userData.names,
+            email: claim.userData.email,
+            invoice: {
+              recipientName: claim.invoice.recipientName,
+              street: claim.invoice.street,
+              postalCode: claim.invoice.postalCode,
+              city: claim.invoice.city,
+              countryCode: claim.invoice.countryCode,
+              tin: claim.invoice.tin,
+              serviceName: serviceName
+            }
+          };
+          //if user need invoice but didn't put invoice data on order
+          if ((claim.needInvoice && (!order.buyer || !order.buyer.invoice))){
+            order.buyer = buyer;
+          }
+          //if user pay withou payu
+          if (claim.paidWithoutPayu && order.status !== 'COMPLETED') {
             // create new order
             order = {
               status: order.status,
               paymentMethod: 'Przelew',
               paidWithoutPayu: true,
               orderId: claim.payment.id,
-              buyer: {
-                names: claim.userData.names,
-                email: claim.userData.email,
-                invoice: {
-                  recipientName: claim.invoice.recipientName,
-                  street: claim.invoice.street,
-                  postalCode: claim.invoice.postalCode,
-                  city: claim.invoice.city,
-                  countryCode: claim.invoice.countryCode,
-                  tin: claim.invoice.tin,
-                  serviceName: serviceName
-                }
-              },
+              buyer: buyer,
               totalAmount: claim.amount * 100,
               currencyCode: 'PLN',
               orderCreateDate: claim.claimedTime
