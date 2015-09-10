@@ -220,7 +220,7 @@ block content
                                 | Payment Details
                         form(
                         method="post"
-                        action="{{getPostUrl(claim.event, claim._id)}}"
+                        action="{{getPostUrl(claim.event._id, claim._id)}}"
                         ng-if="claim.status !== 'payed'"
                         )
                             button.btn.btn-primary(type="submit")
@@ -284,37 +284,37 @@ append scripts
                     };
 
                     $scope.setAsPaid = function (claim) {
-                        $http.post('/admin/events/' + claim.event + '/payed/' + claim._id).then(function () {
+                        $http.post('/admin/events/' + claim.event._id + '/payed/' + claim._id).then(function () {
                             $window.location.reload();
                         });
                     };
 
                     $scope.setAsVIP = function (claim) {
-                        $http.post('/admin/events/' + claim.event + '/vip/' + claim._id).then(function () {
+                        $http.post('/admin/events/' + claim.event._id + '/vip/' + claim._id).then(function () {
                             $window.location.reload();
                         });
                     };
 
                     $scope.setAsSponsor = function (claim) {
-                        $http.post('/admin/events/' + claim.event + '/sponsor/' + claim._id).then(function () {
+                        $http.post('/admin/events/' + claim.event._id + '/sponsor/' + claim._id).then(function () {
                             $window.location.reload();
                         });
                     };
 
                     $scope.cancelClaim = function (claim){
-                        $http.post('/admin/events/' + claim.event + '/cancel/' + claim._id).then(function () {
+                        $http.post('/admin/events/' + claim.event._id + '/cancel/' + claim._id).then(function () {
                         $window.location.reload();
                         });
                     };
 
                     $scope.setAsOffline = function (claim) {
-                        $http.post('/admin/events/' + claim.event + '/offline/' + claim._id).then(function () {
+                        $http.post('/admin/events/' + claim.event._id + '/offline/' + claim._id).then(function () {
                             $window.location.reload();
                         });
                     };
 
                     $scope.needInvoice = function (claim) {
-                        $http.post('/admin/events/' + claim.event + '/invoice/' + claim._id).then(function () {
+                        $http.post('/admin/events/' + claim.event._id + '/invoice/' + claim._id).then(function () {
                             $window.location.reload();
                         });
                     };
