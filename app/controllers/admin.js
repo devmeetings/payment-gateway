@@ -277,6 +277,20 @@ router.get('/events/:ev/users', function (req, res, next) {
   });
 });
 
+router.get('/events/claims', function (req, res, next) {
+  Claims.find({
+    $or: [
+      {status: Claims.STATUS.PAYED},
+      {'extra.vip': true},
+      {'extra.sponsor': true}
+    ]
+  }).populate('event').sort({'invoice.invoiceNo': 'desc'}).exec(intercept(next, function (claims) {
+    res.render('admin/all_claims', {
+      claims: JSON.stringify(claims)
+    });
+  }));
+});
+
 router.get('/events/:ev/claims', function (req, res, next) {
   var event = null;
 
@@ -309,8 +323,9 @@ router.get('/events/:ev/claims', function (req, res, next) {
 });
 
 router.post('/claims/get/invoice/render', function (req, res, next) {
-  res.render('invoice/invoice', {
-    data: req.body
+  var invoiceTemplate = req.body.length > 0 ? 'invoice/invoices' : 'invoice/invoice';
+  res.render(invoiceTemplate, {
+    data: JSON.stringify(req.body)
   });
 });
 

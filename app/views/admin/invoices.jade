@@ -23,6 +23,8 @@ block content
               a(ng-click="view.detailed = !view.detailed") Toggle Detailed View
           .form-group
             input.form-control(type="text", ng-model="search.$", placeholder="Search")
+          .form-group
+            button.btn.btn-primary(download-invoice, compose) Get invoices
         .row(ng-if="!view.detailed")
           table.table
             tr
@@ -107,13 +109,30 @@ block content
                     button.btn.btn-primary(download-invoice) Get invoice
 append scripts
   script.
-    angular.module('invoices', []).factory('InvoiceService',function($http){
+    angular.module('invoices', []).factory('InvoiceService',function($http, $filter){
       return {
         updateInvoice: updateInvoice,
-        getInvoice: getInvoice
+        getInvoice: getInvoice,
+        getInvoices: getInvoices
       };
 
+      function getInvoices(array, title) {
+        var invoices = $filter('filter')(array, title);
+
+        if (invoices.length > 0) {
+          downloadInvoice(invoices);
+        }
+        else {
+          alert('Please write correct event title');
+        }
+
+      }
+
       function getInvoice(data) {
+          downloadInvoice(data);
+      }
+
+      function downloadInvoice(data){
         $http.post('/admin/claims/get/invoice', data, {responseType: 'blob'}).then(function (response) {
           var regEx = response.headers('Content-Disposition').match(/filename="([^"]*)"/);
           var fileName = regEx[1];
@@ -129,9 +148,23 @@ append scripts
         restrict: 'A',
         link: function (scope, element, attrs) {
             element.on('click', function (){
-                var data = {};
 
-                InvoiceService.getInvoice(scope.in);
+
+                if (attrs.hasOwnProperty('compose')) {
+                  if (scope.search) {
+                    InvoiceService.getInvoices(scope.invoices, scope.search.$);
+                  }
+                  else
+                  {
+                    alert('Please write event title');
+                  }
+
+                }
+                else {
+                  InvoiceService.getInvoice(scope.in);
+                }
+
+
             });
         }
       };

@@ -1,0 +1,162 @@
+doctype html
+html(ng-app='invoices')
+    head
+        script(src="/components/angular/angular.js")
+        script.
+            angular.module('invoices', []).controller('InvoicesCtrl', function ($scope) {
+                $scope.invoices = !{data};
+
+            })
+        link(rel='stylesheet', href='/components/bootstrap/dist/css/bootstrap.css')
+        append css
+            style.
+                @media print {
+                    @page {
+                        size: A4;
+                    }
+                }
+
+                body {
+                    margin-top: 0px;
+                    margin-left: 0px;
+                }
+
+                .page {
+                    padding: 0;
+                    margin: 0 auto;
+                    page-break-after: always;
+                    font-family: 'Times New Roman', sans-serif;;
+                }
+
+                .container > .row {
+                   margin-top: 10px;
+                }
+
+                .belt {
+                   position: absolute;
+                   top: 0;
+                   right: 2px;
+                   z-index: -1;
+                }
+
+                .belt img {
+                   width: 287px;
+                   height: 800px;
+                }
+
+                table, .panel {
+                   font-size: 11px;
+                }
+
+                p.info {
+                    position:absolute;
+                    bottom:0;
+                    left:0;
+                }
+
+body(ng-controller="InvoicesCtrl")
+    .page(ng-repeat="inv in invoices")
+       .belt
+          img(src="/img/faktura_pasek.jpg")
+       p.info
+        small * Data dostawy rozumiana jest jako data dokonania lub zakończenia dostawy towarów/wykonania usług
+       .container
+           .row
+              .col-xs-12
+                 p.text-left
+                  small Wystawiono dnia {{inv.invoice.dateOfInvoice}}, Wrocław
+           .row
+              .col-xs-5.col-xs-offset-7
+                 p
+                    strong Faktura VAT nr&nbsp;
+                     span.invoice-no {{inv.invoice.invoiceNo}}
+                 .row
+                    .col-xs-6
+                       | Data dostawy*: <br/>
+                       | Sposób płatności: <br/>
+                       | Termin płatności:
+                    .col-xs-6
+                       | {{inv.invoice.deliveryDate}} <br/>
+                       | {{inv.paymentMethod}} <br/>
+                       | {{inv.invoice.dateOfPayment}}
+
+           .row
+              .col-xs-7
+                 p
+                    strong Sprzedawca:
+                 .row
+                    .col-xs-12
+                       | Developers Peak Sp. z o. o.<br/>
+                       | ul. Rzeźnicza 28-31<br/>
+                       | 50-130 Wrocław<br/>
+                       | NIP 897180089
+              .col-xs-5
+                 p
+                    strong Nabywca:
+                 .row
+                    .col-xs-12
+                       | {{inv.buyer.invoice.recipientName}}<br/>
+                       | {{inv.buyer.invoice.street}}<br/>
+                       | {{inv.buyer.invoice.postalCode}} {{inv.buyer.invoice.city}}<br/>
+                       | NIP {{inv.buyer.invoice.tin}}
+       .container
+          .row
+             .col-xs-12
+                table.table
+                   tr
+                      th Lp.
+                      th Nazwa produktu
+                      th Ilość
+                      th J.m.
+                      th Cena jedn. netto
+                      th Wartość netto
+                      th Stawka VAT
+                      th Kwota VAT
+                      th Wartość brutto
+                   tr
+                      td 1
+                      td {{inv.serviceName}}
+                      td 1
+                      td szt.
+                      td {{inv.invoice.amountNet}} PLN
+                      td {{inv.invoice.amountNet}} PLN
+                      td 23%
+                      td {{inv.invoice.amountDiff}} PLN
+                      td {{inv.invoice.amountGross}} PLN
+                   tr
+                      td.text-right(colspan=4)
+                          strong
+                            | Razem:
+                      td {{inv.invoice.amountNet}} PLN
+                      td {{inv.invoice.amountNet}} PLN
+                      td
+                      td {{inv.invoice.amountDiff}} PLN
+                      td {{inv.invoice.amountGross}} PLN
+
+          .row
+             .col-xs-9
+                .panel.panel-default
+                   .panel-body
+                      .row
+                         .col-xs-6
+                            | Zapłacono:
+                         .col-xs-6
+                            strong {{inv.invoice.amountPayed}} PLN
+                      .row
+                         .col-xs-6
+                            | Pozostało do zapłaty:
+                         .col-xs-6
+                            strong {{inv.invoice.amountStillToPay}} PLN
+                      .row
+                         .col-xs-6
+                            | Konto bankowe:
+                         .col-xs-6
+                            | mBank SA 43 1140 2004 0000 3702 7521 7540
+                   .panel-body
+                      .row
+                         .col-xs-6
+                           | Faktura bez podpisu odbiorcy
+                         .col-xs-6
+                           | Osoba upoważniona do wystawienia faktury VAT
+                           br
+                           strong Piotr Zwoliński
