@@ -58,7 +58,7 @@ body
                .row
                   .col-xs-12
                      p.text-left
-                      small Wystawiono dnia #{data.invoice.dateOfInvoice} , Wrocław
+                      small Wystawiono dnia 2015-09-25 , Wrocław
 
                .row
                   .col-xs-12
@@ -101,6 +101,8 @@ body
                            | #{data.buyer.invoice.postalCode} #{data.buyer.invoice.city}<br/>
                            | NIP #{data.buyer.invoice.tin}
            .container
+              br
+              p Przed korektą:
               .row
                  .col-xs-12
                     table.table
@@ -133,8 +135,8 @@ body
                           td
                           td #{data.invoice.amountDiff} PLN
                           td #{data.invoice.amountGross} PLN
-                 p Po korekcie:
-                 .row
+              p Po korekcie:
+              .row
                  .col-xs-12
                     table.table
                        tr
@@ -166,7 +168,7 @@ body
                           td
                           td #{data.invoice.amountDiff} PLN
                           td #{data.invoice.amountGross} PLN
-
+              p Razem korekta: 0,00 PLN
               .row
                  .col-xs-9
                     .panel.panel-default
@@ -202,8 +204,8 @@ body
                                th Dane przed korektą
                                th Dane po korekcie
                            tr
-                               td Numer NIP: 897180089
-                               td Numer NIP: 8971800894
+                               td Numer NIP Sprzedawcy: 897180089
+                               td Numer NIP Sprzedawcy: 8971800894
 
 
 
