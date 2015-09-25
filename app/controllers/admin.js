@@ -292,15 +292,13 @@ router.get('/events/claims', function (req, res, next) {
 });
 
 router.get('/events/:ev/claims', function (req, res, next) {
-  var event = null;
+  var event = {};
 
   Claims.find({
     event: req.params.ev
   }).populate('event').sort({claimedTime: 'desc'}).exec(intercept(next, function (claims) {
-    if (event === null && claims.length > 0) {
+    if (claims.length > 0) {
       event = claims[0].event;
-    } else {
-      event = {};
     }
 
     Q.all([
