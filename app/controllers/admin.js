@@ -297,8 +297,10 @@ router.get('/events/:ev/claims', function (req, res, next) {
   Claims.find({
     event: req.params.ev
   }).populate('event').sort({claimedTime: 'desc'}).exec(intercept(next, function (claims) {
-    if (event === null) {
+    if (event === null && claims.length > 0) {
       event = claims[0].event;
+    } else {
+      event = {};
     }
 
     Q.all([
@@ -330,12 +332,10 @@ router.post('/claims/get/invoice/:mode/render', function (req, res, next) {
   if (req.params.mode === 'single') {
     invoiceTemplate = 'invoice/invoice';
     data = req.body;
-  }
-  else if (req.params.mode === 'note') {
+  } else if (req.params.mode === 'note') {
     invoiceTemplate = 'invoice/correctionOfInvoice';
     data = req.body;
-  }
-  else {
+  } else {
     invoiceTemplate = 'invoice/invoices';
     data = JSON.stringify(req.body);
   }
