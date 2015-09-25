@@ -58,11 +58,18 @@ body
                .row
                   .col-xs-12
                      p.text-left
-                      small Wystawiono dnia #{data.invoice.dateOfInvoice}, Wrocław
+                      small Wystawiono dnia #{data.invoice.dateOfInvoice} , Wrocław
+
+               .row
+                  .col-xs-12
+                      p.text-center
+                       strong KOREKTA FAKTURY VAT
+                      p.text-center
+                       strong Nr #{data.invoice.correctionNo}
                .row
                   .col-xs-5.col-xs-offset-7
                      p
-                        strong Faktura VAT nr&nbsp;
+                         | Dotyczy faktury VAT nr&nbsp;
                          span.invoice-no #{data.invoice.invoiceNo}
                      .row
                         .col-xs-6
@@ -126,6 +133,39 @@ body
                           td
                           td #{data.invoice.amountDiff} PLN
                           td #{data.invoice.amountGross} PLN
+                 p Po korekcie:
+                 .row
+                 .col-xs-12
+                    table.table
+                       tr
+                          th Lp.
+                          th Nazwa produktu
+                          th Ilość
+                          th J.m.
+                          th Cena jedn. netto
+                          th Wartość netto
+                          th Stawka VAT
+                          th Kwota VAT
+                          th Wartość brutto
+                       tr
+                          td 1
+                          td #{data.serviceName}
+                          td 1
+                          td szt.
+                          td #{data.invoice.amountNet} PLN
+                          td #{data.invoice.amountNet} PLN
+                          td 23%
+                          td #{data.invoice.amountDiff} PLN
+                          td #{data.invoice.amountGross} PLN
+                       tr
+                          td.text-right(colspan=4)
+                              strong
+                                | Razem:
+                          td #{data.invoice.amountNet} PLN
+                          td #{data.invoice.amountNet} PLN
+                          td
+                          td #{data.invoice.amountDiff} PLN
+                          td #{data.invoice.amountGross} PLN
 
               .row
                  .col-xs-9
@@ -154,3 +194,16 @@ body
                                | Osoba upoważniona do wystawienia faktury VAT
                                br
                                strong Piotr Zwoliński
+               p Uwagi:
+                   .row
+                   .col-xs-12
+                       table.table
+                           tr
+                               th Dane przed korektą
+                               th Dane po korekcie
+                           tr
+                               td Numer NIP: 897180089
+                               td Numer NIP: 8971800894
+
+
+

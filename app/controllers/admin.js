@@ -322,14 +322,29 @@ router.get('/events/:ev/claims', function (req, res, next) {
   }));
 });
 
-router.post('/claims/get/invoice/render', function (req, res, next) {
-  var invoiceTemplate = req.body.length > 0 ? 'invoice/invoices' : 'invoice/invoice';
+router.post('/claims/get/invoice/:mode/render', function (req, res, next) {
+  var invoiceTemplate, data;
+
+  console.log('----------------------  ', req.params.mode);
+
+  if (req.params.mode === 'single') {
+    invoiceTemplate = 'invoice/invoice';
+    data = req.body;
+  }
+  else if (req.params.mode === 'note') {
+    invoiceTemplate = 'invoice/correctionOfInvoice';
+    data = req.body;
+  }
+  else {
+    invoiceTemplate = 'invoice/invoices';
+    data = JSON.stringify(req.body);
+  }
   res.render(invoiceTemplate, {
-    data: JSON.stringify(req.body)
+    data: data
   });
 });
 
-router.post('/claims/get/invoice', function (req, res, next) {
+router.post('/claims/get/invoice/:mode', function (req, res, next) {
   var fullUrl = req.protocol + '://' + req.get('host') + req.originalUrl;
 
   var phantom = require('phantom');
