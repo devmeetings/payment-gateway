@@ -1,6 +1,7 @@
 doctype html
 html(ng-app='diploma')
     head
+        link(href='https://fonts.googleapis.com/css?family=Open+Sans&subset=latin,latin-ext', rel='stylesheet', type='text/css')
         script(src="/components/angular/angular.js")
         link(rel='stylesheet', href='/components/bootstrap/dist/css/bootstrap.css')
         append css
@@ -24,8 +25,11 @@ html(ng-app='diploma')
                     padding: 0;
                     margin: 0 auto;
                     page-break-after: always;
-                    font-family: 'Calibri'
+                    font-family: 'Open Sans', sans-serif;
+                    border: 1px solid #fff;
                 }
+
+                .section {border: 1px solid #fff;}
 
                 .fb {
                     font-weight: bold;
@@ -36,11 +40,11 @@ html(ng-app='diploma')
                 }
 
                 .f14x {
-                    font-size: 14px;
+                    font-size: 13px;
                 }
 
                 .f16x {
-                    font-size: 16px;
+                    font-size: 14px;
                 }
 
                 .f32x {
@@ -48,7 +52,7 @@ html(ng-app='diploma')
                 }
 
                 .f13x {
-                    font-size: 13px;
+                    font-size: 12px;
                 }
 
                 .fcolor {
@@ -75,11 +79,11 @@ html(ng-app='diploma')
                 }
 
                 .mt59x {
-                    margin-top: 59px;
+                    margin-top: 79px;
                 }
 
                 .mt96x {
-                    margin-top: 96px;
+                    margin-top: 87px;
                 }
 
                 .mt18x {
@@ -87,7 +91,7 @@ html(ng-app='diploma')
                 }
 
                 .mt50x {
-                    margin-top: 50px;
+                    margin-top: 67px;
                 }
 
                 .mt160 {
@@ -104,21 +108,21 @@ html(ng-app='diploma')
                     div
                         img.center-block(src="/img/logo.png")
                 .row
-                    p.text-center.f16x.mt96x Potwierdzamy uczestnictwo w DevMeetingu</p>
-                    p.text-center.fb.f32x.fcolor Responsive Web Design
+                    p.text-center.f16x.mt96x Potwierdzamy uczestnictwo w DevMeetingu
+                    p.text-center.fb.f32x.fcolor {{user.event.title}}
                     p.text-center.f16x.mt59x Uczestnik:
                     p.text-center.fb.f32x.fcolor(style="color: #000090;") {{user.userData.names}}
                     p.text-center.f14x.mt59x
                         strong Data:
                         | &nbsp;12 września 2015
                     p.text-center.fi.f14x.mt18x
-                        span.ft4 &nbsp;
-                        | &nbsp;
+                        strong(ng-if="user.event.substantiveContent") Zawartość merytoryczna:
+                        | &nbsp;{{user.event.substantiveContent}}
 
-            .row.mt56x
-                div
-                    img.center-block(src="/img/piotr_small_line.jpg", style="width:213px;")
-                p.text-center.f13x.mt18x 12 września 2015, Piotr Zwoliński, Założyciel DevMeetings
+                .row.mt56x
+                    div
+                        img.center-block(src="/img/piotr_small_line.jpg", style="width:213px;")
+                    p.text-center.f13x.mt18x 12 września 2015, Piotr Zwoliński, Założyciel DevMeetings
         append scripts
             script.
                 angular.module('diploma', []).controller('UsersCtrl', function ($scope) {

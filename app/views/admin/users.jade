@@ -19,6 +19,7 @@ block content
                                 a(ng-click="sortBy('userData.names')") Name
                             th
                                 a(ng-click="sortBy('userData.email')") E-mail
+                            th
                         tr(
                         ng-repeat="user in users | filter:search | orderBy:sort.by:sort.reverse"
                         )
@@ -26,10 +27,25 @@ block content
                                 strong(ng-if="user.extra.vip")  (VIP)
                                 strong(ng-if="user.extra.sponsor")  (Sponsor)
                             td {{user.userData.email}}
+                            td
+                                button.pull-right.btn.btn-xs.btn-primary.btn-block(
+                                    ng-disabled="!btn.active",
+                                    ng-init="btn = { active: true}"
+                                    ng-click="getUserDiploma(user._id, btn)"
+                                )
+                                    | Pobierz dyplom
                 .col-md-3(
                     ng-controller="SendEmailCtrl"
                     )
+                        button.pull-right.btn.btn-default.btn-block(
+                        ng-show="!showMailBtn"
+                        ng-click="showMailBtn = true"
+                        )
+                            | Pokaż przyciski do maili
+                        br
+                        br
                         button.pull-right.btn.btn-primary.btn-block(
+                        ng-if="showMailBtn",
                         ng-disabled="sendMail"
                         ng-click="sendLocationEmail()"
                         )
@@ -37,6 +53,7 @@ block content
                         br
                         br
                         button.pull-right.btn.btn-primary.btn-block(
+                        ng-if="showMailBtn",
                         ng-disabled="sendMail"
                         ng-click="sendLocationTestEmail()"
                         )
@@ -44,7 +61,9 @@ block content
                         br
                         br
                         button.pull-right.btn.btn-primary.btn-block(
-                        ng-click="getDiploma()"
+                        ng-disabled="!btn.active",
+                        ng-init="btn = { active: true}"
+                        ng-click="getDiploma(btn)"
                         )
                             | Pobierz dyplomy
                         br
@@ -52,8 +71,30 @@ block content
 
 append scripts
     script.
-        angular.module('users', []).controller('UsersCtrl', function ($scope) {
+        angular.module('users', []).controller('UsersCtrl', function ($scope, $http) {
             $scope.users = !{users};
+            var eventId = '!{eventId}';
+
+            $scope.getDiploma = function (btn) {
+                btn.active = false;
+                $http.post('/admin/events/' + eventId + '/users/diploma', {}, {responseType: 'blob'})
+                        .then(function (response) {
+                            var regEx = response.headers('Content-Disposition').match(/filename="([^"]*)"/);
+                            var fileName = regEx[1];
+                            download(response.data, fileName, 'application/pdf');
+                            btn.active = true;
+                        });
+            };
+            $scope.getUserDiploma = function (claimId, btn) {
+                btn.active = false;
+                $http.post('/admin/events/' + eventId + '/' + claimId + '/diploma', {}, {responseType: 'blob'})
+                        .then(function (response) {
+                            var regEx = response.headers('Content-Disposition').match(/filename="([^"]*)"/);
+                            var fileName = regEx[1];
+                            download(response.data, fileName, 'application/pdf');
+                            btn.active=true;
+                        });
+            };
         })
         .controller('SendEmailCtrl', function ($scope, $http) {
             var eventId = '!{eventId}';
@@ -74,9 +115,6 @@ append scripts
                 $http.post('/admin/events/' + eventId + '/users/notify', data).then(function(){
                     initMailBtn();
                 })
-            };
-            $scope.getDiploma = function () {
-                $http.post('/admin/events/' + eventId + '/users/diploma');
             };
 
         });

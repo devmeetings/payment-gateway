@@ -115,7 +115,8 @@ router.post('/events/:ev', function (req, res, next) {
       eventEndDate: req.body.eventEndDate,
       description: req.body.description,
       'mail.location': req.body.location,
-      'mail.partner': req.body.partner
+      'mail.partner': req.body.partner,
+      substantiveContent: req.body.substantiveContent
     }
   }, intercept(next, function (isUpdated) {
     res.redirect('/admin/events');
@@ -147,7 +148,15 @@ router.post('/events/:ev/tickets', function (req, res, next) {
 });
 
 router.get('/events/:ev/users/diploma/render', function (req, res, next) {
-  Claims.find({
+  renderDiploma(req, res, next);
+});
+
+router.get('/events/:ev/:user/diploma/render', function (req, res, next) {
+  renderDiploma(req, res, next);
+});
+
+function renderDiploma (req, res, next) {
+  var condidtions = {
     event: req.params.ev,
     $or: [
       {
@@ -164,23 +173,50 @@ router.get('/events/:ev/users/diploma/render', function (req, res, next) {
       }
     ]
 
-  }).populate('event').exec(intercept(next, function (users) {
+  };
+
+  if (req.params.user) {
+    condidtions = {'_id': req.params.user};
+  }
+
+  Claims.find(condidtions).populate('event').exec(intercept(next, function (users) {
     res.render('diploma/diploma', {
       users: JSON.stringify(users)
     });
   }));
-});
+}
 
 router.post('/events/:ev/users/diploma', function (req, res, next) {
+  generateDiploma(req, res);
+});
+
+router.post('/events/:ev/:user/diploma', function (req, res, next) {
+  generateDiploma(req, res);
+});
+
+function generateDiploma (req, res) {
   var fullUrl = req.protocol + '://' + req.get('host') + req.originalUrl;
 
   var phantom = require('phantom');
   phantom.create(function (ph) {
     ph.createPage(function (page) {
+      page.setPaperSize({
+        format: 'A4',
+        orientation: 'landscape'
+      });
+
       page.cookies = [{
         'name': 'admin',
         'value': 'Devmeetings1'
       }];
+
+      // change zoom factor based on environment,becouse on windows machine zoom factor differs from linux machine
+      if (config.env === 'development') {
+        page.setZoomFactor(1.3);
+      } else {
+        page.setZoomFactor(0.75);
+      }
+
       page.open(fullUrl + '/render', function (status) {
         var file = 'diploma.pdf';
         page.render(file, function () {
@@ -192,7 +228,7 @@ router.post('/events/:ev/users/diploma', function (req, res, next) {
       });
     });
   });
-});
+}
 
 router.post('/events/:ev/users/notify', function (req, res, next) {
   function sendMailToUser (mailText, userTo, title) {
