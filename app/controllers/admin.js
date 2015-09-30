@@ -214,7 +214,7 @@ function generateDiploma (req, res) {
       if (config.env === 'development') {
         page.setZoomFactor(1.3);
       } else {
-        page.setZoomFactor(0.75);
+        page.setZoomFactor(1);
       }
 
       page.open(fullUrl + '/render', function (status) {
