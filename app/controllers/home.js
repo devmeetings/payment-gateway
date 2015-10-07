@@ -4,6 +4,8 @@ var marked = require('marked');
 var intercept = require('../utils/intercept');
 var Event = require('../models/event');
 var Claims = require('../models/claims');
+var config = require('../../config/config');
+var admin = require('../controllers/admin');
 
 module.exports = function (app) {
   app.use('/', router);
@@ -79,6 +81,36 @@ router.get('/events/:name', function (req, res, next) {
           event: JSON.stringify(ev)
         });
       }));
+  }));
+});
+
+
+router.post('/events/:id/invoice/:claim/render', function (req, res, next) {
+  var invoiceTemplate, data;
+  invoiceTemplate = 'invoice/invoice';
+  data = req.body;
+
+  res.render(invoiceTemplate, {
+    data: data
+  });
+});
+
+router.post('/events/:id/invoice/:claim', function (req, res, next) {
+  Claims.findOne({
+    _id: req.params.claim,
+    event: req.params.id,
+    status: Claims.STATUS.PAYED,
+    'userData.email': req.body.email
+  }).populate('event').exec(intercept(next, function (claim) {
+
+    if (!claim) {
+      res.redirect('/events/' + req.params.id + '/tickets/' + req.params.claim);
+      return;
+    }
+    admin.getDataForExistingInvoice(claim).then(function (data) {
+     admin.downloadInvoice(req, res, data);
+    });
+
   }));
 });
 
