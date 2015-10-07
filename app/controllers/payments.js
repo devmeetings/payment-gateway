@@ -28,6 +28,7 @@ router.post('/tickets/:claim/notify', function (req, res, next) {
       }, intercept(next, cb));
     }));
   }
+
   var order = req.body.order;
   var claimId = order.extOrderId;
   claimId = claimId.split('_')[0];
@@ -51,8 +52,7 @@ router.post('/tickets/:claim/notify', function (req, res, next) {
       Claims.findById(claimId).populate('event').exec(intercept(next, function (claim) {
         try {
           createInvoiceForClaim(req, res, next, claimId);
-        }
-        catch(err){}
+        } catch (err) {}
         sendMailWithPaymentConfirmation(claim, function () {
           res.send(200);
         });

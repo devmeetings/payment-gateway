@@ -41,11 +41,27 @@
 
   });
 
+  var InvoiceComponent = R.createClass({
+    render: function () {
+      return (
+        <fieldset className='hidden'>
+          <h4>Dane do faktury</h4>
+          <InputField name='recipientName' title='Nazwa firmy / Imię i nazwisko' placeholder='Nazwa firmy / Imię i nazwisko' />
+          <InputField name='tin' title='NIP' placeholder='NIP' />
+          <InputField name='street' title='Ulica, nr' placeholder='Ulica, nr' />
+          <InputField name='postalCode' title='Kod pocztowy' placeholder='Kod pocztowy' />
+          <InputField name='city' title='Miejscowość' placeholder='Miejscowość' />
+        </fieldset>
+      );
+    }
+  });
+
   var TicketComponent = R.createClass({
     getInitialState: function () {
       return {
         currentTime: new Date(),
-        ownPayment: false
+        ownPayment: false,
+        showInvoiceData: false
       };
     },
 
@@ -116,6 +132,7 @@
                 <InputField name='email' type='email' title='E-mail' placeholder='Adres e-mail' />
                 <InputField name='names' title='Imię i nazwisko' placeholder='Imię i nazwisko' />
               </fieldset>
+              <InvoiceComponent />
 
               <fieldset>
                 <h4>Płatność (Pay What You Want)</h4>

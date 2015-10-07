@@ -4,7 +4,6 @@ var marked = require('marked');
 var intercept = require('../utils/intercept');
 var Event = require('../models/event');
 var Claims = require('../models/claims');
-var config = require('../../config/config');
 var admin = require('../controllers/admin');
 
 module.exports = function (app) {
@@ -61,29 +60,28 @@ router.get('/events/:name', function (req, res, next) {
     }, {
       multi: true
     },
-      intercept(next, function (noOfUpdatedItems) {
-        if (noOfUpdatedItems) {
-          Event.update({
-            _id: ev._id
-          }, {
-            $inc: {
-              ticketsLeft: noOfUpdatedItems
-            }
-          }).exec();
+    intercept(next, function (noOfUpdatedItems) {
+      if (noOfUpdatedItems) {
+        Event.update({
+          _id: ev._id
+        }, {
+          $inc: {
+            ticketsLeft: noOfUpdatedItems
+          }
+        }).exec();
 
-          ev.ticketsLeft += noOfUpdatedItems;
-        }
+        ev.ticketsLeft += noOfUpdatedItems;
+      }
 
-        ev.description = marked(ev.description);
+      ev.description = marked(ev.description);
 
-        res.render('event', {
-          title: ev.title,
-          event: JSON.stringify(ev)
-        });
-      }));
+      res.render('event', {
+        title: ev.title,
+        event: JSON.stringify(ev)
+      });
+    }));
   }));
 });
-
 
 router.post('/events/:id/invoice/:claim/render', function (req, res, next) {
   var invoiceTemplate, data;
@@ -102,15 +100,13 @@ router.post('/events/:id/invoice/:claim', function (req, res, next) {
     status: Claims.STATUS.PAYED,
     'userData.email': req.body.email
   }).populate('event').exec(intercept(next, function (claim) {
-
     if (!claim) {
       res.redirect('/events/' + req.params.id + '/tickets/' + req.params.claim);
       return;
     }
     admin.getDataForExistingInvoice(claim).then(function (data) {
-     admin.downloadInvoice(req, res, data);
+      admin.downloadInvoice(req, res, data);
     });
-
   }));
 });
 

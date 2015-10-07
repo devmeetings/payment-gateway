@@ -378,7 +378,7 @@ router.post('/claims/get/invoice/:mode/render', function (req, res, next) {
   });
 });
 
-module.exports.downloadInvoice = function (req, res, data){
+function downloadInvoice (req, res, data) {
   var fullUrl = req.protocol + '://' + req.get('host') + req.originalUrl;
 
   var phantom = require('phantom');
@@ -426,12 +426,13 @@ module.exports.downloadInvoice = function (req, res, data){
       });
     });
   });
-};
+}
+
+module.exports.downloadInvoice = downloadInvoice;
 
 router.post('/claims/get/invoice/:mode', function (req, res, next) {
-downloadInvoice(req, res, req.body);
+  downloadInvoice(req, res, req.body);
 });
-
 
 function getInvoiceData (claim, order, setting) {
   var def = Q.defer();
@@ -442,7 +443,6 @@ function getInvoiceData (claim, order, setting) {
     def.resolve({});
     return def.promise;
   }
-
 
   if (claim.invoice.invoiceNo) {
     invoiceNo = claim.invoice.invoiceNo;
@@ -660,16 +660,16 @@ module.exports.getDataForExistingInvoice = function getDataForExistingInvoice (c
     }
   };
 
-    order = {
-      status: 'COMPLETED',
-      paymentMethod: claim.paidWithoutPayu ? 'Przelew' : 'Payu',
-      paidWithoutPayu: claim.paidWithoutPayu,
-      orderId: claim.payment.id,
-      buyer: buyer,
-      totalAmount: claim.amount * 100,
-      currencyCode: 'PLN',
-      orderCreateDate: claim.claimedTime
-    };
+  order = {
+    status: 'COMPLETED',
+    paymentMethod: claim.paidWithoutPayu ? 'Przelew' : 'Payu',
+    paidWithoutPayu: claim.paidWithoutPayu,
+    orderId: claim.payment.id,
+    buyer: buyer,
+    totalAmount: claim.amount * 100,
+    currencyCode: 'PLN',
+    orderCreateDate: claim.claimedTime
+  };
 
   order.claim = claim;
   order.serviceName = serviceName;
@@ -686,11 +686,10 @@ module.exports.getDataForExistingInvoice = function getDataForExistingInvoice (c
     }
 
     return order;
-  });;
+  });
 };
 
 module.exports.createInvoiceForClaim = createInvoiceForClaim;
-
 
 function createInvoiceForClaim (req, res, next, claimId) {
   var condidtions = {
@@ -698,8 +697,7 @@ function createInvoiceForClaim (req, res, next, claimId) {
   };
 
   getInvoices(req, res, next, condidtions);
-
-};
+}
 
 function getInvoices (req, res, next, newConditions) {
   var conditions;
@@ -847,7 +845,6 @@ router.post('/events/:ev/payed/:claimId', function (req, res, next) {
         paidWithoutPayu: true
       }
     }).exec(intercept(next, function () {
-
       createInvoiceForClaim(req, res, next, req.params.claimId);
       res.send('ok');
     }));
