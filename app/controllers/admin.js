@@ -749,6 +749,23 @@ function getInvoices (req, res, next, newConditions) {
           if (claim.needInvoice && (!order.buyer || !order.buyer.invoice)) {
             order.buyer = buyer;
           }
+
+          if (order.buyer && order.buyer.invoice) {
+            var conditions = {
+              _id: claim._id
+            };
+            var update = {
+              $set: {
+                'invoice.recipientName': order.buyer.invoice.recipientName,
+                'invoice.street': order.buyer.invoice.street,
+                'invoice.postalCode': order.buyer.invoice.postalCode,
+                'invoice.city': order.buyer.invoice.city,
+                'invoice.tin': order.buyer.invoice.tin
+              }
+            };
+            Claims.update(conditions, update).exec();
+          }
+
           // if user pay withou payu
           if (claim.paidWithoutPayu && order.status !== 'COMPLETED') {
             // create new order
