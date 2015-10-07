@@ -378,7 +378,7 @@ router.post('/claims/get/invoice/:mode/render', function (req, res, next) {
   });
 });
 
-router.post('/claims/get/invoice/:mode', function (req, res, next) {
+module.exports.downloadInvoice = function (req, res, data){
   var fullUrl = req.protocol + '://' + req.get('host') + req.originalUrl;
 
   var phantom = require('phantom');
@@ -406,7 +406,7 @@ router.post('/claims/get/invoice/:mode', function (req, res, next) {
         headers: {
           'Content-Type': 'application/json'
         },
-        data: JSON.stringify(req.body)
+        data: JSON.stringify(data)
       };
 
       page.open(fullUrl + '/render', settings, function (status) {
@@ -426,17 +426,23 @@ router.post('/claims/get/invoice/:mode', function (req, res, next) {
       });
     });
   });
+};
+
+router.post('/claims/get/invoice/:mode', function (req, res, next) {
+downloadInvoice(req, res, req.body);
 });
+
 
 function getInvoiceData (claim, order, setting) {
   var def = Q.defer();
   var invoiceNo = '';
   var invoicePrefix = '';
 
-  if (!order.buyer || !order.buyer.invoice) {
+  if (!claim) {
     def.resolve({});
     return def.promise;
   }
+
 
   if (claim.invoice.invoiceNo) {
     invoiceNo = claim.invoice.invoiceNo;
@@ -468,6 +474,11 @@ function getInvoiceData (claim, order, setting) {
       amountPayed: claim.amountPayed,
       amountStillToPay: claim.amountStillToPay
     });
+    return def.promise;
+  }
+
+  if (!order.buyer || !order.buyer.invoice) {
+    def.resolve({});
     return def.promise;
   }
 
@@ -632,6 +643,64 @@ function getAllInvoices (req, res, next) {
   return getInvoices(req, res, next, conditions);
 }
 
+module.exports.getDataForExistingInvoice = function getDataForExistingInvoice (claim) {
+  var order = {};
+  var serviceName = 'Udział w DevMeetingu ' + claim.event.title;
+  var buyer = {
+    names: claim.userData.names,
+    email: claim.userData.email,
+    invoice: {
+      recipientName: claim.invoice.recipientName,
+      street: claim.invoice.street,
+      postalCode: claim.invoice.postalCode,
+      city: claim.invoice.city,
+      countryCode: claim.invoice.countryCode,
+      tin: claim.invoice.tin,
+      serviceName: serviceName
+    }
+  };
+
+    order = {
+      status: 'COMPLETED',
+      paymentMethod: claim.paidWithoutPayu ? 'Przelew' : 'Payu',
+      paidWithoutPayu: claim.paidWithoutPayu,
+      orderId: claim.payment.id,
+      buyer: buyer,
+      totalAmount: claim.amount * 100,
+      currencyCode: 'PLN',
+      orderCreateDate: claim.claimedTime
+    };
+
+  order.claim = claim;
+  order.serviceName = serviceName;
+  return getInvoiceData(claim).then(function (invoiceData) {
+    order.invoice = {};
+
+    Object.keys(invoiceData).forEach(function (key) {
+      order.invoice[key] = invoiceData[key];
+    });
+
+    if (order.paidWithoutPayu) {
+      order.payed = '0,00';
+      order.stillToPay = '0,00';
+    }
+
+    return order;
+  });;
+};
+
+module.exports.createInvoiceForClaim = createInvoiceForClaim;
+
+
+function createInvoiceForClaim (req, res, next, claimId) {
+  var condidtions = {
+    _id: claimId
+  };
+
+  getInvoices(req, res, next, condidtions);
+
+};
+
 function getInvoices (req, res, next, newConditions) {
   var conditions;
   var defaultConditions = {
@@ -778,6 +847,8 @@ router.post('/events/:ev/payed/:claimId', function (req, res, next) {
         paidWithoutPayu: true
       }
     }).exec(intercept(next, function () {
+
+      createInvoiceForClaim(req, res, next, req.params.claimId);
       res.send('ok');
     }));
   }
