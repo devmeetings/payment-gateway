@@ -7,6 +7,7 @@ var Mailer = require('../utils/mailer');
 var Payu = require('../../config/payu');
 var Claims = require('../models/claims');
 var checkIfAdmin = require('./admin').checkIfAdmin;
+var createInvoiceForClaim = require('./admin').createInvoiceForClaim;
 
 moment.locale('pl');
 
@@ -48,6 +49,10 @@ router.post('/tickets/:claim/notify', function (req, res, next) {
       }
       // send mail with confirmation
       Claims.findById(claimId).populate('event').exec(intercept(next, function (claim) {
+        try {
+          createInvoiceForClaim(req, res, next, claimId);
+        }
+        catch(err){}
         sendMailWithPaymentConfirmation(claim, function () {
           res.send(200);
         });
