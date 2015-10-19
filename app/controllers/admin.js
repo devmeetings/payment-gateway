@@ -898,6 +898,14 @@ router.post('/events/:ev/cancel/:claimId', function (req, res, next) {
     Claims.remove({
       _id: req.params.claimId
     }).exec(intercept(next, function () {
+      Event.update({
+        _id: req.params.ev
+      }, {
+        $inc: {
+          ticketsLeft: 1
+        }
+      }).exec();
+
       res.send('ok');
     }));
   }

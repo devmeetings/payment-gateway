@@ -5,6 +5,7 @@ var intercept = require('../utils/intercept');
 var Event = require('../models/event');
 var Claims = require('../models/claims');
 var admin = require('../controllers/admin');
+// var crypto = require('crypto');
 
 module.exports = function (app) {
   app.use('/', router);
@@ -146,12 +147,14 @@ router.post('/events/:name/tickets', function (req, res, next) {
 
   function createClaim (ev) {
     var now = new Date();
+    var validTill = new Date(now.getTime() + CLAIM_TIME);
     Claims.create({
       event: ev._id,
       claimedTime: new Date(),
-      validTill: new Date(now.getTime() + CLAIM_TIME),
+      validTill: validTill,
       status: Claims.STATUS.ACTIVE
     }, intercept(next, function (claim) {
+      res.cookie('claim', ev._id + ':' + claim._id, {expires: validTill});
       res.redirect('/events/' + ev._id + '/tickets/' + claim._id);
     }));
   }
@@ -170,8 +173,6 @@ router.post('/events/:name/tickets', function (req, res, next) {
         ticketsLeft: -1
       }
     }, intercept(next, function (isUpdated) {
-      console.log(arguments);
-
       if (!isUpdated) {
         return res.render('event-ticket_failed', {
           title: ev.title,
@@ -189,6 +190,15 @@ router.post('/events/:name/tickets', function (req, res, next) {
     if (!ev) {
       return res.send(404);
     }
+
+    if (req.cookies.claim) {
+      var cookieParts = req.cookies.claim.split(':');
+      if (cookieParts.length === 2) {
+        res.redirect('/events/' + cookieParts[0] + '/tickets/' + cookieParts[1]);
+        return;
+      }
+    }
+
     tryToClaimTicket(ev);
   }));
 });

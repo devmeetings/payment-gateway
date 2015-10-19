@@ -1,0 +1,22 @@
+extends layout
+
+block content
+  
+  .container.vertical-padding-s
+    .row
+      .col-md-8.col-md-offset-2.col-sm-10.col-sm-offset-1
+        .vertical-space-l
+        h4.noHeaderMargins
+          | Rejestracja na DevMeeting #{claim.event.title}.
+        p.text-info Informujemy, że na podanym adresie email istnieje nieopłacony bilet, proszę go opłacić lub anulować.
+        p.text-info
+          | Link do biletu znajdą Państwo w otrzymanym od nas mailu, po kliknięciu na link będa mogli
+          | Państwo dokończyć płatność lub anulować istniejącą płatność i wygenerować nową.
+
+        p.text-info
+          | Informujemy, że użytkownik może zarezerwować kilka biletów na jednym adresie email, pod warunkiem opłacenia
+          | każdego zarezerwowanego biletu.
+
+        hr
+        h5.text-muted.noHeaderMargins W razie jakichkolwiek problemów skontaktuj się z nami pod adresem <code>registration@devmeetings.org</code>
+        .vertical-space-xl

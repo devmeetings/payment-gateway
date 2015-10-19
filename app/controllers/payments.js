@@ -6,6 +6,7 @@ var intercept = require('../utils/intercept');
 var Mailer = require('../utils/mailer');
 var Payu = require('../../config/payu');
 var Claims = require('../models/claims');
+var Event = require('../models/event');
 var checkIfAdmin = require('./admin').checkIfAdmin;
 var createInvoiceForClaim = require('./admin').createInvoiceForClaim;
 
@@ -52,7 +53,8 @@ router.post('/tickets/:claim/notify', function (req, res, next) {
       Claims.findById(claimId).populate('event').exec(intercept(next, function (claim) {
         try {
           createInvoiceForClaim(req, res, next, claimId);
-        } catch (err) {}
+        } catch (err) {
+        }
         sendMailWithPaymentConfirmation(claim, function () {
           res.send(200);
         });
@@ -98,6 +100,7 @@ router.post('/admin/events/:id/tickets/:claim/payment', checkIfAdmin, function (
   }).populate('event').exec(intercept(next, function (claim) {
     console.log(claim);
     var num = Math.random() * 100;
+
     createPaymentForClaim(req, res, next, claim, '_' + num.toFixed(0)[0]);
   }));
 });
@@ -188,30 +191,68 @@ router.post('/events/:id/tickets/:claim', function (req, res, next) {
   if (parseFloat(paymentAmount) < 1) {
     return next('Wrong payment amount');
   }
+  var updateClaimProps = {
+    status: Claims.STATUS.CREATING_PAYMENT,
+    amount: paymentAmount,
+    userData: {
+      email: req.body.email,
+      names: req.body.names
+    }
+  };
+  var showInvoiceData = req.body.showInvoiceData;
 
-  Claims.update({
-    _id: req.params.claim,
+  if (showInvoiceData) {
+    updateClaimProps.needInvoice = true;
+    updateClaimProps.invoice = {
+      recipientName: req.body.recipientName,
+      street: req.body.street,
+      postalCode: req.body.postalCode,
+      city: req.body.city,
+      tin: req.body.tin
+    };
+  }
+
+  res.clearCookie('claim', {});
+
+  Claims.findOne({
+    'userData.email': req.body.email,
     event: req.params.id,
-    validTill: {
-      $gte: new Date()
-    },
-    status: Claims.STATUS.ACTIVE
-  }, {
-    $set: {
-      status: Claims.STATUS.CREATING_PAYMENT,
-      amount: paymentAmount,
-      userData: {
-        email: req.body.email,
-        names: req.body.names
-      }
+    status: {
+      $in: [Claims.STATUS.WAITING, Claims.STATUS.CREATING_PAYMENT, Claims.STATUS.PENDING, Claims.STATUS.PAYED]
     }
-  }).exec(intercept(next, function (isUpdated) {
-    if (!isUpdated) {
-      return res.send(404);
-    }
+  }).populate('event').exec(intercept(next, function (claim) {
+    if (claim) {
+      Event.update({
+        _id: req.params.id
+      }, {
+        $inc: {
+          ticketsLeft: 1
+        }
+      }).exec();
 
-    findClaimById(req.params.claim, function (claim) {
-      createPaymentForClaim(req, res, next, claim);
-    }, next);
+      res.render('registration-event-ticket_inprogress', {
+        claim: claim,
+        STATUS: Claims.STATUS
+      });
+    } else {
+      Claims.update({
+        _id: req.params.claim,
+        event: req.params.id,
+        validTill: {
+          $gte: new Date()
+        },
+        status: Claims.STATUS.ACTIVE
+      }, {
+        $set: updateClaimProps
+      }).exec(intercept(next, function (isUpdated) {
+        if (!isUpdated) {
+          return res.send(404);
+        }
+
+        findClaimById(req.params.claim, function (claim) {
+          createPaymentForClaim(req, res, next, claim);
+        }, next);
+      }));
+    }
   }));
 });
