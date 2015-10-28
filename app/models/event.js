@@ -21,7 +21,8 @@ var EventSchema = new Schema({
   mail: {
     location: String,
     partner: String
-  }
+  },
+  substantiveContent: String
 });
 
 EventSchema.virtual('date')

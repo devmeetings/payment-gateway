@@ -23,6 +23,8 @@ block content
               a(ng-click="view.detailed = !view.detailed") Toggle Detailed View
           .form-group
             input.form-control(type="text", ng-model="search.$", placeholder="Search")
+          .form-group
+            button.btn.btn-primary(download-invoice, compose) Get invoices
         .row(ng-if="!view.detailed")
           table.table
             tr
@@ -82,39 +84,63 @@ block content
                   label.col-sm-5.control-label Date of payment:
                   .col-sm-7
                     input.form-control(ng-model="in.invoice.dateOfPayment",name="dateOfPayment", type="text")
-                .form-group(ng-show="in.paidWithoutPayu")
+                .form-group(ng-show="in.paidWithoutPayu || in.needInvoice")
                   label.col-sm-5.control-label Recipient name:
                   .col-sm-7
                     input.form-control(ng-model="in.buyer.invoice.recipientName",name="recipientName", type="text")
-                .form-group(ng-show="in.paidWithoutPayu")
+                .form-group(ng-show="in.paidWithoutPayu || in.needInvoice")
                   label.col-sm-5.control-label Street:
                   .col-sm-7
                     input.form-control(ng-model="in.buyer.invoice.street",name="street", type="text")
-                .form-group(ng-show="in.paidWithoutPayu")
+                .form-group(ng-show="in.paidWithoutPayu || in.needInvoice")
                   label.col-sm-5.control-label Postal code:
                   .col-sm-7
                     input.form-control(ng-model="in.buyer.invoice.postalCode",name="postalCode", type="text")
-                .form-group(ng-show="in.paidWithoutPayu")
+                .form-group(ng-show="in.paidWithoutPayu || in.needInvoice")
                   label.col-sm-5.control-label City:
                   .col-sm-7
                     input.form-control(ng-model="in.buyer.invoice.city",name="city", type="text")
-                 .form-group(ng-show="in.paidWithoutPayu")
+                 .form-group(ng-show="in.paidWithoutPayu || in.needInvoice")
                   label.col-sm-5.control-label TIN:
                   .col-sm-7
                     input.form-control(ng-model="in.buyer.invoice.tin",name="tin", type="text")
                 .form-group
                   .col-sm-7.col-sm-offset-5
                     button.btn.btn-primary(download-invoice) Get invoice
+                .form-group
+                  label.col-sm-5.control-label Invoice correction No:
+                  .col-sm-7
+                    input.form-control(type="text",name="correctionNo",ng-model="in.invoice.correctionNo")
+                .form-group
+                  .col-sm-7.col-sm-offset-5
+                    button.btn.btn-primary(download-invoice, correction) Get invoice correction
 append scripts
   script.
-    angular.module('invoices', []).factory('InvoiceService',function($http){
+    angular.module('invoices', []).factory('InvoiceService',function($http, $filter){
       return {
         updateInvoice: updateInvoice,
-        getInvoice: getInvoice
+        getInvoice: getInvoice,
+        getInvoices: getInvoices
       };
 
-      function getInvoice(data) {
-        $http.post('/admin/claims/get/invoice', data, {responseType: 'blob'}).then(function (response) {
+      function getInvoices(array, title) {
+        var invoices = $filter('filter')(array, title);
+
+        if (invoices.length > 0) {
+          downloadInvoice(invoices, 'all');
+        }
+        else {
+          alert('Please write correct event title');
+        }
+
+      }
+
+      function getInvoice(data, mode) {
+          downloadInvoice(data, mode);
+      }
+
+      function downloadInvoice(data, mode){
+        $http.post('/admin/claims/get/invoice/' + mode, data, {responseType: 'blob'}).then(function (response) {
           var regEx = response.headers('Content-Disposition').match(/filename="([^"]*)"/);
           var fileName = regEx[1];
           download(response.data, fileName, 'application/pdf');
@@ -129,9 +155,26 @@ append scripts
         restrict: 'A',
         link: function (scope, element, attrs) {
             element.on('click', function (){
-                var data = {};
 
-                InvoiceService.getInvoice(scope.in);
+
+                if (attrs.hasOwnProperty('compose')) {
+                  if (scope.search) {
+                    InvoiceService.getInvoices(scope.invoices, scope.search.$);
+                  }
+                  else
+                  {
+                    alert('Please write event title');
+                  }
+
+                }
+                else if (attrs.hasOwnProperty('correction')) {
+                  InvoiceService.getInvoice(scope.in, 'note');
+                }
+                else {
+                    InvoiceService.getInvoice(scope.in, 'single');
+                }
+
+
             });
         }
       };

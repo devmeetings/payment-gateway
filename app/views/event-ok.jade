@@ -12,9 +12,13 @@ block content
             | Zarejestrowałeś się na DevMeeting #{claim.event.title}.
           h5
             | Otrzymaliśmy płatność za Twój bilet, a potwierdzenie przesłaliśmy mailem.
-
-
-        .vertical-space-xl
+        if claim.invoice.invoiceNo
+          .well
+            p Twoja faktura jest już gotowa, aby ją pobrać proszę podać adres email podany podczas rejestracji.
+            form(action="/events/#{claim.event.id}/invoice/#{claim._id}", name="invoiceForm", method="POST")
+              .form-group
+                input.form-control(type="email", required, name="email", autocomplete="off")
+              button.btn.btn-primary(type="submit") Pobierz fakturę
         hr
         h5.text-muted.noHeaderMargins W razie jakichkolwiek problemów skontaktuj się z nami pod adresem <code>registration@devmeetings.org</code>
         h5.text-muted.noHeaderMargins

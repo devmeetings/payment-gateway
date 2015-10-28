@@ -1,0 +1,60 @@
+extends ../angular-layout
+
+block content
+    .container(ng-app="claims")
+        div(ng-controller="ClaimsCtrl")
+            .well.clearfix
+                .form-group
+                    input.form-control(type="text", ng-model="search.$", placeholder="Search")
+            .row
+                h4
+                    | Claims list.
+            .row(ng-if="!view.detailed")
+                table.table.table-striped.table-hover.table-condensed
+                    tr
+                        th
+                            a(ng-click="sortBy('amount')") Amount
+                        th
+                            a(ng-click="sortBy('event.title')") Event
+                        th
+                            a(ng-click="sortBy('userData.names')") Name
+                        th
+                            a(ng-click="sortBy('userData.email')") E-mail
+                        th
+                            a(ng-click="sortBy('claimedTime')") Claimed Time
+                        th
+                            a(ng-click="sortBy('status')") Payment ID
+                        th
+                            a(ng-click="sortBy('invoice.invoiceNo')") Invoice No
+                        th
+                            | Extra
+
+                    tr(
+                    ng-repeat="claim in claims | filter:search | orderBy:sort.by:sort.reverse"
+                    )
+                        td {{claim.amount}}
+                        td {{claim.event.title}}
+                        td {{claim.userData.names}}
+                        td {{claim.userData.email}}
+                        td {{claim.claimedTime | date:'short'}}
+                        td {{claim.payment.id }}
+                        td {{claim.invoice.invoiceNo }}
+                        td
+                            strong(ng-if="claim.extra.vip")  (VIP)
+                            strong(ng-if="claim.extra.sponsor")  (Sponsor)
+
+append scripts
+    script.
+        angular.module("claims", ['angularMoment'])
+                .controller("ClaimsCtrl", function ($scope, $sce, $http, $window) {
+                    $scope.hideExpired = true;
+                    $scope.search = {};
+                    $scope.claims = !{claims};
+                    $scope.view = {};
+
+                    $scope.sort = {};
+                    $scope.sortBy = function (by) {
+                        $scope.sort.by = by;
+                        $scope.sort.reverse = !$scope.sort.reverse;
+                    };
+                });

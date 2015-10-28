@@ -4,6 +4,8 @@ var marked = require('marked');
 var intercept = require('../utils/intercept');
 var Event = require('../models/event');
 var Claims = require('../models/claims');
+var admin = require('../controllers/admin');
+// var crypto = require('crypto');
 
 module.exports = function (app) {
   app.use('/', router);
@@ -51,14 +53,13 @@ router.get('/events/:name', function (req, res, next) {
         // TODO [ToDr] Dont remove WAITING tickets automatically!
         // $in: [Claims.STATUS.ACTIVE #<{(|, Claims.STATUS.WAITING |)}>#]
         $in: [Claims.STATUS.ACTIVE]
-      }
-    }, {
-      $set: {
-        status: Claims.STATUS.EXPIRED
-      }
-    }, {
-      multi: true
-    },
+      }}, {
+        $set: {
+          status: Claims.STATUS.EXPIRED
+        }
+      }, {
+        multi: true
+      },
       intercept(next, function (noOfUpdatedItems) {
         if (noOfUpdatedItems) {
           Event.update({
@@ -79,6 +80,33 @@ router.get('/events/:name', function (req, res, next) {
           event: JSON.stringify(ev)
         });
       }));
+  }));
+});
+
+router.post('/events/:id/invoice/:claim/render', function (req, res, next) {
+  var invoiceTemplate, data;
+  invoiceTemplate = 'invoice/invoice';
+  data = req.body;
+
+  res.render(invoiceTemplate, {
+    data: data
+  });
+});
+
+router.post('/events/:id/invoice/:claim', function (req, res, next) {
+  Claims.findOne({
+    _id: req.params.claim,
+    event: req.params.id,
+    status: Claims.STATUS.PAYED,
+    'userData.email': req.body.email
+  }).populate('event').exec(intercept(next, function (claim) {
+    if (!claim) {
+      res.redirect('/events/' + req.params.id + '/tickets/' + req.params.claim);
+      return;
+    }
+    admin.getDataForExistingInvoice(claim).then(function (data) {
+      admin.downloadInvoice(req, res, data);
+    });
   }));
 });
 
@@ -118,12 +146,14 @@ router.post('/events/:name/tickets', function (req, res, next) {
 
   function createClaim (ev) {
     var now = new Date();
+    var validTill = new Date(now.getTime() + CLAIM_TIME);
     Claims.create({
       event: ev._id,
       claimedTime: new Date(),
-      validTill: new Date(now.getTime() + CLAIM_TIME),
+      validTill: validTill,
       status: Claims.STATUS.ACTIVE
     }, intercept(next, function (claim) {
+      res.cookie('claim', ev._id + ':' + claim._id, {expires: validTill});
       res.redirect('/events/' + ev._id + '/tickets/' + claim._id);
     }));
   }
@@ -142,8 +172,6 @@ router.post('/events/:name/tickets', function (req, res, next) {
         ticketsLeft: -1
       }
     }, intercept(next, function (isUpdated) {
-      console.log(arguments);
-
       if (!isUpdated) {
         return res.render('event-ticket_failed', {
           title: ev.title,
@@ -161,6 +189,24 @@ router.post('/events/:name/tickets', function (req, res, next) {
     if (!ev) {
       return res.send(404);
     }
-    tryToClaimTicket(ev);
+
+    if (req.cookies.claim) {
+      var cookieParts = req.cookies.claim.split(':');
+      if (cookieParts.length === 2) {
+        Claims.findOne({
+          _id: cookieParts[1],
+          event: cookieParts[0]
+        }).exec(intercept(next, function (claim) {
+          if (!claim) {
+            tryToClaimTicket(ev);
+          } else {
+            res.redirect('/events/' + cookieParts[0] + '/tickets/' + cookieParts[1]);
+            return;
+          }
+        }));
+      }
+    } else {
+      tryToClaimTicket(ev);
+    }
   }));
 });
