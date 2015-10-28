@@ -53,34 +53,33 @@ router.get('/events/:name', function (req, res, next) {
         // TODO [ToDr] Dont remove WAITING tickets automatically!
         // $in: [Claims.STATUS.ACTIVE #<{(|, Claims.STATUS.WAITING |)}>#]
         $in: [Claims.STATUS.ACTIVE]
-      }
-    }, {
-      $set: {
-        status: Claims.STATUS.EXPIRED
-      }
-    }, {
-      multi: true
-    },
-    intercept(next, function (noOfUpdatedItems) {
-      if (noOfUpdatedItems) {
-        Event.update({
-          _id: ev._id
-        }, {
-          $inc: {
-            ticketsLeft: noOfUpdatedItems
-          }
-        }).exec();
+      }}, {
+        $set: {
+          status: Claims.STATUS.EXPIRED
+        }
+      }, {
+        multi: true
+      },
+      intercept(next, function (noOfUpdatedItems) {
+        if (noOfUpdatedItems) {
+          Event.update({
+            _id: ev._id
+          }, {
+            $inc: {
+              ticketsLeft: noOfUpdatedItems
+            }
+          }).exec();
 
-        ev.ticketsLeft += noOfUpdatedItems;
-      }
+          ev.ticketsLeft += noOfUpdatedItems;
+        }
 
-      ev.description = marked(ev.description);
+        ev.description = marked(ev.description);
 
-      res.render('event', {
-        title: ev.title,
-        event: JSON.stringify(ev)
-      });
-    }));
+        res.render('event', {
+          title: ev.title,
+          event: JSON.stringify(ev)
+        });
+      }));
   }));
 });
 
@@ -194,23 +193,19 @@ router.post('/events/:name/tickets', function (req, res, next) {
     if (req.cookies.claim) {
       var cookieParts = req.cookies.claim.split(':');
       if (cookieParts.length === 2) {
-
         Claims.findOne({
           _id: cookieParts[1],
           event: cookieParts[0]
         }).exec(intercept(next, function (claim) {
           if (!claim) {
             tryToClaimTicket(ev);
-          }
-          else {
+          } else {
             res.redirect('/events/' + cookieParts[0] + '/tickets/' + cookieParts[1]);
             return;
           }
         }));
-
       }
-    }
-    else{
+    } else {
       tryToClaimTicket(ev);
     }
   }));
