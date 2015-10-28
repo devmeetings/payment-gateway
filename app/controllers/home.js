@@ -194,11 +194,24 @@ router.post('/events/:name/tickets', function (req, res, next) {
     if (req.cookies.claim) {
       var cookieParts = req.cookies.claim.split(':');
       if (cookieParts.length === 2) {
-        res.redirect('/events/' + cookieParts[0] + '/tickets/' + cookieParts[1]);
-        return;
+
+        Claims.findOne({
+          _id: cookieParts[1],
+          event: cookieParts[0]
+        }).exec(intercept(next, function (claim) {
+          if (!claim) {
+            tryToClaimTicket(ev);
+          }
+          else {
+            res.redirect('/events/' + cookieParts[0] + '/tickets/' + cookieParts[1]);
+            return;
+          }
+        }));
+
       }
     }
-
-    tryToClaimTicket(ev);
+    else{
+      tryToClaimTicket(ev);
+    }
   }));
 });
