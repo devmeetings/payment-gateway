@@ -180,7 +180,9 @@ function renderDiploma (req, res, next) {
   }
 
   Claims.find(condidtions).populate('event').exec(intercept(next, function (users) {
+    var eventStartDate = moment(users[0].event.eventStartDate).format('LL');
     res.render('diploma/diploma', {
+      eventStartDate: eventStartDate,
       users: JSON.stringify(users)
     });
   }));
