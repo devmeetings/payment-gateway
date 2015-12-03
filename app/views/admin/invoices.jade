@@ -67,6 +67,7 @@ block content
                       | {{ in.buyer.invoice.postalCode }} {{ in.buyer.invoice.city }} ({{ in.buyer.invoice.countryCode }})
                       br
                       | NIP: {{ in.buyer.invoice.tin }}
+
               .col-xs-6(on-change-invoice-data="{{in.orderId}}")
                 .form-group
                   label.col-sm-5.control-label Invoice No:
@@ -84,23 +85,19 @@ block content
                   label.col-sm-5.control-label Date of payment:
                   .col-sm-7
                     input.form-control(ng-model="in.invoice.dateOfPayment",name="dateOfPayment", type="text")
-                .form-group(ng-show="in.paidWithoutPayu || in.needInvoice")
+                .form-group(ng-show="in.claim.needInvoice")
                   label.col-sm-5.control-label Recipient name:
                   .col-sm-7
                     input.form-control(ng-model="in.buyer.invoice.recipientName",name="recipientName", type="text")
-                .form-group(ng-show="in.paidWithoutPayu || in.needInvoice")
                   label.col-sm-5.control-label Street:
                   .col-sm-7
                     input.form-control(ng-model="in.buyer.invoice.street",name="street", type="text")
-                .form-group(ng-show="in.paidWithoutPayu || in.needInvoice")
                   label.col-sm-5.control-label Postal code:
                   .col-sm-7
                     input.form-control(ng-model="in.buyer.invoice.postalCode",name="postalCode", type="text")
-                .form-group(ng-show="in.paidWithoutPayu || in.needInvoice")
                   label.col-sm-5.control-label City:
                   .col-sm-7
                     input.form-control(ng-model="in.buyer.invoice.city",name="city", type="text")
-                 .form-group(ng-show="in.paidWithoutPayu || in.needInvoice")
                   label.col-sm-5.control-label TIN:
                   .col-sm-7
                     input.form-control(ng-model="in.buyer.invoice.tin",name="tin", type="text")

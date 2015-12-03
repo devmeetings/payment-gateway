@@ -695,7 +695,8 @@ module.exports.createInvoiceForClaim = createInvoiceForClaim;
 
 function createInvoiceForClaim (req, res, next, claimId) {
   var condidtions = {
-    _id: claimId
+    _id: claimId,
+    status: Claims.STATUS.PAYED
   };
 
   getInvoices(req, res, next, condidtions);
@@ -705,13 +706,13 @@ function getInvoices (req, res, next, newConditions) {
   var conditions;
   var defaultConditions = {
     event: req.params.ev,
+    status: Claims.STATUS.PAYED,
     $or: [
       {
         'payment.id': {
           $exists: true
         }
       },
-      {paidWithoutPayu: true},
       {needInvoice: true}
     ]
   };
@@ -864,7 +865,6 @@ router.post('/events/:ev/payed/:claimId', function (req, res, next) {
         paidWithoutPayu: true
       }
     }).exec(intercept(next, function () {
-      createInvoiceForClaim(req, res, next, req.params.claimId);
       res.send('ok');
     }));
   }
