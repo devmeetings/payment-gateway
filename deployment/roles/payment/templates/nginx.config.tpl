@@ -3,10 +3,21 @@ upstream {{ server_id }} {
   keepalive 32;
 }
 
+map $geoip_country_code $closest_server {
+  default devmeetings.com;
+  PL      devmeetings.pl;
+  DE      devmeetings.de;
+  CH      devmeetings.de;
+  AT      devmeetings.de;
+}
+
 server {
   listen 80;
   {% if server_name == 'registration.devmeetings.com' %}
   server_name {{ server_name }} devmeetings.com devmeetings.pl devmeetings.org devmeetings.de *.devmeetings.com *.devmeetings.pl *.devmeetings.org *.devmeetings.de;
+  if ($closest_server != $host) {
+    rewrite ^ $scheme://$closest_server$request_uri break;
+  }
   {% else %}
   server_name {{ server_name }};
   {% endif %}
