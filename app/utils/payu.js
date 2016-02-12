@@ -37,7 +37,8 @@ Payu.prototype = {
     if (this === Payu.test) {
       return '127.0.0.1';
     }
-    return req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+    return '127.0.0.1';
+    //return req.headers['x-forwarded-for'] || req.connection.remoteAddress;
   },
 
   /**
