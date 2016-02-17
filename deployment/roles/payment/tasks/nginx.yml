@@ -4,6 +4,11 @@
     pkg: nginx
     state: present
 
+- name: Nginx | Install geoip
+  apt:
+    pkg: geoip-database
+    state: present
+
 - name: Nginx | Copying site
   template:
     src: nginx.config.tpl
