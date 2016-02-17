@@ -43,43 +43,12 @@ router.get('/events/:name', function (req, res, next) {
       return res.send(404);
     }
 
-    // TODO [ToDr] reclaim tickets
-    Claims.update({
-      event: ev._id,
-      validTill: {
-        $lt: new Date()
-      },
-      status: {
-        // TODO [ToDr] Dont remove WAITING tickets automatically!
-        // $in: [Claims.STATUS.ACTIVE #<{(|, Claims.STATUS.WAITING |)}>#]
-        $in: [Claims.STATUS.ACTIVE]
-      }}, {
-        $set: {
-          status: Claims.STATUS.EXPIRED
-        }
-      }, {
-        multi: true
-      },
-      intercept(next, function (noOfUpdatedItems) {
-        if (noOfUpdatedItems) {
-          Event.update({
-            _id: ev._id
-          }, {
-            $inc: {
-              ticketsLeft: noOfUpdatedItems
-            }
-          }).exec();
+    ev.description = marked(ev.description);
 
-          ev.ticketsLeft += noOfUpdatedItems;
-        }
-
-        ev.description = marked(ev.description);
-
-        res.render('event', {
-          title: ev.title,
-          event: JSON.stringify(ev)
-        });
-      }));
+    res.render('event', {
+      title: ev.title,
+      event: JSON.stringify(ev)
+    });
   }));
 });
 
@@ -142,7 +111,7 @@ router.get('/events/:id/tickets/:claim', function (req, res, next) {
 });
 
 router.post('/events/:name/tickets', function (req, res, next) {
-  var CLAIM_TIME = 15 * 60 * 1000;
+  var CLAIM_TIME = 2 * 60 * 1000;
 
   function createClaim (ev) {
     var now = new Date();

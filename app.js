@@ -2,6 +2,7 @@ var express = require('express');
 var config = require('./config/config');
 var glob = require('glob');
 var mongoose = require('mongoose');
+var scheduler = require('./app/logic/scheduler/scheduler');
 
 mongoose.connect(config.db);
 var db = mongoose.connection;
@@ -17,5 +18,6 @@ var app = express();
 
 require('./config/express')(app, config);
 
-app.listen(process.env.PORT || config.port);
+scheduler.startScheduler();
 
+app.listen(process.env.PORT || config.port);
