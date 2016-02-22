@@ -27,10 +27,9 @@ block content
                 .form-group
                     input.form-control(type="text", ng-model="search.$", placeholder="Search")
             .row
-                p.lead !{event.title}
-                h4
-                    | Claims list.
-                .center-block
+                .col-xs-4
+                    p.lead !{event.title}
+                    h4 Claims list.
                     ul.list-group
                         li.list-group-item.list-group-item-info
                             span.badge !{payedCount}
@@ -44,6 +43,16 @@ block content
                         li.list-group-item.list-group-item-success
                             span.badge !{sponsor}
                             | Sponsor claims
+                .col-xs-8
+                    .well.clearfix
+                        h1 Invite user to devmeeting
+                        form(ng-submit="sendInvitation(view.inviteEmail)", name="form")
+                            .form-group
+                                label.control-label Uer email
+                                input.form-control(type="email", ng-model="view.inviteEmail", name="email", required)
+                            .form-group
+                                button.btn.btn-primary(type="submit", ng-disabled="form.$invalid") Send
+
             .well.clearfix(ng-if="view.offlineRegistration")
                 h4 Add user without registration
                 form.invoices.form-horizontal(ng-controller="OfflineClaimCtrl", ng-submit="addOfflineClaim()")
@@ -318,4 +327,11 @@ append scripts
                             $window.location.reload();
                         });
                     };
+
+                    $scope.sendInvitation = function (email){
+                        $http.post('/admin/events/#{eventId}/invitation', {email: email}).then(function (){
+                            $window.location.reload();
+                        });
+                    }
+
                 });

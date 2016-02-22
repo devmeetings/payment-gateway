@@ -1,0 +1,16 @@
+extends ./mail.jade
+
+block title
+  Możliwość rejestracji na #{event.title}
+
+block content
+  p Cześć!
+  p Otrzymujesz możliwość rejestracji poza standardową pulą wejściówek na DevMeeting #{event.title} (#{eventDate}).
+
+  strong Link do rejestracji:<br/>
+    a(
+      href="#{appUrl}/events/#{event._id}/tickets/#{claim._id}"
+      ) Rejestracja
+  p
+    | Pozdrawiamy!<br/>
+    | Zespół DevMeetings.pl

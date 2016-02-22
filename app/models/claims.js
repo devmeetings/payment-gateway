@@ -12,7 +12,7 @@ var ClaimSchema = new Schema({
   validTill: Date,
   status: {
     type: String,
-    enum: ['active', 'waiting', 'payed', 'expired']
+    enum: ['invited', 'active', 'waiting', 'payed', 'expired']
   },
   paidWithoutPayu: Boolean,
   needInvoice: Boolean,
@@ -76,6 +76,8 @@ ClaimSchema.virtual('amountStillToPay')
 module.exports = mongoose.model('claim', ClaimSchema);
 
 module.exports.STATUS = {
+  /* Bilet wyslany jako zaproszenie - w trakcie wypelniania */
+  INVITED: 'invited',
   /* Bilet zajety - w trakcie wypelniania */
   ACTIVE: 'active',
   /* Przed wyslaniem do PayU */
