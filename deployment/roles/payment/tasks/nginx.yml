@@ -16,14 +16,28 @@
     mode: 0755
 
 - name: Nginx | Fetch GEOIP
-  unarchive:
-    src: http://geolite.maxmind.com/download/geoip/database/GeoLiteCountry/GeoIP.dat.gz
-    dest: /etc/nginx/geoip
+  get_url:
+    url: http://geolite.maxmind.com/download/geoip/database/GeoLiteCountry/GeoIP.dat.gz
+    dest: /etc/nginx/geoip/
 
 - name: Nginx | Fetch GEOIP City
+  get_url:
+    url: http://geolite.maxmind.com/download/geoip/database/GeoLiteCity.dat.gz
+    dest: /etc/nginx/geoip/
+
+- name: Nginx | Unpack GeoIP
   unarchive:
-    src: http://geolite.maxmind.com/download/geoip/database/GeoLiteCity.dat.gz
-    dest: /etc/nginx/geoip
+    copy: no
+    src: /etc/nginx/geoip/GeoIP.dat.gz
+    dest: /etc/nginx/geoip/
+    creates: /etc/nginx/geoip/GeoIP.dat
+
+- name: Nginx | Unpack GeoLiteCity
+  unarchive:
+    copy: no
+    src: /etc/nginx/geoip/GeoLiteCity.dat.gz
+    dest: /etc/nginx/geoip/
+    creates: /etc/nginx/geoip/GeoLiteCity.dat
 
 - name: Nginx | Copying site
   template:
