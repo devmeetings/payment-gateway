@@ -85,14 +85,14 @@ router.get('/events/:id/tickets/:claim', function (req, res, next) {
     _id: req.params.claim,
     event: req.params.id,
     status: {
-      $in: [Claims.STATUS.ACTIVE, Claims.STATUS.WAITING, Claims.STATUS.CREATING_PAYMENT, Claims.STATUS.PENDING, Claims.STATUS.PAYED]
+      $in: [Claims.STATUS.INVITED, Claims.STATUS.ACTIVE, Claims.STATUS.WAITING, Claims.STATUS.CREATING_PAYMENT, Claims.STATUS.PENDING, Claims.STATUS.PAYED]
     }
   }).populate('event').exec(intercept(next, function (claim) {
     if (!claim) {
       return res.send(404);
     }
 
-    if (claim.status === Claims.STATUS.ACTIVE) {
+    if (claim.status === Claims.STATUS.ACTIVE || claim.status === Claims.STATUS.INVITED) {
       res.render('event-ticket_fill', {
         claim: claim,
         claim_json: JSON.stringify(claim)

@@ -35,6 +35,7 @@ router.get('/', function (req, res) {
   res.redirect('/admin/events');
 });
 
+
 router.get('/events', function (req, res, next) {
   Event.find().sort({eventStartDate: 'desc'}).exec(intercept(next, function (events) {
     res.render('admin/events', {
@@ -975,6 +976,59 @@ router.post('/events/:ev/add/claim/offline', function (req, res, next) {
   Claims.create(newClaim, intercept(next, function (claim) {
     res.send('ok');
   }));
+});
+
+
+
+router.post('/events/:ev/invitation', function (req, res, next) {
+
+    var CLAIM_TIME = 48 * 60 * 60 * 1000;
+
+    function createClaim (ev) {
+        var now = new Date();
+        var validTill = new Date(now.getTime() + CLAIM_TIME);
+        Claims.create({
+            event: ev._id,
+            claimedTime: new Date(),
+            validTill: validTill,
+            status: Claims.STATUS.INVITED,
+            userData: {
+                email: req.body.email
+            }
+        }, intercept(next, function (claim) {
+
+            res.render('mails/registration-invitation', {
+                claim: claim,
+                event:ev,
+                appUrl: config.app.url,
+                eventDate: moment(claim.event.eventStartDate).format('LLL')
+            }, intercept(next, function (mailText) {
+                Mailer.sendMail({
+                    from: Mailer.from,
+                    to: req.body.email,
+                    bcc: Mailer.bcc,
+                    subject: 'Możliwość rejestracji na ' + ev.title,
+                    html: mailText
+                }, intercept(next, function (info) {
+                    res.send(200);
+                }));
+            }));
+
+        }));
+    }
+
+    Event.findOne({
+        _id: req.params.ev
+    }, intercept(next, function (ev) {
+        if (!ev) {
+            return res.send(404);
+        }
+
+        createClaim(ev);
+    }));
+
+
+
 });
 
 router.get('/claims/:claimId/payment', function (req, res, next) {
