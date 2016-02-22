@@ -26,17 +26,15 @@
     dest: /etc/nginx/geoip/
 
 - name: Nginx | Unpack GeoIP
-  unarchive:
-    copy: no
-    src: /etc/nginx/geoip/GeoIP.dat.gz
-    dest: /etc/nginx/geoip/
+  command: gunzip ./GeoIP.dat.gz
+  args:
+    chdir: /etc/nginx/geoip
     creates: /etc/nginx/geoip/GeoIP.dat
 
 - name: Nginx | Unpack GeoLiteCity
-  unarchive:
-    copy: no
-    src: /etc/nginx/geoip/GeoLiteCity.dat.gz
-    dest: /etc/nginx/geoip/
+  command: gunzip ./GeoLiteCity.dat.gz
+  args:
+    chdir: /etc/nginx/geoip
     creates: /etc/nginx/geoip/GeoLiteCity.dat
 
 - name: Nginx | Copying site
