@@ -9,6 +9,22 @@
     pkg: geoip-database
     state: present
 
+- name: Nginx | More GEOIP
+  file:
+    path: /etc/nginx/geoip
+    state: directory
+    mode: 0755
+
+- name: Nginx | Fetch GEOIP
+  unarchive:
+    src: http://geolite.maxmind.com/download/geoip/database/GeoLiteCountry/GeoIP.dat.gz
+    dest: /etc/nginx/geoip
+
+- name: Nginx | Fetch GEOIP City
+  unarchive:
+    src: http://geolite.maxmind.com/download/geoip/database/GeoLiteCity.dat.gz
+    dest: /etc/nginx/geoip
+
 - name: Nginx | Copying site
   template:
     src: nginx.config.tpl
