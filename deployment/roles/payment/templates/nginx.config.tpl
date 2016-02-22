@@ -11,6 +11,9 @@ map $geoip_country_code $closest_server {
   AT      devmeetings.de;
 }
 
+geoip_country  /etc/nginx/geoip/GeoIP.dat;
+geoip_city     /etc/nginx/geoip/GeoLiteCity.dat;
+
 server {
   listen 80;
   {% if server_name == 'registration.devmeetings.com' %}
