@@ -18,7 +18,7 @@ function setInvalidTicketsAsExpired () {
     status: {
       // TODO [ToDr] Dont remove WAITING tickets automatically!
       // $in: [Claims.STATUS.ACTIVE #<{(|, Claims.STATUS.WAITING |)}>#]
-      $in: [Claims.STATUS.ACTIVE]
+      $in: [Claims.STATUS.ACTIVE, Claims.STATUS.INVITED]
     }
   }).populate('event').exec(function (err, claims) {
     if (err) {
