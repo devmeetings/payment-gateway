@@ -241,7 +241,7 @@ router.post('/events/:id/tickets/:claim', function (req, res, next) {
         validTill: {
           $gte: new Date()
         },
-        status: Claims.STATUS.ACTIVE
+        status: {$in: [Claims.STATUS.ACTIVE, Claims.STATUS.INVITED]}
       }, {
         $set: updateClaimProps
       }).exec(intercept(next, function (isUpdated) {
