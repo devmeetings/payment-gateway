@@ -3,6 +3,7 @@ upstream {{ server_id }} {
   keepalive 32;
 }
 
+{% if server_name == 'registration.devmeetings.com' %}
 map $geoip_country_code $closest_server {
   default devmeetings.com;
   PL      devmeetings.pl;
@@ -13,6 +14,7 @@ map $geoip_country_code $closest_server {
 
 geoip_country  /etc/nginx/geoip/GeoIP.dat;
 geoip_city     /etc/nginx/geoip/GeoLiteCity.dat;
+{% endif %}
 
 server {
   listen 80;
