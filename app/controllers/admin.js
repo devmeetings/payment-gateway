@@ -1001,7 +1001,7 @@ router.post('/events/:ev/invitation', function (req, res, next) {
                 claim: claim,
                 event:ev,
                 appUrl: config.app.url,
-                eventDate: moment(claim.event.eventStartDate).format('LLL'),
+                eventDate: moment(ev.eventStartDate).format('LLL'),
                 endDate: moment(new Date(Date.now() + CLAIM_TIME)).format('LLL'),
             }, intercept(next, function (mailText) {
                 Mailer.sendMail({
