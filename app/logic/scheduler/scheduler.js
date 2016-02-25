@@ -5,6 +5,7 @@ var Claims = require('../../models/claims');
 function startScheduler () {
   console.log('Start scheduler');
   schedule.scheduleJob('*/1 * * * *', function () {
+    console.log('Scheduler step');
     setInvalidTicketsAsExpired();
   });
 }
