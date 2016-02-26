@@ -8,3 +8,53 @@ script(async).
   $(function(){
     $('.videos').fitVids();
   });
+  $(function() {
+    $(window).on("load resize", function() {
+      if($(window).width() > 767) {
+        sameHeight(".box", ".photostory-holder", true);
+        sameHeight(".box", ".box-group", true);
+      }
+    });
+  });
+
+  function sameHeight(blocks, parent, outer) {
+    var i = 0;
+    var maxVal;
+    if(parent == null) {
+      parent = "body";
+    } 
+    
+    jQuery(blocks).parents(parent).each(function() {
+    
+      maxVal = 0;
+      
+      jQuery(this).find(blocks).each(function() {
+        if(i == 0) {
+          if(outer) {
+            maxVal = jQuery(this).outerHeight();
+          } else {
+            maxVal = jQuery(this).height();
+          }
+        } else {
+          if(jQuery(this).outerHeight() > maxVal) {
+            if(outer) {
+              maxVal = jQuery(this).outerHeight();
+            } else {
+              maxVal = jQuery(this).height();
+            }
+          }
+        }
+        i++;
+      });
+      
+      jQuery(this).find(blocks).each(function() {
+        if(outer) {
+          jQuery(this).css("min-height", maxVal + "px");
+        } else {
+          jQuery(this).css("min-height", maxVal + "px");
+        }
+      });
+      
+    });
+    
+  }

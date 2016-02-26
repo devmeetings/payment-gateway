@@ -1,0 +1,189 @@
+extends ../../layout-en
+
+block content
+  
+  .event
+    div
+      .container
+        .row
+            .col-md-8.col-sm-8
+              .container-dark-gray.visible-xs
+                .vertical-padding-m
+                  .row
+                    .col-xs-10.col-xs-offset-1
+                      div
+                        .row
+                          .col-md-2
+                            h1.noHeaderMargins
+                              span.fa.fa-ticket
+                          .col-md-10
+                            h4.noHeaderMargins Rejestracja trwa!
+                            span Aby wziąć udział w DevMeetingu
+                            br
+                            span musisz się zarejestrować.
+                            h5 Pozostało 1 z 42 miejsc.
+                            form(action='/events/react-redux-wro/tickets', method='post')
+                              .progress
+                                .progress-bar.progress-bar-warning(style='width:97.61904761904762%;')
+                                .progress-bar.progress-bar-info(style='width:2.380952380952381%;')
+                              button.btn.btn-lg.btn-dev Zarejestruj się!
+                        .row
+                          .col-md-2.text-center
+              .vertical-padding-s.visible-xs
+              h4 React + Redux
+              div
+                p
+                  | Zespół DevMeetings zaprasza na całodniowe warsztaty poświęcone React'owi z Redux'em.
+                p
+                  strong Dlaczego w ogóle zainteresować się Reactem?
+                p
+                  | Stosowane od wielu lat MVC przy większej skali aplikacji zaczyna generować problemy związane ze stanem danych. Jeśli istnieje wiele modeli, które się ze sobą łączą, to jak możemy się łatwo dowiedzieć w jakich okolicznościach zachowuje się ona niepoprawnie? Jak poradzić sobie z aktualizacją modeli, gdy mogą być modyfikowane przez wiele asynchonicznych zdarzeń?
+                p
+                  strong Flux? Redux?
+                p
+                  | Flux, a w szczególności jego konkretne implementacja (Redux) wydaje się być rozwiązaniem tego problemu. Do samego renderowania elementów wykorzystamy komponenty Reacta, który nadal jest jednym z najbardziej wydajnych rozwiązań do generowania UI. Całość daje solidne podstawy do tworzenia skalowalnych aplikacji typu SPA.
+                p
+                  | Na DevMeetingu poznasz zarówno Reacta, jak i Reduxa - i zastosujesz w praktyce zdobytą wiedzę, implementując kompletnia prostą aplikację typu sklep internetowy.
+                p Zapraszamy!
+                p
+                  em Zespół DevMeetings
+                h4#-nbsp-  
+                h3#dlaczego-react- Dlaczego React?
+                p
+                  | Reactem warto się zainteresować, ponieważ jest coraz bardziej popularną biblioteką stosowaną przez szerokie grono frontend developerów na całym świecie.
+                ul
+                  li
+                    | biblioteka do tworzenia wydajnych interfejsów użytkownika zbudowanych z komponentów
+                  li prosty w nauce i łatwy w implementacji również w już istniejących systemach
+                  li
+                    | intuicyjny cykl życia komponentów pozwala na łatwe zrozumienie działania aplikacji
+                  li
+                    | React jako biblioteka nie narzuca ekosystemu czy korzystania z konkretnych narzędzi
+                  li
+                    | React w pełni wykorzystuje potęgę JavaScript; zaawansowany algorytm redukujący operacje na DOM w połączeniu z łatwą optymalizacją stanowi świetną podstawę dla wysoce interaktywnych interfejsów
+                  li
+                    | stworzony przez Facebooka i poza community wspierany przez firmy takie jak Netflix stanowi pewną i sprawdzoną platformę developerską
+                  li łatwy w rozszerzaniu i zarządzaniu
+                  li świetne podpowiedzi o błędach oraz ostrzeżenia
+                  li
+                    | posiada dobrze przemyślane API, które zmienia się nieznacznie; prosty w uaktualnianiu do wyższych wersji
+                  li
+                    | powstały rozwiązania umożliwiające stosowanie komponentów na innych platformach - iOS, Android
+                h4#-nbsp-  
+                h3#dlaczego-redux- Dlaczego Redux?
+                p
+                  | Redux jest kontenerem stanu aplikacji inspirowany Flux i Elm - wejście w niego jest bardzo proste, natomiast korzyści z wykorzystania bardzo duże.
+                ul
+                  li
+                    | posiada wsparcie dla Hot Reloading oraz Time Travel Debugger, który zaimplementujemy w naszej aplikacji podczas warsztatów
+                  li
+                    | pozbawiony wad i złożoności Fluxa poprzez korzystanie z pojedynczego kontenera i wykorzystanie tzw. reducerów
+                  li
+                    | zachęca do korzystania z niemutowalnych struktur danych co bezpośrednio przekłada się na wydajność, ale przede wszystkim upraszcza debugowanie
+                  li
+                    | możesz go używać z dowolną biblioteką czy frameworkiem, nie ma znaczenia czy wolisz Angulara, Reacta czy może vue.js.
+                  li
+                    | pozbawiony skomplikowanych zależności między danymi, które występują przy większej liczbie kontenerów w bibliotekach takich jak Alt.js
+                  li popularny i wybierany przez większość zespołów tworzących aplikacje w React
+                h4#-nbsp-  
+                h3#100-praktyki 100% praktyki
+                p
+                  | Podczas warsztatów uczestnicy stworzą od podstaw prosty sklep internetowy poznając omawiane narzędzia w zderzeniu z realnymi problemami takimi jak:
+                ul
+                  li Tworzenie pierwszego komponentu
+                  li Podział aplikacji na wiele komponentów
+                  li Stan komponentu
+                  li Przechwytywanie eventów
+                  li Redux
+                  li Komunikacja z API
+                h4#-nbsp-  
+                h3#informacje-praktyczne Informacje praktyczne
+                p
+                  strong Gdzie:
+                  |  Sala konferencyjna w centrum miasta, dokładna lokalizacja zostanie wysłana uczestnikom
+                p
+                  strong Kiedy:
+                  |  Sobota, 20. lutego 2016, start o 9.00 (prosimy o przybycie ok. 8.45), zakończenie ok. 16.00
+                p
+                  strong Co należy przynieść:
+                  |  Laptop z zainstalowanym Google Chrome + zasilacz.
+                p
+                  strong Koszt udziału
+                  | : Udział w modelu Pay What You Want. 
+                  a(href='http://devmeetings.pl/pl/info/pwyw', target='_blank') Więcej informacji tutaj.
+                  |  Dla osób, które wpłacą 100 pln - wysokiej jakości drukowany certyfikat uczestnictwa.
+                h4#-nbsp-  
+                h3#co-to-jest-devmeeting- Co to jest DevMeeting?
+                p
+                  | DevMeeting to mix hackathonu i warsztatów programistycznych. Przez cały dzień uczestnicy implementują przykładową aplikację - samodzielnie i w zespołach. Nad merytoryką czuwają doświadczeni mentorzy, którzy cały czas służą pomocą, prowokują dyskusje oraz dzielą się swoją wiedzą praktyczną.
+                p
+                  | DevMeeting nie jest wykładem czy klasycznym szkoleniem. Stawiamy na praktykę, kodowanie oraz wymianę wiedzy i doświadczeń. Jest to też świetna okazja, by poznać innych programistów i nawiązać wartościowe kontakty z developerami z Twojego miasta.
+                p
+                  | Jeśli chcesz poczuć atmosferę DevMeetingu, zapraszamy na 
+                  a(href='https://www.youtube.com/watch?v=sb_Mmhq-iX0', target='_blank') YouTube
+                  |  (film z DevMeetingu 9. maja 2015, Node.JS).
+                p  
+                
+              .vertical-space-m
+              .container-dark-gray.visible-xs
+                .container-fluid.vertical-padding-m
+                  .row
+                    .col-xs-10.col-xs-offset-1
+                      div
+                        .row
+                          .col-md-2
+                            h1.noHeaderMargins
+                              span.fa.fa-ticket
+                          .col-md-10
+                            h4.noHeaderMargins Rejestracja trwa!
+                            span Aby wziąć udział w DevMeetingu
+                            br
+                            span(data-reactid='.0.0.0.0.5.0.0.0.0.0.1.3') musisz się zarejestrować.
+                            h5 Pozostało 1 z 42 miejsc.
+                            form(action='/events/react-redux-wro/tickets', method='post')
+                              .progress
+                                .progress-bar.progress-bar-warning(style='width:97.61904761904762%;')
+                                .progress-bar.progress-bar-info(style='width:2.380952380952381%;')
+                              button.btn.btn-lg.btn-dev Zarejestruj się!
+                        .row
+                          .col-md-2.text-center
+              .vertical-padding-m
+            .col-md-4.col-sm-4(style='position:relative;')
+              .well(style='position:fixed;width:25%;z-index:2;')
+                .row
+                  .col-md-2.text-center
+                    h1.noHeaderMargins
+                      span.fa.fa-calendar-o
+                  .col-md-10
+                    h4.noHeaderMargins 20 czerwca 2015
+                    h5.noHeaderMargins.text-muted
+                      span sobota
+                      span , 
+                      span 09:00 - 16:00
+                hr.no-border
+                .row
+                  .col-md-2.text-center
+                    h1.noHeaderMargins
+                      span.fa.fa-map-marker
+                  .col-md-10
+                    h4.noHeaderMargins Kraków
+                    h5.noHeaderMargins.text-muted Centrum Miasta
+                hr
+                div
+                  .row
+                    .col-md-2
+                      h1.noHeaderMargins
+                        span.fa.fa-ticket
+                    .col-md-10
+                      h4.noHeaderMargins Rejestracja trwa!
+                      span Aby wziąć udział w DevMeetingu
+                      br
+                      span musisz się zarejestrować.
+                      h5 Brak wolnych miejsc.
+                      form(action='/events/es6-maj-krakow/tickets', method='post')
+                        .progress
+                          .progress-bar.progress-bar-warning(style='width:100%;')
+                          .progress-bar.progress-bar-info(style='width:0%;')
+                        button.btn.btn-lg.btn-dev.btn-disabled.disabled(disabled='') Zarejestruj się!
+                  .row
+                    .col-md-2.text-center
