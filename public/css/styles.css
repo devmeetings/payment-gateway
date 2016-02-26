@@ -11,8 +11,8 @@ body {
   text-rendering: optimizelegibility;
   -moz-osx-font-smoothing: grayscale;
 }
-h1,
-h2 {
+h1, .h1,
+h2, .h2 {
   font-weight: 700;
   color: #2c3e50;
   font-size: 32px;
@@ -20,7 +20,7 @@ h2 {
   margin-top: 21px;
   margin-bottom: 10.5px;
 }
-h3 {
+h3, .h3 {
   font-weight: 700;
   color: #2c3e50;
   font-size: 26px;
@@ -28,7 +28,7 @@ h3 {
   margin-top: 21px;
   margin-bottom: 10.5px;
 }
-h4 {
+h4, .h4 {
   font-weight: 700;
   color: #2c3e50;
   font-size: 19px;
@@ -36,13 +36,19 @@ h4 {
   margin-top: 14px;
   margin-bottom: 10.5px;
 }
-h5 {
+h5, .h5 {
   font-weight: 700;
   color: #2c3e50;
   font-size: 15px;
   line-height: 20px;
   margin-top: 10.5px;
   margin-bottom: 10.5px;
+}
+iframe {
+  border: none;
+}
+.em {
+  font-style: italic;
 }
 .navbar-default .navbar-nav.navbar-right > li > a,
 .footer-ul li a,
