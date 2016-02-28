@@ -412,7 +412,10 @@ function downloadInvoice (req, res, data) {
         data: JSON.stringify(data)
       };
 
+      console.log(fullUrl);
+      console.log(settings);
       page.open(fullUrl + '/render', settings, function (status) {
+        console.log('Page.opne = > status = ', status);
         page.evaluate(function (className) {
           return document.querySelector(className).innerText.replace(/\//g, '_');
         }, renderPage, '.invoice-no');
