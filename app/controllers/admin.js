@@ -24,6 +24,7 @@ function checkIfAdmin (req, res, next) {
 }
 
 function checkIfPhantomJs (req) {
+  console.log('req.headers[user-agent] =>', req.headers['user-agent'])
   return req.headers['user-agent'].indexOf('PhantomJS') >= 0;
 }
 
