@@ -30,99 +30,141 @@ block content
                         .row
                           .col-md-2.text-center
               .vertical-padding-s.visible-xs
-              h4 React + Redux
+              h1 DevMeeting ECMAScript 6
               div
                 p
-                  | Zespół DevMeetings zaprasza na całodniowe warsztaty poświęcone React'owi z Redux'em.
+                  | DevMeetings Team invites you to a full-day meeting on ECMAScript 6 (Harmony) - the upcoming version of the JavaScript standard. By participating in DevMeeting you will learn the most important concepts of the language, write a complete application using ES6, and meet other developers starting out with ES6 and mentors who already have experience in implementating applications using this version of the language.
+                p Join us!
                 p
-                  strong Dlaczego w ogóle zainteresować się Reactem?
+                  em Piotr Zwoliński
+                p Founder of DevMeetings.pl 
+                p piotr (at) devmeetings (dot) org
+                img.img-responsive.workshop-img(src='/img/static/workshops/es6/es6_logo.jpg' alt='')
+                
+                h3 Why ES6? 
                 p
-                  | Stosowane od wielu lat MVC przy większej skali aplikacji zaczyna generować problemy związane ze stanem danych. Jeśli istnieje wiele modeli, które się ze sobą łączą, to jak możemy się łatwo dowiedzieć w jakich okolicznościach zachowuje się ona niepoprawnie? Jak poradzić sobie z aktualizacją modeli, gdy mogą być modyfikowane przez wiele asynchonicznych zdarzeń?
+                  | ECMAScript 6, also known as ECMAScript 2015 is the upcoming version of the ECMA standard, which is the basis of languages such as JavaScript or ActionScript. ES6 brings significant changes compared to the previous version, which was published in 2009. Most of the companies creating browsers already offers some of the new features, and many more will be added soon.
+                p 
+                  em ECMA organization rolls out a carpet for us. The carpet on which you and I will soon walk. As of today, this carpet is not yet fully rolled out, so if you want to experience what it feels like to walk on it, you need to use linoleum, which is only a modest replacement. The linoleum of this story is transpiler, e.g. 
+                  a(href='https://babeljs.io/', target='_blank') Babel.js 
+                  em or 
+                  a(href='https://github.com/google/traceur-compiler', target='_blank') Traceur. 
+                  em The carpet is ECMAScript 6.
+
+                h3 Agenda
                 p
-                  strong Flux? Redux?
+                  | During DevMeeting you will learn the following concepts of ES6 language.
                 p
-                  | Flux, a w szczególności jego konkretne implementacja (Redux) wydaje się być rozwiązaniem tego problemu. Do samego renderowania elementów wykorzystamy komponenty Reacta, który nadal jest jednym z najbardziej wydajnych rozwiązań do generowania UI. Całość daje solidne podstawy do tworzenia skalowalnych aplikacji typu SPA.
+                  | strong Variables, arrays and objects:
+                  ul
+                    li
+                      | let and const instead of var
+                    li
+                      | blocks and a range of variables
+                    li
+                      | spread, that is simpler operations on lists
+                    li
+                      | destructuring assignment which makes it easier to use objects
                 p
-                  | Na DevMeetingu poznasz zarówno Reacta, jak i Reduxa - i zastosujesz w praktyce zdobytą wiedzę, implementując kompletnia prostą aplikację typu sklep internetowy.
-                p Zapraszamy!
+                  strong Functions:
+                  ul
+                    li
+                      | default parameters
+                    li
+                      | grouping parameters
+                    li
+                      | new syntax: arrow functions
                 p
-                  em Zespół DevMeetings
-                h4#-nbsp-  
-                h3#dlaczego-react- Dlaczego React?
+                  strong Classes:
+                  ul
+                    li
+                      | the introduction of syntax
+                    li
+                      | Symbols and private variables
+                    li
+                      | getting and saving data (getters and setters)
+                    li
+                      | static variables
+                    li
+                      | expanding classes – inheritance and Object.assign
                 p
-                  | Reactem warto się zainteresować, ponieważ jest coraz bardziej popularną biblioteką stosowaną przez szerokie grono frontend developerów na całym świecie.
-                ul
-                  li
-                    | biblioteka do tworzenia wydajnych interfejsów użytkownika zbudowanych z komponentów
-                  li prosty w nauce i łatwy w implementacji również w już istniejących systemach
-                  li
-                    | intuicyjny cykl życia komponentów pozwala na łatwe zrozumienie działania aplikacji
-                  li
-                    | React jako biblioteka nie narzuca ekosystemu czy korzystania z konkretnych narzędzi
-                  li
-                    | React w pełni wykorzystuje potęgę JavaScript; zaawansowany algorytm redukujący operacje na DOM w połączeniu z łatwą optymalizacją stanowi świetną podstawę dla wysoce interaktywnych interfejsów
-                  li
-                    | stworzony przez Facebooka i poza community wspierany przez firmy takie jak Netflix stanowi pewną i sprawdzoną platformę developerską
-                  li łatwy w rozszerzaniu i zarządzaniu
-                  li świetne podpowiedzi o błędach oraz ostrzeżenia
-                  li
-                    | posiada dobrze przemyślane API, które zmienia się nieznacznie; prosty w uaktualnianiu do wyższych wersji
-                  li
-                    | powstały rozwiązania umożliwiające stosowanie komponentów na innych platformach - iOS, Android
-                h4#-nbsp-  
-                h3#dlaczego-redux- Dlaczego Redux?
+                  strong Collections:
+                  ul
+                    li
+                      | sets – set and WeakSet
+                    li
+                      | maps – Map and WeakMap
                 p
-                  | Redux jest kontenerem stanu aplikacji inspirowany Flux i Elm - wejście w niego jest bardzo proste, natomiast korzyści z wykorzystania bardzo duże.
-                ul
-                  li
-                    | posiada wsparcie dla Hot Reloading oraz Time Travel Debugger, który zaimplementujemy w naszej aplikacji podczas warsztatów
-                  li
-                    | pozbawiony wad i złożoności Fluxa poprzez korzystanie z pojedynczego kontenera i wykorzystanie tzw. reducerów
-                  li
-                    | zachęca do korzystania z niemutowalnych struktur danych co bezpośrednio przekłada się na wydajność, ale przede wszystkim upraszcza debugowanie
-                  li
-                    | możesz go używać z dowolną biblioteką czy frameworkiem, nie ma znaczenia czy wolisz Angulara, Reacta czy może vue.js.
-                  li
-                    | pozbawiony skomplikowanych zależności między danymi, które występują przy większej liczbie kontenerów w bibliotekach takich jak Alt.js
-                  li popularny i wybierany przez większość zespołów tworzących aplikacje w React
-                h4#-nbsp-  
-                h3#100-praktyki 100% praktyki
+                  strong Modules, generators and Promises:
+                  ul
+                    li
+                      | definition of modules and loading them
+                    li
+                      | generators,
+                    li
+                      | Promises
+                p 
+                    | Examples of issues: Should you become friends with the ECMAScript 6? Below we present two examples of language elements that will be discussed on this DevMeeting.
                 p
-                  | Podczas warsztatów uczestnicy stworzą od podstaw prosty sklep internetowy poznając omawiane narzędzia w zderzeniu z realnymi problemami takimi jak:
-                ul
-                  li Tworzenie pierwszego komponentu
-                  li Podział aplikacji na wiele komponentów
-                  li Stan komponentu
-                  li Przechwytywanie eventów
-                  li Redux
-                  li Komunikacja z API
-                h4#-nbsp-  
-                h3#informacje-praktyczne Informacje praktyczne
+                  strong Block scope
                 p
-                  strong Gdzie:
-                  |  Sala konferencyjna w centrum miasta, dokładna lokalizacja zostanie wysłana uczestnikom
+                  | Until now, there was only one range of variables in JS – a function. Therefore, in the example of ES5 we use the trick – a self executing function – to create a private variable, you can use the function by the closure (closure). In ES6 instead of function we use block {} and let to declare a variable within a scope of a given block; we define function in a usual way and it is available outside the block.
                 p
-                  strong Kiedy:
-                  |  Sobota, 20. lutego 2016, start o 9.00 (prosimy o przybycie ok. 8.45), zakończenie ok. 16.00
+                  img.img-responsive.workshop-img(src='/img/static/workshops/es6/snippet_es6_block_scope.jpg' alt='')
                 p
-                  strong Co należy przynieść:
-                  |  Laptop z zainstalowanym Google Chrome + zasilacz.
+                  strong Classes
                 p
-                  strong Koszt udziału
-                  | : Udział w modelu Pay What You Want. 
-                  a(href='http://devmeetings.pl/pl/info/pwyw', target='_blank') Więcej informacji tutaj.
-                  |  Dla osób, które wpłacą 100 pln - wysokiej jakości drukowany certyfikat uczestnictwa.
-                h4#-nbsp-  
-                h3#co-to-jest-devmeeting- Co to jest DevMeeting?
+                  | Both in JS and ES6 there are no real classes – entire inheritance is carried out through prototypes. It is perfectly visible in the following example written in JS, in which we define a constructor function and add methods to its prototype. ES6 does not change how it works, but allows you to use nicer and more transparent syntax.
                 p
-                  | DevMeeting to mix hackathonu i warsztatów programistycznych. Przez cały dzień uczestnicy implementują przykładową aplikację - samodzielnie i w zespołach. Nad merytoryką czuwają doświadczeni mentorzy, którzy cały czas służą pomocą, prowokują dyskusje oraz dzielą się swoją wiedzą praktyczną.
+                  img.img-responsive.workshop-img(src='/img/static/workshops/es6/snippet_es6_classes.jpg' alt='')
+
+                h3#100-praktyki 100% practical
                 p
-                  | DevMeeting nie jest wykładem czy klasycznym szkoleniem. Stawiamy na praktykę, kodowanie oraz wymianę wiedzy i doświadczeń. Jest to też świetna okazja, by poznać innych programistów i nawiązać wartościowe kontakty z developerami z Twojego miasta.
+                  | DevMeeting is focused on implementing a sample application, which allows you to learn the above mentioned functionalities of language in a practical way and to immediately practice and apply acquired skills
                 p
-                  | Jeśli chcesz poczuć atmosferę DevMeetingu, zapraszamy na 
-                  a(href='https://www.youtube.com/watch?v=sb_Mmhq-iX0', target='_blank') YouTube
-                  |  (film z DevMeetingu 9. maja 2015, Node.JS).
-                p  
+                  | This time we have prepared two applications that you can implement – on the DevMeeting you will choose which one do you want to work on.
+                .row.vertical-space-m
+                  .col-sm-6
+                    img.img-responsive.workshop-img(src='/img/static/workshops/es6/app_es6_tinder.png' alt='')
+                  .col-sm-6
+                    h5 Application 1: DevTinder
+                    p
+                      | Maximally simplified clone version of Tinder app. A user can view and rate presented photos.
+                .row.vertical-space-m
+                  .col-sm-6
+                    img.img-responsive.workshop-img(src='/img/static/workshops/es6/app_es6_maps.png' alt='')
+                  .col-sm-6
+                    h5 Application 2: PlacesRating
+                    p
+                      | Application modelled after Foursquare, which enables to mark and rate locations all around the world through the use of Google Maps.
+
+                h3#informacje-praktyczne Practical information
+                p
+                  strong Where:
+                  |  The conference room in the city centre, the exact location will be mailed to the participants.
+                p
+                  strong When:
+                  |  Saturday,February 20th 2016, start at 9.00 am (please arrive around 8.45), ending approx. at 4 pm.
+                p
+                  strong What you should bring:
+                  |  The conference room in the city centre, the exact location will be mailed to the participants.
+                p
+                  strong Participation cost
+                  | : Participation in the Pay What You Want model. 
+                  a(href='http://devmeetings.pl/pl/info/pwyw', target='_blank') More information here.
+                  |  People who will pay 100 PLN or more will obtain a high-quality printed certificate of participation.
+                  
+                h3 What is a DevMeeting?
+                p
+                  | A DevMeeting is a mix of a hackathon and a programming workshop. Throughout the day, participants implement a sample application – on their own and in teams. Experienced mentors supervise taught content and execution of a workshops and at all times offer their help, provoke discussions and share their practical knowledge.
+
+                p
+                  | A DevMeeting is not a lecture or a classic training. We focus on practical skills, coding and exchanging knowledge and experience. It is also a great opportunity to meet other developers and to make valuable contacts with developers from your city.
+
+                p
+                  | If you want to discover the atmosphere of DevMeeting, go to our 
+                  a(href='https://www.youtube.com/watch?v=De17BOe1GnE', target='_blank') YouTube channel 
+                  | (video from DevMeeting on 9th May 2015, Node.JS)
                 
               .vertical-space-m
               .container-dark-gray.visible-xs

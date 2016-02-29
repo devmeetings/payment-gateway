@@ -30,99 +30,136 @@ block content
                         .row
                           .col-md-2.text-center
               .vertical-padding-s.visible-xs
-              h4 React + Redux
+              h1 Angular 2
               div
                 p
-                  | Zespół DevMeetings zaprasza na całodniowe warsztaty poświęcone React'owi z Redux'em.
+                  | DevMeetings team invites you to a full-day workshop on Angular 2 with TypeScript and ES2015.
                 p
-                  strong Dlaczego w ogóle zainteresować się Reactem?
+                  | Although Angular 2 is still in the alpha phase, its most important concepts shouldn’t change anymore, especially since the first beta version is supposed to be made available in the next few days. Because of that, now is a perfect time to start learning both new Angular and TypeScript – a language compiled to JavaScript, which makes working with the new version of Angular a real pleasure.
+                h3 Why Angular 2?
                 p
-                  | Stosowane od wielu lat MVC przy większej skali aplikacji zaczyna generować problemy związane ze stanem danych. Jeśli istnieje wiele modeli, które się ze sobą łączą, to jak możemy się łatwo dowiedzieć w jakich okolicznościach zachowuje się ona niepoprawnie? Jak poradzić sobie z aktualizacją modeli, gdy mogą być modyfikowane przez wiele asynchonicznych zdarzeń?
+                  | The creators of Angular want to break with many concepts of the first version of the framework. Their main objective was to prepare a tool which would perfectly cooperate with browsers while also having full support for the ES2015/2016.
+                
                 p
-                  strong Flux? Redux?
-                p
-                  | Flux, a w szczególności jego konkretne implementacja (Redux) wydaje się być rozwiązaniem tego problemu. Do samego renderowania elementów wykorzystamy komponenty Reacta, który nadal jest jednym z najbardziej wydajnych rozwiązań do generowania UI. Całość daje solidne podstawy do tworzenia skalowalnych aplikacji typu SPA.
-                p
-                  | Na DevMeetingu poznasz zarówno Reacta, jak i Reduxa - i zastosujesz w praktyce zdobytą wiedzę, implementując kompletnia prostą aplikację typu sklep internetowy.
-                p Zapraszamy!
-                p
-                  em Zespół DevMeetings
-                h4#-nbsp-  
-                h3#dlaczego-react- Dlaczego React?
-                p
-                  | Reactem warto się zainteresować, ponieważ jest coraz bardziej popularną biblioteką stosowaną przez szerokie grono frontend developerów na całym świecie.
+                  | That is why many of prior components have been thoroughly analysed and created from scratch. The changes which are most important to us include:
                 ul
                   li
-                    | biblioteka do tworzenia wydajnych interfejsów użytkownika zbudowanych z komponentów
-                  li prosty w nauce i łatwy w implementacji również w już istniejących systemach
+                    | detecting changes based mainly on immutable data structures and observable objects
                   li
-                    | intuicyjny cykl życia komponentów pozwala na łatwe zrozumienie działania aplikacji
+                    | placing greater emphasis on writing object-oriented code
                   li
-                    | React jako biblioteka nie narzuca ekosystemu czy korzystania z konkretnych narzędzi
+                    | rebuilt dependency injection container, now also allowing creating a hierarchy of containers
                   li
-                    | React w pełni wykorzystuje potęgę JavaScript; zaawansowany algorytm redukujący operacje na DOM w połączeniu z łatwą optymalizacją stanowi świetną podstawę dla wysoce interaktywnych interfejsów
+                    | major simplification of the concept of services
                   li
-                    | stworzony przez Facebooka i poza community wspierany przez firmy takie jak Netflix stanowi pewną i sprawdzoną platformę developerską
-                  li łatwy w rozszerzaniu i zarządzaniu
-                  li świetne podpowiedzi o błędach oraz ostrzeżenia
+                    | dynamic loading of components during the application life-cycle
                   li
-                    | posiada dobrze przemyślane API, które zmienia się nieznacznie; prosty w uaktualnianiu do wyższych wersji
+                    | breaking with rigid attachment to DOM, which in result facilitates rendering on the server side
                   li
-                    | powstały rozwiązania umożliwiające stosowanie komponentów na innych platformach - iOS, Android
-                h4#-nbsp-  
-                h3#dlaczego-redux- Dlaczego Redux?
+                    | simplifying the option of creating custom components and communication between them
+                  li
+                    | simplifying form management  
+               
                 p
-                  | Redux jest kontenerem stanu aplikacji inspirowany Flux i Elm - wejście w niego jest bardzo proste, natomiast korzyści z wykorzystania bardzo duże.
+                  | As you can see, the list of changes is quite large and some of them make a great improvement compared to the first version. Many of them are the answers to the problems and needs that have been discovered by the users working with Angular 1. Some of them also result from development of JavaScript and improvement of browser functionalities. It means that we get a tool which is much easier to understand and use, and provides less of "magic" responses and more of the expectable ones. In a nutshell – a very good tool, tailored to meet the demands of modern front-end.
+
+                h3#100-praktyki 100% practical
+                p
+                  | During the workshop, the participants will create a simple online shop from scratch, learning about these tools while using them to face real problems, such as:
+                  ul
+                    li How to use TypeScript so that it helps rather than stands in your way?
+                    li How to make your application free from dependency on back-end for testing?
+                    li How to conveniently validate data in a form and send it further on?
+                    li How to build components and organise communication between them so that your code does not look like spaghetti?
+               
+                h3#informacje-praktyczne Agenda
+
+                p
+                  | TypeScript and ES2015 revision.
+                p
+                  | NOTE: On a DevMeeting we will devote no more than 45 minutes to revise their main concepts, but we will not be teaching you the basics of these languages. Before the DevMeeting each participant should learn ES2015 / TypeScript on their own.
                 ul
-                  li
-                    | posiada wsparcie dla Hot Reloading oraz Time Travel Debugger, który zaimplementujemy w naszej aplikacji podczas warsztatów
-                  li
-                    | pozbawiony wad i złożoności Fluxa poprzez korzystanie z pojedynczego kontenera i wykorzystanie tzw. reducerów
-                  li
-                    | zachęca do korzystania z niemutowalnych struktur danych co bezpośrednio przekłada się na wydajność, ale przede wszystkim upraszcza debugowanie
-                  li
-                    | możesz go używać z dowolną biblioteką czy frameworkiem, nie ma znaczenia czy wolisz Angulara, Reacta czy może vue.js.
-                  li
-                    | pozbawiony skomplikowanych zależności między danymi, które występują przy większej liczbie kontenerów w bibliotekach takich jak Alt.js
-                  li popularny i wybierany przez większość zespołów tworzących aplikacje w React
-                h4#-nbsp-  
-                h3#100-praktyki 100% praktyki
+                  li declarations types
+                    li interfaces
+                    li classes
+                    li module system
+                    li decorators
+                    li promises
+               
                 p
-                  | Podczas warsztatów uczestnicy stworzą od podstaw prosty sklep internetowy poznając omawiane narzędzia w zderzeniu z realnymi problemami takimi jak:
-                ul
-                  li Tworzenie pierwszego komponentu
-                  li Podział aplikacji na wiele komponentów
-                  li Stan komponentu
-                  li Przechwytywanie eventów
-                  li Redux
-                  li Komunikacja z API
-                h4#-nbsp-  
-                h3#informacje-praktyczne Informacje praktyczne
+                  | Application skeleton and the absolute basics of working with Angular 2:
+                  ul
+                    li application skeleton
+                    li displaying data
+                    li basic directives
+                
                 p
-                  strong Gdzie:
-                  |  Sala konferencyjna w centrum miasta, dokładna lokalizacja zostanie wysłana uczestnikom
+                  | Components and event handling:
+                  ul
+                    li the concept of components
+                    li creating own components
+                    li event handling
+                    li communication between components
+                    li creating own events
+
                 p
-                  strong Kiedy:
-                  |  Sobota, 20. lutego 2016, start o 9.00 (prosimy o przybycie ok. 8.45), zakończenie ok. 16.00
+                  | Services and dependency injection container:
+                  ul
+                    li the concept of services
+                    li the concept and requirements for dependency injection
+                    li creating own services
+                    li using dependency injection container
+                    li creating readily convertible, universal services
+
                 p
-                  strong Co należy przynieść:
-                  |  Laptop z zainstalowanym Google Chrome + zasilacz.
+                  | Forms and data formatting options:
+                  ul
+                    li creating forms
+                    li data validation
+                    li the concept of pipes
+                    li creating own pipes
+
                 p
-                  strong Koszt udziału
-                  | : Udział w modelu Pay What You Want. 
-                  a(href='http://devmeetings.pl/pl/info/pwyw', target='_blank') Więcej informacji tutaj.
-                  |  Dla osób, które wpłacą 100 pln - wysokiej jakości drukowany certyfikat uczestnictwa.
-                h4#-nbsp-  
-                h3#co-to-jest-devmeeting- Co to jest DevMeeting?
+                  | Communication with external API:
+                  ul
+                    li the concepts in the new http module
+                    li using http module to communicate with back-end
+                    li http alternatives
+                    li currently developed solutions
+
                 p
-                  | DevMeeting to mix hackathonu i warsztatów programistycznych. Przez cały dzień uczestnicy implementują przykładową aplikację - samodzielnie i w zespołach. Nad merytoryką czuwają doświadczeni mentorzy, którzy cały czas służą pomocą, prowokują dyskusje oraz dzielą się swoją wiedzą praktyczną.
+                  | Routing and navigation:
+                  ul
+                    li the concepts in the component-based routing
+                    li using routing for navigation
+
+                h3#informacje-praktyczne Practical information
                 p
-                  | DevMeeting nie jest wykładem czy klasycznym szkoleniem. Stawiamy na praktykę, kodowanie oraz wymianę wiedzy i doświadczeń. Jest to też świetna okazja, by poznać innych programistów i nawiązać wartościowe kontakty z developerami z Twojego miasta.
+                  strong Where:
+                  | The conference room in the city centre, the exact location will be mailed to the participants.
                 p
-                  | Jeśli chcesz poczuć atmosferę DevMeetingu, zapraszamy na 
-                  a(href='https://www.youtube.com/watch?v=sb_Mmhq-iX0', target='_blank') YouTube
-                  |  (film z DevMeetingu 9. maja 2015, Node.JS).
-                p  
+                  strong When:
+                  | Saturday,February 20th 2016, start at 9.00 am (please arrive around 8.45), ending approx. at 4 pm.
+                p
+                  strong What you should bring:
+                  | The conference room in the city centre, the exact location will be mailed to the participants.
+                p
+                  strong Participation cost
+                  | : Participation in the Pay What You Want model. 
+                  a(href='http://devmeetings.pl/pl/info/pwyw', target='_blank') More information here.
+                  |  People who will pay 100 PLN or more will obtain a high-quality printed certificate of participation.    
+                
+                h3 What is a DevMeeting?
+                p
+                  | A DevMeeting is a mix of a hackathon and a programming workshop. Throughout the day, participants implement a sample application – on their own and in teams. Experienced mentors supervise taught content and execution of a workshops and at all times offer their help, provoke discussions and share their practical knowledge.
+
+                p
+                  | A DevMeeting is not a lecture or a classic training. We focus on practical skills, coding and exchanging knowledge and experience. It is also a great opportunity to meet other developers and to make valuable contacts with developers from your city.
+
+                p
+                  | If you want to discover the atmosphere of DevMeeting, go to our 
+                  a(href='https://www.youtube.com/watch?v=De17BOe1GnE', target='_blank') YouTube channel 
+                  | (video from DevMeeting on 9th May 2015, Node.JS)
                 
               .vertical-space-m
               .container-dark-gray.visible-xs

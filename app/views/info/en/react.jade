@@ -30,99 +30,97 @@ block content
                         .row
                           .col-md-2.text-center
               .vertical-padding-s.visible-xs
-              h4 React + Redux
+              h1 React + Redux
               div
                 p
-                  | Zespół DevMeetings zaprasza na całodniowe warsztaty poświęcone React'owi z Redux'em.
+                  | DevMeetings team is happy to invite you to a full-day workshop on React and Redux.
+                h3 Why should you be interested in React?
                 p
-                  strong Dlaczego w ogóle zainteresować się Reactem?
+                  | MVC, used for many years, starts to generate problems with state of data when used in an application of larger scale. If there are many models that are connected to one another, how can we easily find out the circumstances in which the app behaves incorrectly? How to deal with updating models if they can be modified by many asynchronous events?
+                h3 Flux? Redux?
                 p
-                  | Stosowane od wielu lat MVC przy większej skali aplikacji zaczyna generować problemy związane ze stanem danych. Jeśli istnieje wiele modeli, które się ze sobą łączą, to jak możemy się łatwo dowiedzieć w jakich okolicznościach zachowuje się ona niepoprawnie? Jak poradzić sobie z aktualizacją modeli, gdy mogą być modyfikowane przez wiele asynchonicznych zdarzeń?
+                  | Flux, in particular its specific implementation (Redux), seems to be the solution to this problem. To render elements we will use components of React, which is still one of the most efficient solutions for UI generating. It all provides a solid base for building scalable SPA applications.
                 p
-                  strong Flux? Redux?
+                  | On this DevMeeting you will learn about both React and Redux – and you will have a chance to practice your new skills by implementing a simple store application.
+                p Join us!
                 p
-                  | Flux, a w szczególności jego konkretne implementacja (Redux) wydaje się być rozwiązaniem tego problemu. Do samego renderowania elementów wykorzystamy komponenty Reacta, który nadal jest jednym z najbardziej wydajnych rozwiązań do generowania UI. Całość daje solidne podstawy do tworzenia skalowalnych aplikacji typu SPA.
+                  em DevMeetings Team
+
+                h3#dlaczego-react- Why React?
                 p
-                  | Na DevMeetingu poznasz zarówno Reacta, jak i Reduxa - i zastosujesz w praktyce zdobytą wiedzę, implementując kompletnia prostą aplikację typu sklep internetowy.
-                p Zapraszamy!
-                p
-                  em Zespół DevMeetings
-                h4#-nbsp-  
-                h3#dlaczego-react- Dlaczego React?
-                p
-                  | Reactem warto się zainteresować, ponieważ jest coraz bardziej popularną biblioteką stosowaną przez szerokie grono frontend developerów na całym świecie.
+                  | As it is becoming a more and more popular library and is used by a wide range of front-end developers all around the world, React is definitely worth your attention. 
                 ul
                   li
-                    | biblioteka do tworzenia wydajnych interfejsów użytkownika zbudowanych z komponentów
-                  li prosty w nauce i łatwy w implementacji również w już istniejących systemach
+                    | a library for creating powerful user interfaces built with components
+                  li easy to learn and to be implemented, also in existing systems
                   li
-                    | intuicyjny cykl życia komponentów pozwala na łatwe zrozumienie działania aplikacji
+                    | intuitive life cycle of components makes it easy to understand how an application works
                   li
-                    | React jako biblioteka nie narzuca ekosystemu czy korzystania z konkretnych narzędzi
+                    | React as a library does not require you to use a specific ecosystem or tools
                   li
-                    | React w pełni wykorzystuje potęgę JavaScript; zaawansowany algorytm redukujący operacje na DOM w połączeniu z łatwą optymalizacją stanowi świetną podstawę dla wysoce interaktywnych interfejsów
+                    | React takes full advantage of the power of JavaScript; advanced algorithm for reducing operations on DOM combined with easy optimization is a great base for highly interactive interfaces
                   li
-                    | stworzony przez Facebooka i poza community wspierany przez firmy takie jak Netflix stanowi pewną i sprawdzoną platformę developerską
-                  li łatwy w rozszerzaniu i zarządzaniu
-                  li świetne podpowiedzi o błędach oraz ostrzeżenia
+                    | created by Facebook and having support of community and companies such as Netflix guarantees that it is now a reliable and proven developer platform
+                  li easy to expand and to manage
+                  li great hints about errors and warnings
                   li
-                    | posiada dobrze przemyślane API, które zmienia się nieznacznie; prosty w uaktualnianiu do wyższych wersji
+                    | a well designed API, with only minor changes; easy to upgrade to a higher version
                   li
-                    | powstały rozwiązania umożliwiające stosowanie komponentów na innych platformach - iOS, Android
+                    | there were developed solutions enabling the use of components on other platforms – iOS, Android
                 h4#-nbsp-  
-                h3#dlaczego-redux- Dlaczego Redux?
+                h3#dlaczego-redux- Why Redux?
                 p
-                  | Redux jest kontenerem stanu aplikacji inspirowany Flux i Elm - wejście w niego jest bardzo proste, natomiast korzyści z wykorzystania bardzo duże.
+                  | Redux is an application state container inspired by Flux and Elm – it is very easy to get into it, whereas benefits of using it are really great.
                 ul
                   li
-                    | posiada wsparcie dla Hot Reloading oraz Time Travel Debugger, który zaimplementujemy w naszej aplikacji podczas warsztatów
+                    | It has support for Hot Reloading and Time Travel Debugger, which we will implement in the application built during the workshop.
                   li
-                    | pozbawiony wad i złożoności Fluxa poprzez korzystanie z pojedynczego kontenera i wykorzystanie tzw. reducerów
+                    | It is devoid of defects and complexity of Flux, thanks to using a single container and the so-called reducers.
                   li
-                    | zachęca do korzystania z niemutowalnych struktur danych co bezpośrednio przekłada się na wydajność, ale przede wszystkim upraszcza debugowanie
+                    | It encourages using immutable data structures, which directly translates into efficiency and, above all, simplifies debugging.
                   li
-                    | możesz go używać z dowolną biblioteką czy frameworkiem, nie ma znaczenia czy wolisz Angulara, Reacta czy może vue.js.
+                    | You can use it with any library or framework, it does not matter whether you prefer Angular, React or maybe vue.js.
                   li
-                    | pozbawiony skomplikowanych zależności między danymi, które występują przy większej liczbie kontenerów w bibliotekach takich jak Alt.js
-                  li popularny i wybierany przez większość zespołów tworzących aplikacje w React
+                    | Devoid of complex data dependencies that occur while using a great number of containers in libraries such as Alt.js
+                  li Popular and chosen by majority of teams creating React applications.
                 h4#-nbsp-  
-                h3#100-praktyki 100% praktyki
+                h3#100-praktyki 100% practical
                 p
-                  | Podczas warsztatów uczestnicy stworzą od podstaw prosty sklep internetowy poznając omawiane narzędzia w zderzeniu z realnymi problemami takimi jak:
+                  | During this workshop, the participants will create a simple online shop from scratch, learning about these tools while using them facing real problems, such as:
                 ul
-                  li Tworzenie pierwszego komponentu
-                  li Podział aplikacji na wiele komponentów
-                  li Stan komponentu
-                  li Przechwytywanie eventów
+                  li creating a first component
+                  li dividing application into multiple components
+                  li state of a component
+                  li capturing events
                   li Redux
-                  li Komunikacja z API
-                h4#-nbsp-  
-                h3#informacje-praktyczne Informacje praktyczne
+                  li communication with API
+                
+                h3#informacje-praktyczne Practical information
                 p
-                  strong Gdzie:
-                  |  Sala konferencyjna w centrum miasta, dokładna lokalizacja zostanie wysłana uczestnikom
+                  strong Where:
+                  |  The conference room in the city centre, the exact location will be mailed to the participants.
                 p
-                  strong Kiedy:
-                  |  Sobota, 20. lutego 2016, start o 9.00 (prosimy o przybycie ok. 8.45), zakończenie ok. 16.00
+                  strong When:
+                  |  Saturday,February 20th 2016, start at 9.00 am (please arrive around 8.45), ending approx. at 4 pm.
                 p
-                  strong Co należy przynieść:
-                  |  Laptop z zainstalowanym Google Chrome + zasilacz.
+                  strong What you should bring:
+                  |  The conference room in the city centre, the exact location will be mailed to the participants.
                 p
-                  strong Koszt udziału
-                  | : Udział w modelu Pay What You Want. 
-                  a(href='http://devmeetings.pl/pl/info/pwyw', target='_blank') Więcej informacji tutaj.
-                  |  Dla osób, które wpłacą 100 pln - wysokiej jakości drukowany certyfikat uczestnictwa.
-                h4#-nbsp-  
-                h3#co-to-jest-devmeeting- Co to jest DevMeeting?
+                  strong Participation cost
+                  | : Participation in the Pay What You Want model. 
+                  a(href='http://devmeetings.pl/pl/info/pwyw', target='_blank') More information here.
+                  |  People who will pay 100 PLN or more will obtain a high-quality printed certificate of participation.
+                h3 What is a DevMeeting?
                 p
-                  | DevMeeting to mix hackathonu i warsztatów programistycznych. Przez cały dzień uczestnicy implementują przykładową aplikację - samodzielnie i w zespołach. Nad merytoryką czuwają doświadczeni mentorzy, którzy cały czas służą pomocą, prowokują dyskusje oraz dzielą się swoją wiedzą praktyczną.
+                  | A DevMeeting is a mix of a hackathon and a programming workshop. Throughout the day, participants implement a sample application – on their own and in teams. Experienced mentors supervise taught content and execution of a workshops and at all times offer their help, provoke discussions and share their practical knowledge.
+
                 p
-                  | DevMeeting nie jest wykładem czy klasycznym szkoleniem. Stawiamy na praktykę, kodowanie oraz wymianę wiedzy i doświadczeń. Jest to też świetna okazja, by poznać innych programistów i nawiązać wartościowe kontakty z developerami z Twojego miasta.
+                  | A DevMeeting is not a lecture or a classic training. We focus on practical skills, coding and exchanging knowledge and experience. It is also a great opportunity to meet other developers and to make valuable contacts with developers from your city.
+
                 p
-                  | Jeśli chcesz poczuć atmosferę DevMeetingu, zapraszamy na 
-                  a(href='https://www.youtube.com/watch?v=sb_Mmhq-iX0', target='_blank') YouTube
-                  |  (film z DevMeetingu 9. maja 2015, Node.JS).
-                p  
+                  | If you want to discover the atmosphere of DevMeeting, go to our 
+                  a(href='https://www.youtube.com/watch?v=De17BOe1GnE', target='_blank') YouTube channel 
+                  | (video from DevMeeting on 9th May 2015, Node.JS)
                 
               .vertical-space-m
               .container-dark-gray.visible-xs
