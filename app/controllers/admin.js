@@ -16,6 +16,7 @@ module.exports = function (app) {
 };
 
 function checkIfAdmin (req, res, next) {
+  console.log('req.cookies.admin', req.cookies.admin);
   if (req.cookies.admin === 'Devmeetings1' || checkIfPhantomJs(req)) {
     next();
   } else {
@@ -386,6 +387,7 @@ function downloadInvoice (req, res, data) {
   var fullUrl = req.protocol + '://' + req.get('host') + req.originalUrl;
 
   var phantom = require('phantom');
+  console.log('Start phantom request');
   phantom.create(function (ph) {
     ph.createPage(function (page) {
       page.setPaperSize({
@@ -438,6 +440,7 @@ function downloadInvoice (req, res, data) {
 module.exports.downloadInvoice = downloadInvoice;
 
 router.post('/claims/get/invoice/:mode', function (req, res, next) {
+  console.log('Start downloadInvoice');
   downloadInvoice(req, res, req.body);
 });
 
