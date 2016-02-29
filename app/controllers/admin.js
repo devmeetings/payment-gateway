@@ -16,7 +16,7 @@ module.exports = function (app) {
 };
 
 function checkIfAdmin (req, res, next) {
-  console.log('req.cookies.admin', req.cookies.admin);
+  console.log('req.cookies', req.cookies);
   if (req.cookies.admin === 'Devmeetings1' || checkIfPhantomJs(req)) {
     next();
   } else {
