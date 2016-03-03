@@ -35,10 +35,11 @@ block content
                 p
                   | Das DevMeetings Team lädt zu einem ganztägigen Treffen über EcmaScript 6 (Harmony) – der kommenden Version des Standards der JavaScript Sprache. Während des DevMeetings werden Sie die wichtigsten Konzepte der Sprache kennenlernen, eine komplette App unter Verwendung von ES6 schreiben und andere Developer, die ihr Abenteuer mit ES6 beginnen, sowie Mentoren, die schon heute Erfahrungen bei der Implementierung der App mit Anwendung dieser Version der Sprache haben, kennenlernen.
                 p Willkommen!
-                p
+                  br
                   em Piotr Zwoliński
                 p Gründer von DevMeetings.pl
-                p piotr (at) devmeetings (dot) org
+                  br 
+                  | piotr (at) devmeetings (dot) org
                 img.img-responsive.workshop-img(src='/img/static/workshops/es6/es6_logo.jpg' alt='')
                 
                 h3 Warum ES6? 
@@ -57,13 +58,19 @@ block content
                   strong Variablen, Tafeln und Objekte
                   ul
                     li
-                      | let und const statt var
+                      strong let  
+                      | und 
+                      strong const 
+                      | statt var
                     li
-                      | Blöcke und Variablenumfang
+                      strong Blöcke 
+                      | und Variablenumfang
                     li
-                      | spread, d.h. einfachere Operationen auf Listen
+                      strong spread
+                      | , d.h. einfachere Operationen auf Listen
                     li
-                      | destructuring assignment, der einfachere Nutzung der Objekte erlaubt
+                      strong destructuring assignment
+                      | , der einfachere Nutzung der Objekte erlaubt
                 p
                   strong Funktionen:
                   ul
@@ -72,27 +79,40 @@ block content
                     li
                       | Gruppierung der Parameter
                     li
-                      | neue Syntax: arrow functions
+                      | neue Syntax: 
+                      strong arrow functions
                 p
                   strong Klassen:
                   ul
                     li
                       | Einführung der Syntax
                     li
-                      | Symbole und private Variablen
+                      strong Symbole 
+                      | und private Variablen
                     li
-                      | Holen und Setzen der Daten (Getters und Setters)
+                      | Holen und Setzen der Daten (
+                      strong Getters 
+                      | und 
+                      strong Setters
+                      |)
                     li
                       | statische Variablen
                     li
-                      | Erweiterung der Klassen – Vererbung und Object.assign
+                      | Erweiterung der Klassen – Vererbung und 
+                      strong Object.assign
                 p
                   strong Kollektionen:
                   ul
                     li
-                      | Mengen – Set und WeakSet
+                      | Mengen – 
+                      strong Set 
+                      | und 
+                      strong WeakSet
                     li
-                      | Mappen – Map und WeakMap
+                      | Mappen – 
+                      strong – Map 
+                      | und 
+                      strong WeakMap
                 p
                   strong Module, Generatoren und Promises
                   ul
@@ -106,12 +126,18 @@ block content
                   | Beispielhafte Themen: Lohnt es sich, sich mit EcmaScript 6 anzufreunden? Unten stellen wir zwei beispielhafte Elemente der Sprache, die während des DevMeetings erscheinen.
                 h5 Block Scope
                 p
-                  | Bisher existierte im JS nur ein Variablenbereich – die Funktion. Deswegen nutzen wir im Beispiel mit ES5 einen Trick – eine sich selbstausführende Funktion – um eine private Variable zu bilden, die die Funktion durch den Funktionsabschluss (closure) nutzen kann. Statt der Funktion nutzt man im ES6 den Block {} und let zur Deklaration der Variable im Bereich dieses Blocks; die Funktion wird wie bisher definiert und ist außerhalb des Blocks zugänglich.
+                  | Bisher existierte im JS nur ein Variablenbereich – die Funktion. Deswegen nutzen wir im Beispiel mit ES5 einen Trick – eine sich selbstausführende Funktion – um eine private Variable zu bilden, die die Funktion durch den Funktionsabschluss (closure) nutzen kann. Statt der Funktion nutzt man im ES6 den 
+                  strong Block {} 
+                  | und 
+                  strong let 
+                  | zur Deklaration der Variable im Bereich dieses Blocks; die Funktion wird wie bisher definiert und ist außerhalb des Blocks zugänglich.
                 p
                   img.img-responsive.workshop-img(src='/img/static/workshops/es6/snippet_es6_block_scope.jpg' alt='')
                 h5 Klassen
                 p
-                  | Sowohl im JS als auch im ES6 gibt es keine echten Klassen – die ganze Vererbung wird mit Hilfe von Prototypen ausgeführt. Es ist sehr gut am unten angeführten, in JS geschriebenen Beispiel sichtbar, wo wir uns die Konstrukteur-Funktion definieren und die Methoden zu ihrem Prototyp hinzufügen. ES6 ändert diese Wirkungsweise nicht, ermöglicht jedoch die Nutzung einer schöneren und mehr dursichtigen Syntax.
+                  | Sowohl im JS als auch im ES6 gibt es keine echten Klassen – die ganze Vererbung wird mit Hilfe von 
+                  strong Prototypen 
+                  | ausgeführt. Es ist sehr gut am unten angeführten, in JS geschriebenen Beispiel sichtbar, wo wir uns die Konstrukteur-Funktion definieren und die Methoden zu ihrem Prototyp hinzufügen. ES6 ändert diese Wirkungsweise nicht, ermöglicht jedoch die Nutzung einer schöneren und mehr dursichtigen Syntax.
                 p
                   img.img-responsive.workshop-img(src='/img/static/workshops/es6/snippet_es6_classes.jpg' alt='')
 
@@ -138,17 +164,17 @@ block content
                 h3.vertical-space-m#informacje-praktyczne Praktische Informationen
                 p
                   strong Wo:
-                  |  The conference room in the city centre, the exact location will be mailed to the participants.
+                  |  Konferenzsaal im Stadtzentrum, genaue Lokalisierung wird an die Teilnehmer gesendet.
                 p
                   strong Wann:
-                  |  Saturday,February 20th 2016, start at 9.00 am (please arrive around 8.45), ending approx. at 4 pm.
+                  |   Samstag, den 10. Oktober 2015, Beginn um 9:00 (bitte etwa um 8:45 anzukommen), Ende etwa 16:00.
                 p
                   strong Was soll man mitbringen:
                   |  Laptop mit installiertem Google Chrome + Netzteil. Wenn sie ein Android Device (Tablet, Telefon) besitzen, nehmen sie es mit.
                 p
                   strong Teilnahmekosten
                   | : Teilnahme im Modell Pay What You Want. 
-                  a(href='http://devmeetings.pl/pl/info/pwyw', target='_blank') Mehr Informationen hier.
+                  a(href='http://devmeetings.pl/pl/info/pwyw', target='_blank') Mehr Informationen hier. 
                   |  Für Personen, die 100 PLN einzahlen – hoher Qualität gedrucktes Teilnahmezertifikat.
                 h3 Was ist DevMeeting?
                 p
