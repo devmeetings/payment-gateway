@@ -17,26 +17,26 @@ block content
                             h1.noHeaderMargins
                               span.fa.fa-ticket
                           .col-md-10
-                            h4.noHeaderMargins Registration is on!
-                            span In order to be able to participate in a DevMeeting, 
-                            br
-                            span you must register.
-                            h5 No vacancies.
+                            h4.noHeaderMargins Registration
+                            span In order to be able to participate in a DevMeeting, you must register.
+                            h5 Registration will start on 20th March!
                             form(action='/events/react-redux-wro/tickets', method='post')
                               .progress
                                 .progress-bar.progress-bar-warning(style='width:97.61904761904762%;')
                                 .progress-bar.progress-bar-info(style='width:2.380952380952381%;')
-                              button.btn.btn-lg.btn-dev Register!
+                              button.btn.btn-lg.btn-dev.btn-disabled.disabled(disabled='') Sign up!
                         .row
                           .col-md-2.text-center
               .vertical-padding-s.visible-xs
-              h1 DevMeeting ECMAScript 6
+              h1 Dive into ECMAScript 2015 (ES6)
               div
                 p
-                  | DevMeetings Team invites you to a full-day meeting on ECMAScript 6 (Harmony) - the upcoming version of the JavaScript standard. By participating in DevMeeting you will learn the most important concepts of the language, write a complete application using ES6, and meet other developers starting out with ES6 and mentors who already have experience in implementating applications using this version of the language.
-                p Join us!
+                  | Come and join us for a full-day workshop focusing on ECMAScript 2015 / ES6 (Harmony) - the current version of the JavaScript standard.
+                p
+                  | During this DevMeeting you will learn the most important concepts of the language, implement a complete application using ES2015 and meet other developers starting out with ES6, as well as mentors who already have experience in implementating applications using this version of the language.
+                p See you!
                   br
-                  em Piotr Zwoliński
+                  | Piotr Zwolinski
                 p Founder of DevMeetings.pl 
                   br
                   | piotr (at) devmeetings (dot) org
@@ -44,7 +44,7 @@ block content
                 
                 h3 Why ES6? 
                 p
-                  | ECMAScript 6, also known as ECMAScript 2015 is the upcoming version of the ECMA standard, which is the basis of languages such as JavaScript or ActionScript. ES6 brings significant changes compared to the previous version, which was published in 2009. Most of the companies creating browsers already offers some of the new features, and many more will be added soon.
+                  | ECMAScript 6, also known as ECMAScript 2015 is the current version of the ECMA standard, which is the base of languages such as JavaScript or ActionScript. ES6 brings significant changes compared to the previous version, which was published in 2009. Most of the browsers already offer support for some of the new features, and many more will be added soon.
                 p 
                   em ECMA organization rolls out a carpet for us. The carpet on which you and I will soon walk. As of today, this carpet is not yet fully rolled out, so if you want to experience what it feels like to walk on it, you need to use linoleum, which is only a modest replacement. The linoleum of this story is transpiler, e.g. 
                   a(href='https://babeljs.io/', target='_blank') Babel.js 
@@ -55,7 +55,7 @@ block content
                   img.img-responsive.workshop-img(src='/img/static/workshops/es6-seattle.jpg' alt='')
                 h3 Agenda
                 p
-                  | During DevMeeting you will learn the following concepts of ES6 language.
+                  | During the DevMeeting you will learn the following concepts of ES6 language.
                 p
                   strong Variables, arrays and objects:
                   ul
@@ -71,8 +71,8 @@ block content
                       strong spread
                       |, that is simpler operations on lists
                     li
-                      strong destructuring assignment which 
-                      | makes it easier to use objects
+                      strong destructuring assignment 
+                      | which makes it easier to use objects
                 p
                   strong Functions:
                   ul
@@ -124,30 +124,31 @@ block content
                       | generators,
                     li
                       | Promises
-                p 
-                    | Examples of issues: Should you become friends with the ECMAScript 6? Below we present two examples of language elements that will be discussed on this DevMeeting.
+                h3 Examples of topics
+                p
+                  | Should you become friends with ECMAScript 2015? Just take a look a the following 2 examples of language elements that will be discussed on this DevMeeting.
                 p
                   strong Block scope
                 p
-                  | Until now, there was only one range of variables in JS – a function. Therefore, in the example of ES5 we use the trick – a self executing function – to create a private variable, you can use the function by the closure (closure). In ES6 instead of function we use 
+                  | Until now, there was only one scope of variables in JS: a function scope. Therefore, creating a private variable in ES5 needed using a trick: a self executing function / a closure. In ES6 instead of a function we can use 
                   strong block {} 
                   | and 
                   strong let 
-                  | to declare a variable within a scope of a given block; we define function in a usual way and it is available outside the block.
+                  | to declare a variable within a scope of a given block; we define function in a usual way and it is available outside of the block.
                 p
                   img.img-responsive.workshop-img(src='/img/static/workshops/es6/snippet_es6_block_scope.jpg' alt='')
                 p
                   strong Classes
                 p
-                  | Both in JS and ES6 there are no real classes – entire inheritance is carried out through 
+                  | Both in JS and ES6 there are no real classes – the inheritance is carried out through 
                   strong prototypes. 
-                  | It is perfectly visible in the following example written in JS, in which we define a constructor function and add methods to its prototype. ES6 does not change how it works, but allows you to use nicer and more transparent syntax.
+                  | It is perfectly visible in the following example written in JS (left), in which we define a constructor function and add methods to its prototype. ES6 (right) does not change how it works, but allows you to use nicer and more transparent syntax (it's called syntax sugar).
                 p
                   img.img-responsive.workshop-img(src='/img/static/workshops/es6/snippet_es6_classes.jpg' alt='')
 
                 h3#100-praktyki 100% practical
                 p
-                  | DevMeeting is focused on implementing a sample application, which allows you to learn the above mentioned functionalities of language in a practical way and to immediately practice and apply acquired skills
+                  | DevMeeting is focused on implementing a sample application, which allows you to learn the functionalities of ECMAScript 2015 in a practical way, as well as to immediately apply acquired skills in a small, yet complete project.
                 p
                   | This time we have prepared two applications that you can implement – on the DevMeeting you will choose which one do you want to work on.
                 .row.vertical-space-m
@@ -156,40 +157,39 @@ block content
                   .col-sm-6
                     h5 Application 1: DevTinder
                     p
-                      | Maximally simplified clone version of Tinder app. A user can view and rate presented photos.
+                      | Maximally simplified clone version of Tinder app. User can view and rate presented photos.
                 .row.vertical-space-m
                   .col-sm-6
                     img.img-responsive.workshop-img(src='/img/static/workshops/es6/app_es6_maps.png' alt='')
                   .col-sm-6
                     h5 Application 2: PlacesRating
                     p
-                      | Application modelled after Foursquare, which enables to mark and rate locations all around the world through the use of Google Maps.
+                      | Application similar to Foursquare: you can mark and rate locations all around the world on Google Maps.
 
                 h3#informacje-praktyczne Practical information
                 p
                   strong Where: 
-                  |  The conference room in the city centre, the exact location will be mailed to the participants.
+                  |  Venue in the city centre, the exact location will be mailed to the participants.
                 p
                   strong When: 
-                  |  Saturday, February 20th 2016, start at 9.00 am (please arrive around 8.45), ending approx. at 4 pm.
+                  |  Saturday, 9th April 2016, start at 9.00 am (please arrive around 8.45), ending approx. at 4 pm.
                 p
                   strong What you should bring: 
-                  | The conference room in the city centre, the exact location will be mailed to the participants.
+                  | BYOL: Bring Your Own Laptop. Catering (snacks, soda, coffee, tea and pizza lunch) will be provided.
                 p
-                  strong Participation cost
+                  strong Participation fee
                   | : Participation in the Pay What You Want model. 
                   a(href='/en/info/pwyw', target='_blank') More information here.
-                  |  People who will pay 100 PLN or more will obtain a high-quality printed certificate of participation.
+                  |  Participants paying 100 USD or more will obtain a high-quality printed certificate of participation.
                   
-                h3 What is a DevMeeting?
+                h3 What is DevMeeting?
                 p
-                  | A DevMeeting is a mix of a hackathon and a programming workshop. Throughout the day, participants implement a sample application – on their own and in teams. Experienced mentors supervise taught content and execution of a workshops and at all times offer their help, provoke discussions and share their practical knowledge.
+                  | DevMeeting is a mix of hackathon and programming workshop. Throughout the day, participants implement a sample application – on their own and in teams. Experienced mentors supervise the learning process, support the participants with their help, provoke discussions and share their practical know-how, as well as best practices.
 
                 p
-                  | A DevMeeting is not a lecture or a classic training. We focus on practical skills, coding and exchanging knowledge and experience. It is also a great opportunity to meet other developers and to make valuable contacts with developers from your city.
-
+                  | DevMeeting is not a lecture or a classic training. We focus on practical skills, coding and exchanging knowledge and experience. It is also a great opportunity to meet other developers and expand your professional network.
                 p
-                  | If you want to discover the atmosphere of DevMeeting, go to our 
+                  | If you want to discover the atmosphere of DevMeeting, check out our 
                   a(href='https://www.youtube.com/watch?v=De17BOe1GnE', target='_blank') YouTube channel 
                   | (video from DevMeeting on 9th May 2015, Node.JS)
                 
@@ -205,15 +205,13 @@ block content
                               span.fa.fa-ticket
                           .col-md-10
                             h4.noHeaderMargins Registration is on!
-                            span In order to be able to participate in a DevMeeting, 
-                            br
-                            span you must register.
-                            h5 No vacancies.
+                            span In order to be able to participate in a DevMeeting, you must register.
+                            h5 Registration will start on 20th March!
                             form(action='/events/react-redux-wro/tickets', method='post')
                               .progress
                                 .progress-bar.progress-bar-warning(style='width:97.61904761904762%;')
                                 .progress-bar.progress-bar-info(style='width:2.380952380952381%;')
-                              button.btn.btn-lg.btn-dev Register!
+                              button.btn.btn-lg.btn-dev.btn-disabled.disabled(disabled='') Sign up!
                         .row
                           .col-md-2.text-center
               .vertical-padding-m
@@ -224,18 +222,18 @@ block content
                     h1.noHeaderMargins
                       span.fa.fa-calendar-o
                   .col-md-10
-                    h4.noHeaderMargins 20th of June 2015
+                    h4.noHeaderMargins 9th of April 2016
                     h5.noHeaderMargins.text-muted
                       span Saturday
                       span , 
-                      span 09:00AM – 4:00PM
+                      span 9AM – 4PM local time
                 hr.no-border
                 .row
                   .col-md-2.text-center
                     h1.noHeaderMargins
                       span.fa.fa-map-marker
                   .col-md-10
-                    h4.noHeaderMargins Kraków
+                    h4.noHeaderMargins Seattle, New York, London
                     h5.noHeaderMargins.text-muted City Centre
                 hr
                 div
@@ -244,15 +242,13 @@ block content
                       h1.noHeaderMargins
                         span.fa.fa-ticket
                     .col-md-10
-                      h4.noHeaderMargins Registration is on!
-                      span In order to be able to participate in a DevMeeting,
-                      br
-                      span you must register.
-                      h5 No vacancies.
+                      h4.noHeaderMargins Registration
+                      span In order to participate in a DevMeeting, you must register.
+                      h5 Registration will start on 20th March!
                       form(action='/events/es6-maj-krakow/tickets', method='post')
                         .progress
                           .progress-bar.progress-bar-warning(style='width:100%;')
                           .progress-bar.progress-bar-info(style='width:0%;')
-                        button.btn.btn-lg.btn-dev.btn-disabled.disabled(disabled='') Register!
+                        button.btn.btn-lg.btn-dev.btn-disabled.disabled(disabled='') Sign up!
                   .row
                     .col-md-2.text-center
