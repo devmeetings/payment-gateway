@@ -42,11 +42,31 @@
   npm: 
     path: "/srv/{{ server_name }}/"
 
-- name: Run On Startup
-  command: pm2 startup -u payments && mv /etc/init.d/pm2-init.sh /etc/init.d/pm2-{{ server_id }}.sh
+- name: Payments | Startup - remove old script
+  file:
+    state: absent
+    path: /etc/init.d/pm2-init.sh
+
+- name: Payments | Startup - remove old script
+  file:
+    state: absent
+    path: /etc/init.d/pm2-{{ server_id }}.sh
+
+- name: Payments | Run On Startup
+  command: pm2 startup -u payments
   args:
-    creates: "/etc/init.d/pm2-{{ server_id }}.sh"
-    chdir: "/srv/{{ server_name }}"
+    chdir: "/srv/{{server_name}}"
+
+- name: Payments | Rename Startup Script
+  command: mv /etc/init.d/pm2-init.sh /etc/init.d/pm2-{{ server_id }}.sh
+
+- name: Payments | Removing wrong names
+  command: find . | grep pm2-init | xargs rm
+  args:
+    chdir: "/etc"
+
+- name: Payments | Run on startup
+  command: update-rc.d pm2-{{ server_id }}.sh defaults
 
 - name: delete existing pm2 processes if running
   command: "pm2 delete {{ server_id }}"
@@ -63,5 +83,4 @@
   environment:
     NODE_ENV: "production"
     PORT: "{{payments_port}}"
-
 
