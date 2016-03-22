@@ -3,14 +3,16 @@ extends ../../layout-en
 block content
 
   .container-full
-    .container
-
-      h1.h3.centered.vertical-space-m DevMeetings: workshops for passionate software developers.
-      p.h5.centered Offered in Pay What You Want model.
-      .workshop-holder.row.vertical-space-m
-        .col-md-8.col-md-offset-2
-          .videos 
-            <iframe width="854" height="510" src="https://www.youtube.com/embed/De17BOe1GnE?rel=0" allowfullscreen></iframe>
+    .container-light-gray
+      .container.container-heading
+        h1.h3.centered.vertical-space-m.text-thin DevMeetings: 
+          strong workshops 
+          | for passionate software developers.
+        p.h5.centered Offered in Pay What You Want model.
+        .workshop-holder.row.vertical-space-m
+          .col-md-8.col-md-offset-2
+            .videos 
+              <iframe width="854" height="510" src="https://www.youtube.com/embed/De17BOe1GnE?rel=0" allowfullscreen></iframe>
     .container            
       .row.vertical-space-m
         h2.h3.centered Upcoming workshops
@@ -19,7 +21,10 @@ block content
           .box
             .box-image
               a(href='/en/info/ecmaScript6')
-                img.img-responsive.workshop-img(src='/img/static/workshops/es6_devmeeting_krk.jpg' alt='')
+                .workshop-img(style='background-image: url(/img/static/workshops/teaser1.png);' alt='')
+                  .workshop-inner
+                    img(src='/img/static/workshops/logo_es6.png' alt='')
+                    .workshop-subtitle(style='border-color: #f0da51') Dive into ECMAScript 2015 (ES6)
             .box-details
               a(href='/en/info/ecmaScript6')
                 h3.h4 Teaser ES6
@@ -38,7 +43,10 @@ block content
           .box
             .box-image
               a(href='/en/info/react')
-                img.img-responsive.workshop-img(src='/img/static/workshops/teaser_devm_react.png' alt='')
+                .workshop-img(style='background-image: url(/img/static/workshops/teaser2.png);' alt='')
+                  .workshop-inner
+                    img(src='/img/static/workshops/logo_react.png' alt='')
+                    .workshop-subtitle(style='border-color: #62dafc') Efficient Webapps with React.js + Redux
             .box-details
               a(href='/en/info/react')
                 h3.h4 Teaser React
@@ -58,7 +66,10 @@ block content
           .box
             .box-image
               a(href='/en/info/ionic')
-                img.img-responsive.workshop-img(src='/img/static/workshops/teaser_devm_ionic.png' alt='')
+                .workshop-img(style='background-image: url(/img/static/workshops/teaser3.png);' alt='')
+                  .workshop-inner
+                    img(src='/img/static/workshops/logo_ionic.png' alt='')
+                    .workshop-subtitle(style='border-color: #4e8ff7') Hybrid Apps with Ionic Framework
             .box-details
               a(href='/en/info/ionic')
                 h3.h4 Teaser Ionic
@@ -77,7 +88,10 @@ block content
           .box
             .box-image
               a(href='/en/info/angular-2')
-                img.img-responsive.workshop-img(src='/img/static/workshops/teaser_devm_angular_2.png' alt='')
+                .workshop-img(style='background-image: url(/img/static/workshops/teaser4.png);' alt='')
+                  .workshop-inner
+                    img(src='/img/static/workshops/logo_angular.png' alt='')
+                    .workshop-subtitle(style='border-color: #e23137') Modern Webapps with Angular 2
             .box-details
               a(href='/en/info/angular-2')
                 h3.h4 Teaser Angular 2
@@ -94,15 +108,16 @@ block content
 
     .container-light-gray
       .container
-        h2.h3.centered.vertical-space-m Recent workshops
+        h2.h3.centered.vertical-space-m Testimonials
         p.h5.centered Some claim that these are not workshops, but a state of mind.
-        .opinions-holder.row.vertical-space-m
+        .opinions-holder.row.vertical-space-ml
           .opinions-col
             .col-md-1.col-xs-2
-              img.img-responsive(src='/img/static/homepage/blake-s.jpg' alt='')
+              img.img-responsive(src='/img/static/homepage/blacke-s-big.jpg' alt='')
             .col-md-5.col-sm-4.col-xs-10
-              em.big
-                  | ...The tutorial format and mentoring was probably the best I've seen at a meetup of this kind so far. It was a very valuable experience!
+                p
+                  em
+                    | ...The tutorial format and mentoring was probably the best I've seen at a meetup of this kind so far. It was a very valuable experience!
                 p
                   a(href='http://www.meetup.com/Seattle-Devmeetings/events/226985992/#event_comment-458693701', target='_blank')
                     | meetup.com/Seattle-Devmeetings/events/...
@@ -113,9 +128,10 @@ block content
                   strong Ecmascript 6, Seattle, WA
           .opinions-col
             .col-md-1.col-xs-2
-              img.img-responsive(src='/img/static/homepage/tony-h.jpg' alt='')
+              img.img-responsive(src='/img/static/homepage/tony-h-big.jpg' alt='')
             .col-md-5.col-sm-4.col-xs-10
-              em.big
+                p
+                  em
                   | Thanks for the meetup! Excellent material and help from the organisers. Even though I had no experience in web development I was able to follow along and learned a lot.
                 p
                   a(href='http://www.meetup.com/AngularJS-Oslo/events/221099320/#event_comment-446442714', target='_blank')
@@ -129,9 +145,10 @@ block content
         .opinions-holder.row.vertical-space-s
           .opinions-col
             .col-md-1.col-xs-2
-              img.img-responsive(src='/img/static/homepage/hs.jpg' alt='')
+              img.img-responsive(src='/img/static/homepage/hs-big.jpg' alt='')
             .col-md-5.col-sm-4.col-xs-10
-              em.big
+                p
+                  em
                   | Awesome workshop.. thank you for doing yhis. It is a saturday very well spent...
                 p
                   a(href='http://www.meetup.com/Seattle-Devmeetings/events/222682646/#event_comment-451146648', target='_blank')
@@ -143,9 +160,10 @@ block content
                   strong AngularJS, Seattle, WA
           .opinions-col
             .col-md-1.col-xs-2
-              img.img-responsive(src='/img/static/homepage/paul-s.jpg' alt='')
+              img.img-responsive(src='/img/static/homepage/paul-s-big.jpg' alt='')
             .col-md-5.col-sm-4.col-xs-10
-              em.big
+                p
+                  em
                   | Great workshop! Looking forward to the next meetup ;)
                 p
                   a(href='http://www.meetup.com/AngularJS-Oslo/events/221099320/#event_comment-446456074', target='_blank')
@@ -161,20 +179,26 @@ block content
         .sub-footer-holder.row.vertical-space-m
           .col-md-4.col-sm-4
             h5
-              a(href='/en/info/about_devmeetings') About DevMeetings
+              a(href='/en/info/about_devmeetings')
+              img(src='/img/icon_pixels.png' alt='') 
+              | About DevMeetings
             p
               | DevMeetings is a full-day workshop – prepared by programmers with a passion. Since 2011, we have held more than 30 meetings, from Server-Side JavaScript through implementation of games in JavaScript to Responsive Web Design.
             p
               a(href='/en/info/about_devmeetings') More about DevMeetings >
           .col-md-4.col-sm-4
             h5
-              a(href='/en/info/pwyw') Pay What You Want
+              a(href='/en/info/pwyw')
+              img(src='/img/icon_pixels.png' alt='') 
+              | Pay What You Want
             p
               | The main idea of DevMeetings is to maximise availability of trainings. This is why we decided on the "Pay What You Want" model – you can take part completely free of charge or support the initiative by paying registration fee.
             p
               a(href='/en/info/pwyw') More about Pay What You Want >
           .col-md-4.col-sm-4
-            h5 Collaboration
+            h5
+              img(src='/img/icon_pixels.png' alt='') 
+              | Collaboration
             p
               | We are looking for speakers, sponsors and people who want to help with the organization of the meetings. Write to us if you want to support our initiative.
               | Contact: info (at) devmeetings (dot) pl
