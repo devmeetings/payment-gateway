@@ -108,6 +108,7 @@ a:hover h5 {
 }
 .navbar-default .navbar-nav.navbar-right > li.langs-first > a {
   padding-left: 15px;
+  margin-left: 20px;
 }
 .navbar-default .navbar-nav.navbar-right > li.langs.current a {
   color: #de272b;
@@ -348,8 +349,15 @@ h4 {
 .workshop-img {
   height: 293px;
   background-position: center center;
-  background-size: cover;
+  background-size: 100% auto;
   position: relative;
+  -ms-transition: all 0.4s ease;
+  -moz-transition: all 0.4s ease;
+  -webkit-transition: all 0.4s ease;
+  transition: all 0.4s ease;
+}
+.box:hover .workshop-img {
+  background-size: 110% auto;
 }
 .workshop-inner {
   position: absolute;
@@ -417,7 +425,7 @@ h4 {
 .footer h5,
 .footer h5 a {
   color: #fff;
-  font-size: 15px;
+  font-size: 14px;
 }
 .footer a,
 .footer-ul li a {
