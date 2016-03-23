@@ -13,7 +13,15 @@ script(async).
       if($(window).width() > 767) {
         sameHeight(".box", ".photostory-holder", true);
         sameHeight(".box", ".box-group", true);
+        sameHeight(".box", ".workshop-holder", true);
       }
+    });
+    $(window).scroll(function () {
+      if($(window).scrollTop() > 100) {
+          $("body").addClass("fixed");
+        } else {
+          $("body").removeClass("fixed");
+        }
     });
   });
 
