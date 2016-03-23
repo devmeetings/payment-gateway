@@ -30,13 +30,13 @@ block content
                         .row
                           .col-md-2.text-center
               .vertical-padding-s.visible-xs
-              h1 DevMeeting "ECMAScript 6
+              h1 DevMeeting "ECMAScript 6 / ES2015"
               div
                 p
-                  | Das DevMeetings Team lädt zu einem ganztägigen Treffen über EcmaScript 6 (Harmony) – der kommenden Version des Standards der JavaScript Sprache. Während des DevMeetings werden Sie die wichtigsten Konzepte der Sprache kennenlernen, eine komplette App unter Verwendung von ES6 schreiben und andere Developer, die ihr Abenteuer mit ES6 beginnen, sowie Mentoren, die schon heute Erfahrungen bei der Implementierung der App mit Anwendung dieser Version der Sprache haben, kennenlernen.
+                  | Das DevMeetings-Team lädt zum ganztägigen Workshop zum Thema EcmaScript 6 / ES2015 (Harmony) ein – der aktuellen Version des JavaScript-Standards. Während des DevMeetings werden wir die wichtigsten Konzepte der Sprache kennenlernen und eine komplette App unter Verwendung von ES6 entwickeln. Es wird auch eine Gelegenheit sein, andere Entwickler kennenzulernen, die mit ES2015 anfangen, sowie Mentoren, die schon heute über Erfahrungen mit der ES2015-Implementierung verfügen.
                 p Willkommen!
                   br
-                  em Piotr Zwoliński
+                  em Piotr Zwolinski
                 p Gründer von DevMeetings.pl
                   br 
                   | piotr (at) devmeetings (dot) org
@@ -44,20 +44,20 @@ block content
                 
                 h3 Warum ES6? 
                 p
-                  | EcmaScript 6, bekannt auch als EcmaScript 2015, ist die kommende Version des Standards ECMA, der die Grundlage solcher Sprachen wie JavaScript oder ActionScript ist. ES6 bringt wesentliche Änderungen im Verhältnis zu der vorherigen, 2009 veröffentlichten Version. Die Mehrheit der Firmen, die Browser herstellt bietet schon heute ein Teil neuer Funktionalitäten an, viele weiteren werden in Kürze hinzugefügt.
+                  | EcmaScript 6, bekannt auch als EcmaScript 2015, ist die aktuelle Version des ECMA-Standards, der die Grundlage für Sprachen wie JavaScript oder ActionScript schafft. ES6 bringt wesentliche Änderungen im Verhältnis zu der vorherigen Version aus 2009. Die meisten Browser bieten schon heute teilweise Unterstützung für die neuen Features der Sprache, viele weiteren werden in Kürze berücksichtigt.
                 p 
-                  em Die Organisation ECMA rollt vor uns einen Teppich aus. Einen Teppich, auf dem ich und Sie bald schreiten werden. Für heute wurde er noch nicht ganz ausgerollt, deswegen – wenn Sie fühlen möchten, wie man auf ihm läuft – müssen Sie Linoleum nutzen, das nur ein bescheidener Ersatz ist. Linoleum ist in dieser Geschichte Transpiler, z.B. 
+                  em Die ECMA-Organisation rollt vor uns einen Teppich aus. Einen Teppich, auf dem wir bald schreiten werden. Für heute wurde er noch nicht ganz ausgerollt, deswegen – wenn wir das Gefühl bekommen wollen, wie man auf ihm läuft – muss Linoleum genutzt werden, das nur ein bescheidener Ersatz ist. Linoleum ist in dieser Geschichte ein Transpiler, z.B. 
                   a(href='https://babeljs.io/', target='_blank') Babel.js 
                   em oder 
                   a(href='https://github.com/google/traceur-compiler', target='_blank') Traceur. 
-                  em Teppich ist ECMAScript 6.
+                  em Der Teppich ist ECMAScript 6.
                 p.vertical-space-s
                   img.img-responsive.workshop-img(src='/img/static/workshops/es6-seattle.jpg' alt='')
                 h3 Agenda
                 p
                   | Während des DevMeetings werden Sie folgende Konzepte der Sprache ES6 kennenlernen:
                 p
-                  strong Variablen, Tafeln und Objekte
+                  strong Variablen, Arrays und Objekte
                   ul
                     li
                       strong let  
@@ -66,10 +66,10 @@ block content
                       | statt var
                     li
                       strong Blöcke 
-                      | und Variablenumfang
+                      | und Variablensichtbarkeit
                     li
                       strong spread
-                      | , d.h. einfachere Operationen auf Listen
+                      | , - einfachere Operationen auf Listen
                     li
                       strong destructuring assignment
                       | , der einfachere Nutzung der Objekte erlaubt
@@ -77,7 +77,7 @@ block content
                   strong Funktionen:
                   ul
                     li
-                      | voreingestellte Parameter
+                      | voreingestellte / default Parameter
                     li
                       | Gruppierung der Parameter
                     li
@@ -92,7 +92,7 @@ block content
                       strong Symbole 
                       | und private Variablen
                     li
-                      | Holen und Setzen der Daten (
+                      | Lesen und Setzen der Daten (
                       strong Getters 
                       | und 
                       strong Setters
@@ -124,11 +124,12 @@ block content
                       | Generatoren
                     li
                       | Promises
+                h3 Beispielthemen
                 p 
-                  | Beispielhafte Themen: Lohnt es sich, sich mit EcmaScript 6 anzufreunden? Unten stellen wir zwei beispielhafte Elemente der Sprache, die während des DevMeetings erscheinen.
+                  | Lohnt es sich, mit EcmaScript 6 sich anzufreunden? Wir stellen beispielhafte Elemente der Sprache vor, die während des DevMeetings tiefer eingegangen werden.
                 h5 Block Scope
                 p
-                  | Bisher existierte im JS nur ein Variablenbereich – die Funktion. Deswegen nutzen wir im Beispiel mit ES5 einen Trick – eine sich selbstausführende Funktion – um eine private Variable zu bilden, die die Funktion durch den Funktionsabschluss (closure) nutzen kann. Statt der Funktion nutzt man im ES6 den 
+                  | Bisher existierte im JS nur ein Variablenbereich – die Funktion. Deswegen nutzen wir im JS-Beispiel (links) einen Trick – eine sich selbstausführende Funktion – um eine private Variable zu bilden, die die Funktion durch den Funktionsabschluss (closure) nutzen kann. Im ES6 nutzt man statt der Funktion, den 
                   strong Block {} 
                   | und 
                   strong let 
@@ -137,56 +138,60 @@ block content
                   img.img-responsive.workshop-img(src='/img/static/workshops/es6/snippet_es6_block_scope.jpg' alt='')
                 h5 Klassen
                 p
-                  | Sowohl im JS als auch im ES6 gibt es keine echten Klassen – die ganze Vererbung wird mit Hilfe von 
+                  | Sowohl im JS als auch im ES6 gibt es keine echten Klassen – die Vererbung wird mit Hilfe von 
                   strong Prototypen 
-                  | ausgeführt. Es ist sehr gut am unten angeführten, in JS geschriebenen Beispiel sichtbar, wo wir uns die Konstrukteur-Funktion definieren und die Methoden zu ihrem Prototyp hinzufügen. ES6 ändert diese Wirkungsweise nicht, ermöglicht jedoch die Nutzung einer schöneren und mehr dursichtigen Syntax.
+                  | ausgeführt. Es ist in dem JS Beispiel sehr gut sichtbar: wir definieren die Constructor-Funktion  und fügen die Methoden zu ihrem Prototyp hinzu. ES6 ändert diese Wirkungsweise nicht, ermöglicht jedoch die Nutzung einer schöneren und mehr dursichtigen Syntax (sogenanntes Syntactic Sugar).
                 p
                   img.img-responsive.workshop-img(src='/img/static/workshops/es6/snippet_es6_classes.jpg' alt='')
 
                 h3#100-praktyki 100% Praxis
                 p
-                  | Das DevMeeting beruht auf der Implementierung einer Beispiel-App, bei der Sie die obenerwähnten Funktionalitäten der Sprache kennenlernen und die gewonnenen Kenntnisse in der Praxis werden einsetzen können.
+                  | Das DevMeeting basiert auf Implementierung einer kleinen, aber kompletten Beispiel-App, bei der wird die obenerwähnten Funktionalitäten der Sprache kennenlernen und die vorgestellten Konzepte in der Praxis einsetzen werden.
                 p
-                  | Das DevMeeting beruht auf der Implementierung einer Beispiel-App, bei der Sie die obenerwähnten Funktionalitäten der Sprache kennenlernen und die gewonnenen Kenntnisse in der Praxis werden einsetzen können.
+                  | Diesmal haben wir zwei unterschiedliche Apps für Euch vorbereitet: die Teilnehmer werden eine davon auswählen, um sie selbst in Teams und mit Unterstützung der Mentoren entwickeln werden.
                 .row.vertical-space-m
                   .col-sm-6
                     img.img-responsive.workshop-img(src='/img/static/workshops/es6/app_es6_tinder.png' alt='')
                   .col-sm-6
                     h5 App 1: DevTinder
                     p
-                      | Maximal vereinfachter Klon des Services Tinder. Der Nutzer kann präsentierte Fotos browsen und beurteilen.
+                      | Maximal vereinfachter Klon der Tinder-App. Der Nutzer kann angezeigte Fotos browsen und beurteilen.
                 .row.vertical-space-m
                   .col-sm-6
                     img.img-responsive.workshop-img(src='/img/static/workshops/es6/app_es6_maps.png' alt='')
                   .col-sm-6
                     h5 App 2: PlacesRating
                     p
-                      | App im Stil von Foursquare, die mit Nutzung der Google Maps die Möglichkeit der Markierung und Beurteilung der Orte auf der ganzen Welt gibt.
+                      | App ähnlich zum Foursquare: mit Nutzung von Google Maps können Orte markiert und beurteilt werden.
 
-                h3.vertical-space-m#informacje-praktyczne Praktische Informationen
+                h3#informacje-praktyczne Praktische Informationen
                 p
                   strong Wo:
-                  |  Konferenzsaal im Stadtzentrum, genaue Lokalisierung wird an die Teilnehmer gesendet.
+                  |  Veranstaltungsort im Stadtzentrum, genaue Locations wird an den Teilnehmern mitgeteilt.
                 p
                   strong Wann:
                   |   Samstag, den 10. Oktober 2015, Beginn um 9:00 (bitte etwa um 8:45 anzukommen), Ende etwa 16:00.
                 p
                   strong Was soll man mitbringen:
-                  |  Laptop mit installiertem Google Chrome + Netzteil. Wenn sie ein Android Device (Tablet, Telefon) besitzen, nehmen sie es mit.
+                  |  Bring Your Own Laptop (mit installiertem Google Chrome).
+                p
+                  strong Wie soll man sich vorbereiten:
+                  |  Jeder Teilnehmer soll vor dem Workshop die Kernkonzepte von ES6 / ES2015 und TypeScript kennenlernen
                 p
                   strong Teilnahmekosten
                   | : Teilnahme im Modell Pay What You Want. 
                   a(href='/de/info/pwyw', target='_blank') Mehr Informationen hier. 
-                  |  Für Personen, die 100 PLN einzahlen – hoher Qualität gedrucktes Teilnahmezertifikat.
+                  |  Für Personen, die 100 Eur einzahlen – in hoher Qualität gedrucktes Teilnahmezertifikat.
+                 
                 h3 Was ist DevMeeting?
                 p
-                  | DevMeeting ist ein Mix von Hackathon und Programmierungswerkstätten. Den ganzen Tag lang implementieren die Teilnehmer eine beispielhafte App – selbstständig und in Teams. Die sachliche Seite wird durch erfahrene Mentoren beaufsichtigt, die die ganze Zeit zur Hilfe stehen, Diskussionen provozieren und ihr praktisches Wissen weitergeben.
+                  | DevMeeting ist ein Mix von Hackathon und Workshop. Den ganzen Tag lang implementieren die Teilnehmer eine Beispiel-App – selbstständig und in Teams. Die fachliche Seite wird durch erfahrene Mentoren beaufsichtigt, die die ganze Zeit zur Hilfe stehen, Diskussionen provozieren und ihr praktisches Wissen weitergeben.
 
                 p
-                  | DevMeeting ist weder eine Vorlesung noch eine klassische Schulung. Wir setzen auf die Praxis, Codierung und Wissen- und Erfahrungsaustausch. Es ist auch eine hervorragende Gelegenheit, andere Programmierer kennenzulernen und wertvolle Kontakte mit Developern aus Ihrer Stadt aufzunehmen.
+                  | DevMeeting ist weder eine Vorlesung noch eine klassische Schulung. Wir setzen auf die Praxis, Coding und Wissen- und Erfahrungsaustausch. Es ist auch eine hervorragende Gelegenheit, andere Entwickler kennenzulernen und wertvolle Kontakte mit Developern zu knüpfen.
 
                 p
-                  | Wenn Sie die Atmosphäre des DevMeetings schnuppern möchten, besuchen Sie 
+                  | Willst Du die Atmosphäre eines DevMeetings spüren? Schau Dir das Video on:  
                   a(href='https://www.youtube.com/watch?v=t4zh2gII5J8', target='_blank') YouTube 
                   | (Film vom DevMeeting am 9. Mai 2015, Node.JS).
                 

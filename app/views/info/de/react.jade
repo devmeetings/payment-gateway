@@ -33,91 +33,93 @@ block content
               h1 React + Redux
               div
                 p
-                  | Das DevMeetings Team lädt zu einer ganztägigen Werkstatt über React mit Redux.
+                  | Das DevMeetings-Team lädt zu einem ganztägigen Workshop zum Thema React + Redux.
                 h3 Warum sollte man sich überhaupt für React interessieren?
                 p
-                  | Der seit vielen Jahren genutzte MVC beginnt bei einer größeren Skala der App Probleme, die mit dem Zustand der Daten verbunden sind, zu generieren. Wie kann man, wenn es mehrere Modelle gibt, die sich miteinander verbinden, auf einfache Weise erfahren, unter welchen Bedingungen sie sich inkorrekt verhalten? Wie kann man mit der Aktualisierung der Modelle zurechtkommen, wenn sie durch viele asynchrone Ereignisse modifiziert werden können?
+                  | Der seit vielen Jahren genutzte MVC beginnt bei einer größeren Skala der App Probleme zu generieren, die mit dem Zustand der Daten verbunden sind. Wie kann man, wenn es mehrere Modelle gibt, (die sich miteinander verbinden), auf einfache Weise erfahren, unter welchen Bedingungen sie sich inkorrekt verhalten? Wie kann man mit der Aktualisierung der Modelle zurechtkommen, wenn sie durch viele asynchrone Ereignisse modifiziert werden können?
                 h3 Flux? Redux?
                 p
-                  | Lösung des Problems scheint Flux und insbesondere seine konkrete Implementation (Redux) zu sein. Zum Rendering der Elemente selbst nutzen wir die Komponenten des React, der weiterhin eine der effektivsten Lösungen zum Generieren von UI bleibt. Die Ganzheit liefert solide Grundlagen zum Erzeugen skalierbarer Apps vom Typ SPA.
+                  | Die Lösung des Problems scheint Flux und insbesondere seine konkrete Implementation Redux zu sein. Zum Rendering der Elemente nutzen wir die React-Komponenten, der weiterhin eine der effektivsten Lösungen zum Generieren des User Interfaces bleiben. React + Redux zusammen liefern solide Grundlagen zur Entwicklung von skalierbaren Single Page Applications.
                 p
-                  | Während des DevMeetings lernen Sie sowohl den React, als auch den Redux kennen – und Sie werden das erzielte Wissen praktisch umsetzen, indem Sie eine simple App vom Typ Internetshop implementieren werden.
+                  | Während des DevMeetings lernst Du sowohl React, als auch Redux kennen. Die beigebrachten Konzepte wirst Du sofort am Beispiel eine kleinen, aber kompletten App (Webshop) einsetzen.
                 p Herzlich willkommen!
                 p
                   em Das DevMeetings Team
                 h3#dlaczego-react- Warum React?
                 p
-                  | Es lohnt sich, sich für React zu interessieren, weil es immer mehr populäre Bibliothek ist, die durch breite Kreise der Front-End Developer in der ganzen Welt verwendet wird.
+                  | Es lohnt sich, sich für React zu interessieren, weil es immer mehr an Popularität gewinnt.
                 ul
                   li
-                    | Bibliothek zum Erzeugen effektiver, aus Komponenten aufgebauter Nutzer-Interfaces.
-                  li Simpel zum Lernen und einfach implementierbar auch in schon bestehenden Systemen.
+                    | Bibliothek zur Entwicklung effizienter User-Interfaces, die auf Komponenten basieren.
+                  li Einfach zum Lernen und einfach implementierbar (auch in bereits laufenden Projekten).
                   li
-                    | Intuiver Lebenszyklus der Komponenten erlaubt das Funktionieren der App einfach zu verstehen. 
+                    | Intuiver Lebenszyklus der Komponenten macht es einfach zu vestehen, wie die App funktioniert.
                   li
-                    | React als Bibliothek zwingt weder das Ökosystem noch Nutzung konkreter Tools auf.
+                    | React als Bibliothek zwingt nicht dazu, konkrete Tools zu verwenden.
                   li
-                    | React nutzt im vollen Umfang die Macht des JavaScripts; der hochentwickelte, Operationen auf DOM reduzierende Algorithmus in Verbindung mit einfacher Optimierung ist eine hervorragende Grundlage für hochinteraktive Interfaces.
+                    | React nutzt im vollen Umfang die Macht der JavaScript-Sprache. Der fortgeschrittenen Reduction-Algorithmus Verbindung mit einfacher Optimierung ist eine hervorragende Grundlage für hochinteraktive Interfaces.
                   li
-                    | Vom Facebook erzeugt und außerhalb der Community durch solche Firmen wie etflix unterstützt, ist er eine sichere und bewährte Developer-Plattform. 
+                    | Gebaut von Facebook-Entwicklern und unterstützt durch Firmen wie Netflix, ist er eine sichere und bewährte Developer-Plattform. 
                   li Einfach zum Erweitern und Managen.
                   li Hervorragende Fehlertipps und Warnungen.
                   li
-                    | Hat wohlüberdachte API, die sich wenig verändert; zu höheren Versionen simpel aktualisierbar.
+                    | Hat gut durchdachte API, die sich wenig verändert. Simpel aktualisierbar zu höheren Versionen.
                   li
-                    | Es gibt Lösungen, die die Nutzung der Komponenten auf anderen Plattformen – iOS, Android – ermöglichen.
+                    | Es gibt Lösungen, die die Nutzung der Komponenten auf anderen Plattformen (iOS, Android) ermöglichen.
                 h4#-nbsp-  
                 h3#dlaczego-redux- Warum Redux?
                 p
-                  | Redux ist ein durch Flux und Elm inspirierter Container des App-Zustands – Zutritt zum Programm ist sehr einfach und der Nutzen aus der Anwendung sehr groß.
+                  | Redux ist ein App-Zustands-Container, inspiriert durch Flux und Elm. Einsteigen in die Technologie ist sehr einfach und gleichzeitig ist bringt sie großes Nutzen.
                 ul
                   li
-                    | Hat Unterstützung für Hot Reloading und Time Travel Debugger, den wir in unserer App während der Werkstätten implementieren werden.
+                    | Hat Unterstützung für Hot Reloading und Time Travel Debugger, die wir in unserer App während des Workshops implementieren werden.
                   li
-                    | Durch Nutzung eines einzelnen Containers und der sog. Reducer ist er von den Fehlern und Kompliziertheit des Flux frei.
+                    | Frei den Fehlern und Komplexität von Flux - durch Nutzung eines einzelnen Containers und der sog. Reducers.
                   li
-                    | Ermuntert zur Nutzung immutabler Datenstrukturen, was sich direkt in Effektivität umsetzt, vor allem jedoch das Debuggen vereinfacht. 
+                    | Fürdert die Nutzung von immutabler Datenstrukturen, was sowohl direkten Einfluss auf Effizienz hat, als auch das Debuggen vereinfacht. 
                   li
-                    | Es kann mit einer beliebigen Bibliothek oder Framework verwendet werden – unabhängig davon, ob man Angular, Reacta oder vue.js lieber mag.
+                    | Es kann mit einer beliebigen Bibliothek oder Framework verwendet werden – ausser React auch mit  Angular oder vue.js.
                   li
-                    | Ist von komplizierten Verhältnissen zwischen den Daten, die bei größerer Anzahl der Container, in solchen Bibliotheken wie Alt.js, auftreten, frei.
-                  li Ist populär und wird von der Mehrheit der Teams, die Apps in React erzeugen, gewählt.
+                    | Ist frei von komplizierten Aäbhängigkeiten zwischen Daten, die bei größerer Anzahl der Container (wie in Alt.js) auftreten.
+                  li Ist populär und wird von der Mehrheit der Teams gewählt, die Apps in React entwickeln.
                 h4#-nbsp-  
                 h3#100-praktyki 100% Praxis
                 p
-                  | Während der Werkstätten werden die Teilnehmer von Null an einen simplen Internetshop erzeugen und die besprochenen Tools durch Konfrontation mit realen Problemen, kennenlernen – solchen wie:
+                  | Während des Workshops werden die Teilnehmer von Null an einen simplen Internetshop entwickeln und die besprochenen Tools durch Konfrontation mit realen Problemen, kennenlernen – solchen wie:
                 ul
-                  li Erzeugung der ersten Komponente
-                  li Teilung der App auf viele Komponenten
+                  li Implementierung der ersten Komponente
+                  li Verteilung der App auf viele Komponenten
                   li Zustand der Komponente
-                  li Ereigniserfassung
+                  li Abfangen der Events
                   li Redux
-                  li Kommunikation mit API
+                  li Kommunikation mit APIs
                 h4#-nbsp-  
+
                 h3#informacje-praktyczne Praktische Informationen
                 p
                   strong Wo:
-                  |  Konferenzsaal im Stadtzentrum, genaue Lokalisierung wird an die Teilnehmer gesendet.
+                  |  Veranstaltungsort im Stadtzentrum, genaue Locations wird an den Teilnehmern mitgeteilt.
                 p
                   strong Wann:
                   |   Samstag, den 10. Oktober 2015, Beginn um 9:00 (bitte etwa um 8:45 anzukommen), Ende etwa 16:00.
                 p
                   strong Was soll man mitbringen:
-                  |  Laptop mit installiertem Google Chrome + Netzteil. Wenn sie ein Android Device (Tablet, Telefon) besitzen, nehmen sie es mit.
+                  |  Bring Your Own Laptop (mit installiertem Google Chrome).
                 p
                   strong Teilnahmekosten
                   | : Teilnahme im Modell Pay What You Want. 
-                  a(href='/de/info/pwyw', target='_blank') Mehr Informationen hier.
-                  |  Für Personen, die 100 PLN einzahlen – hoher Qualität gedrucktes Teilnahmezertifikat.
+                  a(href='/de/info/pwyw', target='_blank') Mehr Informationen hier. 
+                  |  Für Personen, die 100 Eur einzahlen – in hoher Qualität gedrucktes Teilnahmezertifikat.
+                 
                 h3 Was ist DevMeeting?
                 p
-                  | DevMeeting ist ein Mix von Hackathon und Programmierungswerkstätten. Den ganzen Tag lang implementieren die Teilnehmer eine beispielhafte App – selbstständig und in Teams. Die sachliche Seite wird durch erfahrene Mentoren beaufsichtigt, die die ganze Zeit zur Hilfe stehen, Diskussionen provozieren und ihr praktisches Wissen weitergeben.
+                  | DevMeeting ist ein Mix von Hackathon und Workshop. Den ganzen Tag lang implementieren die Teilnehmer eine Beispiel-App – selbstständig und in Teams. Die fachliche Seite wird durch erfahrene Mentoren beaufsichtigt, die die ganze Zeit zur Hilfe stehen, Diskussionen provozieren und ihr praktisches Wissen weitergeben.
 
                 p
-                  | DevMeeting ist weder eine Vorlesung noch eine klassische Schulung. Wir setzen auf die Praxis, Codierung und Wissen- und Erfahrungsaustausch. Es ist auch eine hervorragende Gelegenheit, andere Programmierer kennenzulernen und wertvolle Kontakte mit Developern aus Ihrer Stadt aufzunehmen.
+                  | DevMeeting ist weder eine Vorlesung noch eine klassische Schulung. Wir setzen auf die Praxis, Coding und Wissen- und Erfahrungsaustausch. Es ist auch eine hervorragende Gelegenheit, andere Entwickler kennenzulernen und wertvolle Kontakte mit Developern zu knüpfen.
 
                 p
-                  | Wenn Sie die Atmosphäre des DevMeetings schnuppern möchten, besuchen Sie 
+                  | Willst Du die Atmosphäre eines DevMeetings spüren? Schau Dir das Video on:  
                   a(href='https://www.youtube.com/watch?v=t4zh2gII5J8', target='_blank') YouTube 
                   | (Film vom DevMeeting am 9. Mai 2015, Node.JS).
                 
