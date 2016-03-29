@@ -52,6 +52,7 @@ h5, .h5 {
   margin-top: 10.5px;
   margin-bottom: 10.5px;
 }
+
 .text-thin {
   font-weight: 300;
 }
@@ -253,6 +254,17 @@ hr {
   margin-bottom: 0;
 }
 
+.box-white {
+  background: #fff;
+}
+.box-blue {
+  background: #3379b7;
+  color: #fff;
+}
+.box-blue * {
+  color: inherit;
+}
+
 .event {
   padding-top: 20px;
 }
@@ -327,7 +339,7 @@ h4 {
   font-size: 19px;
   line-height: 25px;
   margin-top: 14px;
-  margin-bottom: 10.5px;
+  margin-bottom: 15px;
 }
 
 .box {
@@ -345,6 +357,57 @@ h4 {
 .box-details p {
   font-size: 13px;
   line-height: 20px; 
+}
+
+.photostory-holder .box {
+	box-shadow: 1px 1px 4px #d5d5d5;
+	padding: 3px;
+}
+
+.photostory-holder h4 {
+	font-size: 15px;
+	color: #3379b7;
+}
+.photostory-holder h4 a {
+	color: inherit;
+}
+
+.offer-holder > div {
+  padding-left: 5px;
+  padding-right: 5px;
+}
+.offer-holder > .col-md-1 {
+  padding-left: 0px;
+  padding-right: 0px;
+}
+.offer-holder .box {
+  text-align: center;
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-bottom: 35px;
+  box-shadow: 1px 1px 4px #d5d5d5;
+}
+.offer-holder .box h5 {
+  margin-bottom: 20px;
+}
+.offer-holder .box p {
+  margin-left: 30px;
+  margin-right: 30px;
+}
+.offer-or {
+  vertical-align: middle;
+}
+.offer-or img {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -moz-transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  -webkit-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+  width: 45px;
+  max-width: 100%;
+  height: auto;
 }
 
 .text-darkblue {
@@ -411,7 +474,8 @@ h4 {
 .founder-holder h4 {
   margin-top: -5px;
 }
-.opinions-col img {
+.opinions-col img,
+.founder-col img {
   width: 100%;
   height: auto;
   border-radius: 50%;
@@ -446,6 +510,9 @@ h4 {
   margin-top: 10px;
 }
 
+.features:last-of-type {
+	margin-bottom: 40px;
+}
 .features i {
   font-size: 55px;
   margin-bottom: 5px;
@@ -575,6 +642,24 @@ h4 {
   .opinions-col .col-md-1 {
       padding-left: 15px;
       padding-right: 5px;
+  }
+  .offer-or {
+    text-align: center;
+    padding: 10px 0;
+  }
+  .offer-or img {
+    position: static;
+    -moz-transform: none;
+    -ms-transform: none;
+    -webkit-transform: none;
+    transform: none;
+    display: inline-block;
+    width: 45px;
+    max-width: 100%;
+    height: auto;
+  }
+  .offer-holder .box {
+    margin-bottom: 0px;
   }
   .box {
     margin-bottom: 40px;

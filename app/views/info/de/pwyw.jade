@@ -3,59 +3,88 @@ extends ../../layout-de
 block content
   
   .container-full
-    .container
-      h1.h2.centered.vertical-space-m Pay What You Want
-      p.h4.centered
-        | Hauptvoraussetzung der DevMeetings ist ihre Zugänglichkeit – wenn Sie ein leidenschaftlicher Developer sind, laden wir Sie herzlich ein, unabhängig von der Dicke Ihrer Brieftasche!
-      .row.vertical-space-s
-        .col-md-6
-          h5
-            | Kostenlose Teilnahme
-          p
-            | Kostenlose Teilnahme ist durchaus möglich, selbstverständlich ermutigen wir zur Unterstützung der Initiative, weil die Veranstaltung der Werkstätten sowohl viel Zeit als auch Geld in Anspruch nimmt.
-        .col-md-6
-          h5
-            | Show us your love!
-          p
-            | Wir werden uns freuen, wenn Sie für die Teilnahme die DevMeetings-Initiative unterstützen! Bei der Registrierung zu den Werkstätten werden wir Sie bitten, eine Summe zu deklarieren, die Sie für die Teilnahme bereit wären zu zahlen: im Bereich von  0 PLN bis 300 PLN für einen vollen Schulungstag. Zahlung: gegenwärtig mit Überweisung oder bar am Ort. Sie erhalten eine Rechnung (mit ausgewiesener MwSt.).
-            
-    .container-light-gray.vertical-space-m
+    .container-light-gray
       .container
-        h3.centered.vertical-space-m Was kostet uns die Veranstaltung der Werkstätten?
-        .row.vertical-space-m
-          .col-md-4
-            h5
-              | Vorbereitung des Materials
-            p
-              | Vorbereitung eines professionellen Schulungsmaterials: ca. 10-20 Arbeitstage eines erfahrenen Trainers.
-          .col-md-4
-            h5
-              | Anreise, Übernachtung des Trainers
-            p
-              | Oft reisen die Trainer zum DevMeeting aus einer anderen Stadt an – es generiert Reise- und Übernachtungskosten. Wir wollen nicht, dass der Trainer Werkstätten nach einer Nachtreise aus dem anderen Ende Polens führt!
-          .col-md-4
-            h5
-              | Schulungssaal
-            p
-              | Vermietung eines Saals für ca. 30 Teilnehmer. DevMeetings finden in komfortablen, professionellen Bedingungen statt. 
-        .row
-          .col-md-4
-            h5
-              | Trainer
-            p
-              | Außer Verwendung eines ganzen Tages für die Führung der Schulung (plus event. Anreise), braucht der Trainer viel Zeit für die Vorbereitung der Schulung.
-          .col-md-4
-            h5
-              | Catering
-            p
-              | Kalte und warme Getränke, Snacks, Kekse während der ganzen Zeit des DevMeetings. Pizza zum Lunch.
-          .col-md-4
-            h5
-              | Organisation
-            p
-              | Organisation und Verwaltung des „Drumherums“: Abwicklung der Registrierung, Führung der Seite, FB-Profil, Trainersuche, Marketing usw. nimmt unserem Team Dutzende von Stunden ein.
-        .vertical-space-l
-        .vertical-space-l      
+        h1.h2.centered.vertical-space-m Pay What You Want
+        p.h4.text-thin.centered
+          | Hauptvoraussetzung der DevMeetings ist ihre Zugänglichkeit 
+          br
+          | laden wir Sie herzlich ein, 
+          strong unabhängig von der Dicke Ihrer Brieftasche!
+        .row.vertical-space-s.offer-holder
+          .col-sm-4.box-wrapper
+            .box.box-white
+              img(src='/img/workshop_logo_rwd_small.png' alt='PayU')
+              h5
+                | Kostenlose Teilnahme
+              p
+                strong Kostenlose Teilnahme ist durchaus möglich, 
+                | selbstverständlich ermutigen wir zur Unterstützung der Initiative, weil die Veranstaltung der Werkstätten sowohl viel Zeit als auch Geld in Anspruch nimmt.
+          .col-sm-1.box-wrapper.offer-or
+            img.img-responsive(src='/img/or.png' alt='OR')
+          .col-sm-7.box-wrapper
+            .box.box-blue
+              img(src='/img/workshop_logo_rwd_small.png' alt='PayU')
+              h5
+                | Show us your love!
+              p
+                | Wir werden uns freuen
+                strong wenn Sie für die Teilnahme die DevMeetings-Initiative unterstützen!
+                | Bei der Registrierung zu den Werkstätten werden wir Sie bitten, eine Summe zu deklarieren, die Sie für die Teilnahme bereit wären zu zahlen: 
+                strong im Bereich von  0 PLN bis 300 PLN 
+                | für einen vollen Schulungstag.
+              p Zahlung: gegenwärtig mit Überweisung oder bar am Ort. Sie erhalten eine Rechnung (mit ausgewiesener MwSt.).
+    .container
+      h3.centered.vertical-space-m Was kostet uns die Veranstaltung der Werkstätten?
+      .row.vertical-space-m.features
+        .col-sm-4.text-center
+          i.fa.fa-cogs
+          h4
+            | Vorbereitung des Materials
+          p
+            strong Vorbereitung eines professionellen Schulungsmaterials: 
+            | ca. 10-20 Arbeitstage eines erfahrenen Trainers.
+        .col-sm-4.text-center
+          i.fa.fa-cogs
+          h4
+            | Trainer
+          p
+            | Außer Verwendung eines ganzen Tages für die Führung der Schulung (plus event. Anreise), 
+            strong braucht der Trainer viel Zeit für die Vorbereitung der Schulung.
+        .col-sm-4.text-center
+          i.fa.fa-cogs
+          h4
+            | Catering
+          p
+            | Kalte und warme 
+            strong Getränke, Snacks, Kekse 
+            | während der ganzen Zeit des DevMeetings. 
+            strong Pizza zum Lunch. 
+      .row.features.vertical-space-m
+        .col-sm-4.text-center
+          i.fa.fa-cogs
+          h4
+            | Anreise, Übernachtung des Trainers
+          p
+            | Oft reisen die Trainer zum DevMeeting aus einer anderen Stadt an – es generiert  
+            strong Reise und Übernachtungskosten 
+            | Wir wollen nicht, dass der Trainer Werkstätten nach einer Nachtreise aus dem anderen Ende Polens führt!
+        .col-sm-4.text-center
+          i.fa.fa-cogs
+          h4
+            | Organisation
+          p
+            | Organisation und Verwaltung des „Drumherums“: 
+            strong Abwicklung der Registrierung, Führung der Seite, FB-Profil, Trainersuche, Marketing usw. nimmt unserem Team Dutzende von Stunden ein.
+        .col-sm-4.text-center
+          i.fa.fa-cogs
+          h4
+            | Schulungssaal
+          p
+            strong Vermietung eines Saals für ca. 30 Teilnehmer.  
+            | DevMeetings finden in komfortablen, professionellen Bedingungen statt. 
+            
+      .vertical-space-l
 
 
 

@@ -3,57 +3,87 @@ extends ../../layout-en
 block content
   
   .container-full
-    .container
-      h1.h2.centered.vertical-space-m Pay What You Want
-      p.h4.centered
-        | The main idea of DevMeetings is their availability – regardless of your wealth, if you are a developer with a passion, join us!
-      .row.vertical-space-s
-        .col-md-6
-          h5
-            | Participation free of charge
-          p
-            | Free of charge participation is absolutely possible, although of course, we encourage you to support the initiative since preparing trainings is consuming both time and money.
-        .col-md-6
-          h5
-            | Show us your love!
-          p
-            | We will be glad if in return for the opportunity to participate you will support the DevMeetings initiative! During a registration for a workshop we will ask you to declare how much you are willing to spend on participation: between 0 and 300 PLN per training day. Payment: currently you can pay via a bank transfer or with cash in the training location. You will receive a VAT invoice.
-    .container-light-gray.vertical-space-m
+    .container-light-gray
       .container
-        h2.centered.vertical-space-m What are our costs of organising workshops?
-        .row.vertical-space-m
-          .col-md-4
-            h5
-              | Preparing materials
-            p
-              | Preparing professional training material: approx. 10-20 of work days of experienced coach.
-          .col-md-4
-            h5
-              | Transport and accommodation for a coach
-            p
-              | Often coaches come to DevMeeting from another cities – which results in costs of travel and accommodation. We do not want our coaches to conduct workshops after an overnight travel from the other end of Poland!
-          .col-md-4
-            h5
-              | Training room
-            p
-              | Renting a training room for approx. 30 participants. DevMeetings take place in comfortable, professional environment.
-        .row
-          .col-md-4
-            h5
-              | Coach
-            p
-              | A coach, in addition to dedicating a whole day to conducting workshops (and possibly transport), spends a lot of time preparing for training.
-          .col-md-4
-            h5
-              | Catering
-            p
-              | Hot and cold drinks, snacks, cookies available throughout the whole DevMeeting. Pizza for lunch.
-          .col-md-4
-            h5
-              | Organisation
-            p
-              | Members of our team spend dozens of hours on organisation and administration of "everything around": managing registration, editing website and FB profile, looking for coaches, marketing, etc.
-        .vertical-space-m       
+        h1.h2.centered.vertical-space-m Pay What You Want
+        p.h4.text-thin.centered
+          | The main idea of DevMeetings is their availability 
+          br
+          | – regardless of your wealth, 
+          strong if you are a developer with a passion, join us!
+        .row.vertical-space-s.offer-holder
+          .col-sm-4.box-wrapper
+            .box.box-white
+              img(src='/img/workshop_logo_rwd_small.png' alt='PayU')
+              h5
+                | Participation free of charge
+              p
+                strong Free of charge participation is absolutely possible, 
+                | although of course, we encourage you to support the initiative since preparing trainings is consuming both time and money.
+          .col-sm-1.box-wrapper.offer-or
+            img.img-responsive(src='/img/or.png' alt='OR')
+          .col-sm-7.box-wrapper
+            .box.box-blue
+              img(src='/img/workshop_logo_rwd_small.png' alt='PayU')
+              h5
+                | Show us your love!
+              p
+                | We will be glad if in return for the opportunity to participate you
+                strong will support the DevMeetings initiative!
+                | During a registration for a workshop we will ask you to declare how much you are willing to spend on participation: 
+                strong between 0 and 300 PLN 
+                | per training day.
+              p Payment: currently you can pay via a bank transfer or with cash in the training location. You will receive a VAT invoice.
+    .container
+      h2.centered.vertical-space-m What are our costs of organising workshops?
+      .row.vertical-space-m.features
+        .col-sm-4.text-center
+          i.fa.fa-cogs
+          h4
+            | Preparing materials
+          p
+            strong Preparing professional training material: 
+            | approx. 10-20 of work days of experienced coach.
+        .col-sm-4.text-center
+          i.fa.fa-cogs
+          h4
+            | Coach
+          p
+            | A coach, in addition to dedicating a whole day to conducting workshops (and possibly transport), 
+            strong spends a lot of time preparing for training.
+        .col-sm-4.text-center
+          i.fa.fa-cogs
+          h4
+            | Catering
+          p
+            | Hot and 
+            strong cold drinks, snacks, cookies 
+            | available throughout the whole DevMeeting. 
+            strong Pizza for lunch.
+      .row.features.vertical-space-m
+        .col-sm-4.text-center
+          i.fa.fa-cogs
+          h4
+            | Transport and accommodation for a coach
+          p
+            | Often coaches come to DevMeeting from another cities – which results in 
+            strong costs of travel and accommodation. 
+            | We do not want our coaches to conduct workshops after an overnight travel from the other end of Poland!
+        .col-sm-4.text-center
+          i.fa.fa-cogs
+          h4
+            | Organisation
+          p
+            | Members of our team spend dozens of hours on organisation and administration of "everything around": 
+            strong managing registration, editing website and FB profile, looking for coaches, marketing, etc.
+        .col-sm-4.text-center
+          i.fa.fa-cogs
+          h4
+            | Training room
+          p
+            strong Renting a training room for approx. 30 participants. 
+            | DevMeetings take place in comfortable, professional environment.
+      .vertical-space-m       
 
 
 
