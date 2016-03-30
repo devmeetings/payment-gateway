@@ -24,7 +24,19 @@ script(async).
           $("body").removeClass("fixed");
         }
     });
+    /* EMAILE */
+    var names = ["info", "piotr", "tomek", "sponsoring", "trener", "locations", "piotr.zwolinski", "wspolpraca", "salki", "cooperation", "trainer", "venue"];
+    var domains = ["devmeetings.org", "devmeetings.com", "devmeetings.de", "devmeetings.pl"];
+    $(".mailaddress").each(function() {
+      makeEmail($(this));
+    });
   });
+  
+  function makeEmail(element) {
+    var name = element.attr("data-name");
+    var domain = element.attr("data-domain");
+    element.html('<a href="mailto:' + name + '@' + domain + '">' + name + '@' + domain + '</a>');
+  }
 
   function sameHeight(blocks, parent, outer) {
     var i = 0;
