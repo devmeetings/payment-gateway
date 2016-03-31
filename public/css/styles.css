@@ -385,18 +385,26 @@ h4 {
   padding-left: 10px;
   padding-right: 10px;
   padding-bottom: 35px;
-  padding-top: 15px;
+  padding-top: 25px;
   box-shadow: 1px 1px 4px #d5d5d5;
 }
 .offer-holder .box h5 {
-  margin-bottom: 20px;
+  margin-bottom: 25px;
+  margin-top: 25px;
 }
 .offer-holder .box p {
   margin-left: 30px;
   margin-right: 30px;
 }
+.offer-left {
+  width: 31%;
+}
 .offer-or {
   vertical-align: middle;
+  width: 5%;
+}
+.offer-right {
+  width: 64%;
 }
 .offer-or img {
   position: absolute;
@@ -514,10 +522,8 @@ h4 {
 .features:last-of-type {
 	margin-bottom: 40px;
 }
-.features i {
-  font-size: 55px;
-  margin-bottom: 5px;
-  color: #7a0002;
+.features h4 {
+	margin-top: 0;
 }
 
 .footer h5,
