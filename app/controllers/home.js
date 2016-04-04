@@ -4,7 +4,7 @@ var marked = require('marked');
 var intercept = require('../utils/intercept');
 var Event = require('../models/event');
 var Claims = require('../models/claims');
-var admin = require('../controllers/admin');
+var invoiceApi = require('../controllers/invoice').api;
 // var crypto = require('crypto');
 
 module.exports = function (app) {
@@ -73,8 +73,8 @@ router.post('/events/:id/invoice/:claim', function (req, res, next) {
       res.redirect('/events/' + req.params.id + '/tickets/' + req.params.claim);
       return;
     }
-    admin.getDataForExistingInvoice(claim).then(function (data) {
-      admin.downloadInvoice(req, res, data);
+    invoiceApi.getDataForExistingInvoice(claim).then(function (data) {
+      invoiceApi.downloadInvoice(req, res, data);
     });
   }));
 });

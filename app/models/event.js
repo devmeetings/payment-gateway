@@ -19,8 +19,12 @@ var EventSchema = new Schema({
   tickets: Number,
   ticketsLeft: Number,
   mail: {
+    sended: Boolean,
     location: String,
-    partner: String
+    partner: String,
+    city: String,
+    preparation: String,
+    contact: { type: String, default: 'Piotr Zwoliński, tel. 532 264 968'}
   },
   substantiveContent: String
 });

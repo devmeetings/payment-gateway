@@ -1,14 +1,14 @@
 extends ./mail.jade
 
 block title
-  Potwierdzenie rejestracji na #{claim.event.title}  
+  Potwierdzenie rejestracji na #{claim.event.title}
 
 block content
   p Cześć!
   p Potwierdzamy Twoją rejestrację na #{claim.event.title} (#{eventDate}).
 
   p
-    strong Dziękujemy za deklarację płatności 
+    strong Dziękujemy za deklarację płatności
     | w formule Pay What You Want oraz&nbsp;
     strong prosimy o wpłatę zadeklarowanej kwoty&nbsp;
     | najpóźniej do <strong>#{endDate}</strong>.
@@ -19,7 +19,8 @@ block content
       ) Twoja rezerwacja
   p
     strong Faktura?<br/>
-    | Jesli życzysz sobie fakturę, prześlij proszę dane łącznie z NIPem na adres registration@devmeetings.org.
+    | Faktura zostanie wysłana mailem po dokonaniu płatności, jeżeli zostały podane dane do faktury.
+    | W innymn przypadku, jeśli życzysz sobie fakturę, prześlij proszę dane łącznie z NIPem na adres registration@devmeetings.org.
 
   p
     strong Co dalej?</br/>
