@@ -18,6 +18,6 @@ var app = express();
 
 require('./config/express')(app, config);
 
-scheduler.startScheduler();
+scheduler.startScheduler(app);
 
 app.listen(process.env.PORT || config.port);

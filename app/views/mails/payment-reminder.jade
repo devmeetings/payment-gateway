@@ -1,0 +1,21 @@
+extends ./mail.jade
+
+block title
+  Przypomnienie o rezerwacji na devmeeting #{claim.event.title}
+
+block content
+  p Cześć!
+  p Zarejestrowałeś się u nas na warsztaty #{claim.event.title} (#{eventDate}),
+  p Prosimy o wpłacenie zadeklarowanej kwoty #{claim.amount} zł. W przypadku braku wpłaty do dnia #{endDate} rezerwacja zostanie anulowana.
+
+  strong Link do informacji nt. Twojej rezerwacji oraz możliwość dokończenia płatności:<br/>
+    a(
+    href="#{appUrl}/events/#{claim.event._id}/tickets/#{claim._id}"
+    ) Twoja rezerwacja
+
+  p
+    | W przypadku pytań prosimy o kontakt na adres registration@devmeetings.org.
+
+  p
+    | Pozdrawiamy!<br/>
+    | Zespół DevMeetings.pl

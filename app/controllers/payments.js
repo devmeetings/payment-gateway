@@ -11,6 +11,7 @@ var checkIfAdmin = require('./admin').checkIfAdmin;
 var createInvoiceForClaim = require('./admin').createInvoiceForClaim;
 var invoiceApi = require('./invoice').api;
 var mailEventLocation = require('./mail-event-location').api;
+var claimDates = require('../utils/claim-dates');
 
 moment.locale('pl');
 
@@ -158,24 +159,26 @@ function extractNames (name) {
 function createPaymentForClaim (req, res, next, claim, postfix) {
     postfix = postfix || '';
 
-    var daysToPay = 2;
-    var timeToPayInSeconds = daysToPay * 3600 * 24;
+    //var daysToPay = 2;
+    //var timeToPayInSeconds = daysToPay * 3600 * 24;
+    //
+    //var eventDate = moment(claim.event.eventStartDate);
+    //var endDate = moment(new Date(Date.now() + 1000 * timeToPayInSeconds));
+    //
+    ////polnoc z czwartku na piatek to ostatni moment na dokonanie oplaty po tym czasie rezerwacja jest kasowana
+    //var lastDateToPay = eventDate.clone().subtract(1,'days').hour(0).minute(0).second(0);
+    //if (lastDateToPay.isBefore(endDate)) {
+    //    endDate = lastDateToPay;
+    //}
 
-    var eventDate = moment(claim.event.eventStartDate);
-    var endDate = moment(new Date(Date.now() + 1000 * timeToPayInSeconds));
-
-    //polnoc z czwartku na piatek to ostatni moment na dokonanie oplaty po tym czasie rezerwacja jest kasowana
-    var lastDateToPay = eventDate.clone().subtract(1,'days').hour(0).minute(0).second(0);
-    if (lastDateToPay.isBefore(endDate)) {
-        endDate = lastDateToPay;
-    }
+    var dates = claimDates(claim);
 
     function sendMailAndRenderResponse (claim) {
         res.render('mails/event-confirmation', {
             claim: claim,
             appUrl: config.app.url,
-            endDate: endDate.format('LLL'),
-            eventDate: eventDate.format('LLL')
+            endDate: dates.endDate.format('LLL'),
+            eventDate: dates.eventDate.format('LLL')
         }, intercept(next, function (mailText) {
             Mailer.sendMail({
                 from: Mailer.from,
@@ -191,6 +194,7 @@ function createPaymentForClaim (req, res, next, claim, postfix) {
 
     function updateClaimWithPaymentDetails (claim, orderId, redirectUri) {
         claim.status = Claims.STATUS.WAITING;
+        claim.validTill = dates.endDate;
         claim.payment = {
             id: orderId,
             url: redirectUri
@@ -207,7 +211,7 @@ function createPaymentForClaim (req, res, next, claim, postfix) {
         customerIp: Payu.getIp(req),
         description: 'Opłata za udział w ' + claim.event.title,
         currencyCode: 'PLN',
-        validityTime: timeToPayInSeconds,
+        validityTime: dates.timeToPayInSeconds,
         extOrderId: claim._id.toString() + postfix
     }, [{
         name: 'Udział w ' + claim.event.title,
