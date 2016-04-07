@@ -47,7 +47,19 @@ router.get('/events', function (req, res, next) {
 
 function countClaimsByStatus (envId, status) {
   var def = Q.defer();
-  Claims.find({event: envId, status: status}).count(function (err, count) {
+  Claims.find({
+    event: envId,
+    status: status,
+    $or: [
+      {'extra.vip': false},
+      {'extra.vip': {$exists: false}}
+    ],
+    $or: [
+      {'extra.sponsor': false},
+      {'extra.sponsor': {$exists: false}}
+    ]
+  })
+      .count(function (err, count) {
     if (err) {
       def.reject();
       return;
@@ -292,6 +304,7 @@ router.get('/events/:ev/claims', function (req, res, next) {
         title: 'Claims for ' + req.params.ev,
         event: event,
         eventId: req.params.ev,
+        allTickets:  counter[0] + counter[4] + counter[3],
         payedCount: counter[0],
         pendingCount: counter[1] + counter[2],
         sponsor: counter[3],

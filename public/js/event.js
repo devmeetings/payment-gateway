@@ -45,7 +45,7 @@ window.Event = (function (R, D) {
       };
 
       var messageText;
-      if (progressVal === 0) {
+      if (progressVal === 0 || !this.props.canRegisterByForm) {
         messageText = 'Brak wolnych miejsc.';
       } else {
         messageText = 'Pozostało ' + this.props.event.ticketsLeft + ' z ' + this.props.event.tickets + ' miejsc.';
@@ -119,10 +119,12 @@ window.Event = (function (R, D) {
       var eventCity2 = this.getCityPart(this.props.event.city, 1);
 
       var eventActions;
-      if (isAvailable) {
-        eventActions = <RegisterComponent event={this.props.event} />;
-      } else {
-        eventActions = <WaitingComponent event={this.props.event} currentTime={this.state.currentTime} />;
+      if (this.props.canRegisterByForm) {
+        if (isAvailable) {
+          eventActions = <RegisterComponent event={this.props.event} canRegisterByForm={this.props.canRegisterByForm}/>;
+        } else {
+          eventActions = <WaitingComponent event={this.props.event} currentTime={this.state.currentTime}/>;
+        }
       }
 
       return (
@@ -219,7 +221,7 @@ window.Event = (function (R, D) {
             </div>*/
 
   R.render(
-    <EventComponent event={currentEvent} />,
+    <EventComponent event={currentEvent} canRegisterByForm={canRegisterByForm} />,
     document.querySelector('.event')
   );
 }(React, React.DOM));

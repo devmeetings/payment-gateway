@@ -1,6 +1,7 @@
 // Example model
 
 var mongoose = require('mongoose');
+var moment = require('moment');
 var Schema = mongoose.Schema;
 
 var EventSchema = new Schema({
@@ -33,5 +34,21 @@ EventSchema.virtual('date')
   .get(function () {
     return this._id.getTimestamp();
   });
+
+EventSchema.virtual('canRegisterByForm')
+    .get(function () {
+
+      var eventDate = moment(this.eventStartDate);
+      var dayBeforeEvent = eventDate.clone().subtract(1, 'days').hour(0).minute(0).second(0);
+      var today = moment();
+
+      if (dayBeforeEvent.isBefore(today)) {
+        return false;
+      }
+      else {
+        return true;
+      }
+
+    });
 
 module.exports = mongoose.model('event', EventSchema);

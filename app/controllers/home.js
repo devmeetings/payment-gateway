@@ -47,6 +47,7 @@ router.get('/events/:name', function (req, res, next) {
 
     res.render('event', {
       title: ev.title,
+      canRegisterByForm: ev.canRegisterByForm,
       event: JSON.stringify(ev)
     });
   }));
@@ -156,6 +157,9 @@ router.post('/events/:name/tickets', function (req, res, next) {
     name: req.params.name
   }, intercept(next, function (ev) {
     if (!ev) {
+      return res.send(404);
+    }
+    if (!ev.canRegisterByForm) {
       return res.send(404);
     }
 
