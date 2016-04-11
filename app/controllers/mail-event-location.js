@@ -4,6 +4,7 @@ var router = express.Router();
 var intercept = require('../utils/intercept');
 var Mailer = require('../utils/mailer');
 var Claims = require('../models/claims');
+var Event = require('../models/event');
 var Q = require('q');
 var admin = require('./admin');
 var config = require('../../config/config');
@@ -20,10 +21,10 @@ module.exports.api ={
     sendLocationMail: sendLocationMail
 };
 
-function sendLocationMail(event, claim, test, res, next, cb){
+function sendLocationMail(eventId, claim, test, res, next, cb){
 
     var criteria = {
-        event: event,
+        event: eventId,
         status: Claims.STATUS.PAYED
     };
 
@@ -77,7 +78,7 @@ function sendLocationMail(event, claim, test, res, next, cb){
                         else {
 
                             Event.update({
-                                _id: req.params.ev
+                                _id: eventId
                             },{
                                 $set: {
                                     'mail.sended': true
