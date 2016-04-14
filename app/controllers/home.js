@@ -168,7 +168,8 @@ router.post('/events/:name/tickets', function (req, res, next) {
       if (cookieParts.length === 2) {
         Claims.findOne({
           _id: cookieParts[1],
-          event: cookieParts[0]
+          event: cookieParts[0],
+          status: Claims.STATUS.ACTIVE
         }).exec(intercept(next, function (claim) {
           if (!claim) {
             tryToClaimTicket(ev);
