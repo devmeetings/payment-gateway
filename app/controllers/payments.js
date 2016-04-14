@@ -30,8 +30,12 @@ router.post('/tickets/:claim/notify', function (req, res, next) {
         sendMail('mails/payment-confirmation', Mailer.from, Mailer.bcc, {
             claim: claim
         }, function (){
+            var dates = claimDates(claim);
+
             sendMail('mails/payment-confirmation-to-user', Mailer.from,  claim.userData.email, {
                 claim: claim,
+                endDate: dates.endDate.format('LLL'),
+                eventDate: dates.eventDate.format('LLL'),
                 invoice: {no: invoiceNo}
             }, cb);
         });
