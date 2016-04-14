@@ -289,7 +289,7 @@ function generateInvoice(url, data,cb){
                         page.close();
                         page = null;
 
-                        cb(file, invoiceNo);
+                        cb(file, invoiceNo.replace(/_/g, '/'));
                     });
                 }
             });
