@@ -3,54 +3,85 @@ extends ../../layout-de
 block content
   
   .container-full
-    .container
-      h2.centered.vertical-space-m Pay What You Want
-      h4.centered.vertical-space-m
-        | Hauptziel von DevMeetings ist die Verfügbareit - wir sind für alle Entwickler da.<br/> Für uns ist die Leidenschaft wichtig, nicht das finanzielle. 
-      .row.vertical-space-m
-        .col-md-6
-          h5
-            | Kostenlose Teilnahme
-          p
-            | Kostenlose Teilnahme ist natürlich Möglich, wir empfehlen aber, die Initiative zu unterstützen, da die Veranstaltung und Vorbereitung der Workshops Zeit- und Finanzintensiv ist.
-        .col-md-6
-          h5
-            | Show us your love!
-          p
-            | Wir würden uns freuen, wenn Du für die Teilnahme die Initiative unterstützen wirst. Bei der Anmeldung werden wir Dich bitten, einen ausgewählten Betrag (zwischen 0,00 und 150,00 Euro) zu bezahlen.
-    .vertical-space-m        
     .container-light-gray
       .container
-        h3.centered.vertical-space-m Welche Veranstaltungskosten sind von uns zu tragen?
-        .row.vertical-space-m
-          .col-md-4
-            h5
-              | Vorbereitung der Inhalte
-            p
-              | Professionelle Vorbereitung der Workshopinhalte (Präsentationen, Codesnippets, Aufgaben, Referenzlösungen). Ca. 10-20 Arbeitstage eines erfahrenen Trainers.
-          .col-md-4
-            h5
-              | Veranstaltungsräume
-            p
-              | Miete eines Workshopsraumes für ca. 30-50 Teilnehmer. DevMeetings finden in komfortablen, profesionellen Räumlichkeiten statt.
-          .col-md-4
-            h5
-              | Catering
-            p
-              | Heiße und kalte Getränke und Snacks den ganzen Tag lang. Pizza-Lunch
-        .row
-          .col-md-4
-            h5
-              | Anreise, Übernachtung der Mentoren und Veranstalter
-            p
-              | Oft reisen die Mentoren von anderen Städten an. Reise- und Übernachtungskosten haben wir zu tragen.
-          .col-md-4
-            h5
-              | Orga
-            p
-              | Organisation und Administration: Teilnehmer-Anmeldung, Marketing, Suche und Abstimmungen mit Trainern, Locations, etc. kosten Zeit und Geld.
-        .vertical-space-l
-        .vertical-space-l      
+        h1.h2.centered.vertical-space-m Pay What You Want
+        p.h4.text-thin.centered
+          | Unser Fokus bei den DevMeetings ist die Zugänglichkeit – wenn Du ein leidenschaftlicher Programmierer bist, laden wir Dich herzlich ein, 
+          strong unabhängig von deinem finanziellen Möglichkeiten.
+        .row.vertical-space-s.offer-holder
+          .col-sm-4.box-wrapper.offer-left
+            .box.box-white
+              img(src='/img/static/pwyw/icon_free.png' alt='')
+              h5
+                | Kostenlose Teilnahme
+              p
+                strong Die kostenlose Teilnahme ist grundsätzlich immer möglich. 
+                | Selbstverständlich ermutigen wir zur Unterstützung der Initiative, da die Veranstaltung unserer Workshops viel Zeit und Geld in Anspruch nimmt.
+          .col-sm-1.box-wrapper.offer-or
+            img.img-responsive(src='/img/or.png' alt='OR')
+          .col-sm-7.box-wrapper.offer-right
+            .box.box-blue
+              img(src='/img/static/pwyw/icon_love.png' alt='')
+              h5
+                | Show us your love!
+              p
+                | Wir freuen uns, 
+                strong wenn Du unsere Initiative unterstützen möchtest. 
+                | Bei der Anmeldung zu unseren Workshops fragen wir Dich nach einem Betrag, mit dem Du uns unterstützen möchtest. Die Spanne reicht 
+                strong von 0 bis 150 Euro 
+                | für einen vollen Schulungstag.
+              p Die Zahlung erfolgt entweder per Überweisung oder vor Ort in bar. Du erhältst eine ordentliche Rechnung mit ausgewiesener Mehrtwertsteuer.
+    .container
+      h3.h2.centered.vertical-space-m Was kostet uns <br> die Veranstaltung eines Workshops?
+      .row.vertical-space-m.features
+        .col-sm-4.text-center
+          img(src='/img/static/pwyw/icon_materials.png' alt='')
+          h4
+            | Vorbereitung des Materials
+          p
+            strong Die Vorbereitung von professionellem Schulungsmaterial benötigt 
+            | ca. 10-20 Arbeitstage eines erfahrenen Trainers.
+        .col-sm-4.text-center
+          img(src='/img/static/pwyw/icon_coach.png' alt='')
+          h4
+            | Trainer
+          p
+            | Außer der reinen Schulungszeit vor Ort benötigt der Trainer auch noch Zeit für 
+            strong die Vorbereitung seiner Schulung, sowie die An- und Abreise.
+        .col-sm-4.text-center
+          img(src='/img/static/pwyw/icon_catering.png' alt='')
+          h4
+            | Verpflegung
+          p
+            | Während der gesamten Zeit des DevMeetings gibt es kalte und warme
+            strong Getränke, Snacks und Kekse. 
+            | Auch die Pizza zur Mittagszeit wird vom DevMeeting bezahlt.
+      .row.features.vertical-space-m
+        .col-sm-4.text-center
+          img(src='/img/static/pwyw/icon_accomodation.png' alt='')
+          h4
+            | Anreise, Übernachtung des Trainers
+          p
+            | Oft Reisen die Trainer aus einer anderen Stadt zu einem DevMeeting an – Das führt zu 
+            strong Reise- und Übernachtungskosten 
+            | vor Ort. Wir möchten daher, dass unsere Trainer ihre Workshops ausgeruht und entspannt beginnen können.
+        .col-sm-4.text-center
+          img(src='/img/static/pwyw/icon_organisation.png' alt='')
+          h4
+            | Organisation
+          p
+            | Die Organisation und Verwaltung des „Drumherums“: 
+            strong Bearbeitung der Anmeldungen, Adimistration von Webseite und Facebook-Seite, Trainersuche, Marketing usw. benötigt monatlich dutzende Stunden unseres Teams.
+        .col-sm-4.text-center
+          img(src='/img/static/pwyw/icon_training.png' alt='')
+          h4
+            | Schulungsraum
+          p
+            strong Die Anmietung eines Raums für ca. 30 Teilnehmer. 
+            | DevMeetings finden in komfortablen und professionellen Räumlichkeiten statt. 
+            
+      .vertical-space-l
 
 
 

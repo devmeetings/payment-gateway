@@ -3,189 +3,199 @@ extends ../../layout-pl
 block content
   
   .container-full
-    .container
-
-      h3.centered.vertical-space-m DevMeetings: warsztaty dla programistów z pasją.
-      h5.centered Szkolenia dostępne dla każdego dzięki formule "Pay What You Want".
-      .workshop-holder.row.vertical-space-m
-        .col-md-8.col-md-offset-2
-          .videos 
-            <iframe width="854" height="510" src="https://www.youtube.com/embed/sb_Mmhq-iX0" frameborder="0" allowfullscreen></iframe>
+    .container-light-gray
+      .container.container-heading
+        h1.h3.centered.vertical-space-m.text-thin DevMeetings: 
+          strong warsztaty 
+          | dla programistów z pasją.
+        p.h5.centered.text-thin Szkolenia dostępne dla każdego dzięki formule <strong>"Pay What You Want"</strong>.
+        .workshop-holder.vertical-space-m
+          .col-md-8.col-md-offset-2
+            .videos 
+              <iframe width="854" height="510" src="https://www.youtube.com/embed/sb_Mmhq-iX0" allowfullscreen></iframe>
     .container            
       .row.vertical-space-m
-        h3.centered Najbliższe warsztaty
+        h2.h3.centered Najbliższe warsztaty
       .workshop-holder.row.vertical-space-m
-        .col-md-6.col-sm-12.col-xs-12
+        .col-sm-6.col-xs-12
           .box
             .box-image
               a(href='http://registration.devmeetings.com/events/es6-maj-krakow')
-                img.img-responsive.workshop-img(src='/img/static/workshops/es6_devmeeting_krk.jpg')
+                .workshop-img(style='background-image: url(/img/static/workshops/teaser1.png);' alt='')
+                  .workshop-inner
+                    img(src='/img/static/workshops/logo_es6.png' alt='')
+                    .workshop-subtitle(style='border-color: #f0da51') Dive into ECMAScript 2015 (ES6)
             .box-details
               a(href='http://registration.devmeetings.com/events/es6-maj-krakow')
-                h4 ECMA Script 6, Kraków
+                h3.h4 ECMA Script 6, Kraków
               p
                 | Warsztaty poświęcone budowanie aplikacjie przy pomocy ECMA Script 6. Kierowane do osób znających JavaScript oraz programistów innych języków (java, php, ruby), którzy chcą od razu wskoczyć do aktualnej specyfikacji języka.
               p
-                .fa.fa-map-marker.fa-lg.fa-fw
+                span.fa.fa-map-marker.fa-lg.fa-fw
                 | &nbsp;<strong>Kraków</strong>
               p
-                .fa.fa-calendar.fa-lg.fa-fw
+                span.fa.fa-calendar.fa-lg.fa-fw
                 | &nbsp; <strong>20 czerwca 2015</strong>
               p.btn-holder
                 a.btn.btn-dev(href='http://registration.devmeetings.com/events/es6-maj-krakow') Rejestracja
 
-        .col-md-6.col-sm-12.col-xs-12
+        .col-sm-6.col-xs-12
           .box
             .box-image
-              a(href='http://registration.devmeetings.com/events/es6-maj-wroclaw')
-                img.img-responsive.workshop-img(src='/img/static/workshops/es6_devmeeting_wro.jpg')
+              a(href='http://devmeetings.pl/events/react-redux-wro')
+                .workshop-img(style='background-image: url(/img/static/workshops/teaser2.png);' alt='')
+                  .workshop-inner
+                    img(src='/img/static/workshops/logo_react.png' alt='')
+                    .workshop-subtitle(style='border-color: #62dafc') Efficient Webapps with React.js + Redux
             .box-details
-              a(href='http://registration.devmeetings.com/events/es6-maj-wroclaw')
-                h4 ECMA Script 6, Wrocław
+              a(href='http://devmeetings.pl/events/react-redux-wro')
+                h3.h4 React + Redux, Wrocław
               p
                 | Warsztaty poświęcone budowanie aplikacjie przy pomocy ECMA Script 6. Kierowane do osób znających JavaScript oraz programistów innych języków (java, php, ruby), którzy chcą od razu wskoczyć do aktualnej specyfikacji języka.
               p
-                .fa.fa-map-marker.fa-lg.fa-fw
+                span.fa.fa-map-marker.fa-lg.fa-fw
                 | &nbsp;<strong>Wrocław</strong>
               p
-                .fa.fa-calendar.fa-lg.fa-fw
+                span.fa.fa-calendar.fa-lg.fa-fw
                 | &nbsp; <strong>27 czerwca 2015</strong>
               p.btn-holder
-                a.btn.btn-dev(href='http://registration.devmeetings.com/events/es6-maj-wroclaw') Rejestracja
+                a.btn.btn-dev(href='http://devmeetings.pl/events/react-redux-wro') Rejestracja
+     
+      .workshop-holder.row
+        .col-sm-6.col-xs-12
+          .box
+            .box-image
+              a(href='http://devmeetings.pl/events/ionic-krk')
+                .workshop-img(style='background-image: url(/img/static/workshops/teaser3.png);' alt='')
+                  .workshop-inner
+                    img(src='/img/static/workshops/logo_ionic.png' alt='')
+                    .workshop-subtitle(style='border-color: #4e8ff7') Hybrid Apps with Ionic Framework
+            .box-details
+              a(href='http://devmeetings.pl/events/ionic-krk')
+                h3.h4 Ionic Framework 6, Kraków
+              p
+                | Warsztaty poświęcone budowanie aplikacjie przy pomocy ECMA Script 6. Kierowane do osób znających JavaScript oraz programistów innych języków (java, php, ruby), którzy chcą od razu wskoczyć do aktualnej specyfikacji języka.
+              p
+                span.fa.fa-map-marker.fa-lg.fa-fw
+                | &nbsp;<strong>Kraków</strong>
+              p
+                span.fa.fa-calendar.fa-lg.fa-fw
+                | &nbsp; <strong>20 czerwca 2015</strong>
+              p.btn-holder
+                a.btn.btn-dev(href='http://devmeetings.pl/events/ionic-krk') Rejestracja
 
+        .col-sm-6.col-xs-12
+          .box
+            .box-image
+              a(href='http://devmeetings.pl/events/angular2-wawa')
+                .workshop-img(style='background-image: url(/img/static/workshops/teaser4.png);' alt='')
+                  .workshop-inner
+                    img(src='/img/static/workshops/logo_angular.png' alt='')
+                    .workshop-subtitle(style='border-color: #e23137') Modern Webapps with Angular 2
+            .box-details
+              a(href='http://devmeetings.pl/events/angular2-wawa')
+                h3.h4 Angular 2, Warszawa
+              p
+                | Warsztaty poświęcone budowanie aplikacjie przy pomocy ECMA Script 6. Kierowane do osób znających JavaScript oraz programistów innych języków (java, php, ruby), którzy chcą od razu wskoczyć do aktualnej specyfikacji języka.
+              p
+                span.fa.fa-map-marker.fa-lg.fa-fw
+                | &nbsp;<strong>Warszawa</strong>
+              p
+                span.fa.fa-calendar.fa-lg.fa-fw
+                | &nbsp; <strong>27 czerwca 2015</strong>
+              p.btn-holder
+                a.btn.btn-dev(href='http://devmeetings.pl/events/angular2-wawa') Rejestracja
 
-      h3.centered Warsztaty w przygotowaniu
-      .workshop-holder.row.vertical-space-m
-        .col-md-4.col-sm-4.col-xs-12
-          .box
-            .box-image
-              a(href='https://docs.google.com/forms/d/1dJfxgQCrMuryvjI4FYMQHTqXdnWjaHEZLzXn0aQhvhU/viewform', target='_blank')
-                img.img-responsive.workshop-img(src='/img/static/workshops/workshop_backbone.jpg')
-            .box-details
-              a(href='https://docs.google.com/forms/d/1dJfxgQCrMuryvjI4FYMQHTqXdnWjaHEZLzXn0aQhvhU/viewform', target='_blank')
-                h4 Backbone.js
-              p
-                | Naucz się tworzyć aplikacje typu Single Page Apps z wykorzystaniem Backbone.js.
-              p
-                .fa.fa-map-marker.fa-lg.fa-fw
-                | &nbsp;Wrocław, Kraków, Poznań, Katowice, Warszawa, Gdańsk<br/>
-              p
-                .fa.fa-calendar.fa-lg.fa-fw
-                | &nbsp;Czerwiec 2015
-              p.btn-holder
-                a.btn.btn-dev(href='https://docs.google.com/forms/d/1dJfxgQCrMuryvjI4FYMQHTqXdnWjaHEZLzXn0aQhvhU/viewform', target='_blank') Zapisz się na listę mailingową
-        .col-md-4.col-sm-4.col-xs-12
-          .box
-            .box-image
-              a(href='https://docs.google.com/forms/d/1DkUSJMqXVYijJUysuDsDlxRlHnm0ggeQMzANgXoGOkk/viewform?usp=send_form', target='_blank')
-                img.img-responsive.workshop-img(src='/img/static/workshops/workshop_bootstrap.jpg')
-            .box-details
-              a(href='https://docs.google.com/forms/d/1DkUSJMqXVYijJUysuDsDlxRlHnm0ggeQMzANgXoGOkk/viewform?usp=send_form', target='_blank')
-                h4 Twitter Bootstrap
-              p
-                | Naucz się tworzyć responsywne strony www z wykorzystaniem Twitter Bootstrap.
-              p
-                .fa.fa-map-marker.fa-lg.fa-fw
-                | &nbsp;Wrocław, Kraków, Poznań, Katowice, Warszawa, Gdańsk
-              p
-                .fa.fa-calendar.fa-lg.fa-fw
-                | &nbsp;Lipiec 2015
-              p.btn-holder
-                a.btn.btn-dev(href='https://docs.google.com/forms/d/1DkUSJMqXVYijJUysuDsDlxRlHnm0ggeQMzANgXoGOkk/viewform?usp=send_form', target='_blank') Zapisz się na listę mailingową
-        .col-md-4.col-sm-4.col-xs-12
-          .box
-            .box-image
-              a(href='https://docs.google.com/forms/d/1PFT-JWrcbm3o7mffWrnqQs3vb2hqixLPPEsAbU8t8y0/viewform', target='_blank')
-                img.img-responsive.workshop-img(src='/img/static/workshops/workshop_js_games_phaser.jpg')
-            .box-details
-              a(href='https://docs.google.com/forms/d/1PFT-JWrcbm3o7mffWrnqQs3vb2hqixLPPEsAbU8t8y0/viewform', target='_blank')
-                h4 Gry w JS, HTML5 i Phaser
-              p
-                | Naucz się tworzenia gier przeglądarkowych w oparciu o HTML5, JS i framework Phaser.
-              p
-                .fa.fa-map-marker.fa-lg.fa-fw
-                | &nbsp;Wrocław, Kraków, Poznań, Katowice, Warszawa, Gdańsk
-              p
-                .fa.fa-calendar.fa-lg.fa-fw
-                | &nbsp;Sierpień 2015
-              p.btn-holder
-                a.btn.btn-dev(href='https://docs.google.com/forms/d/1PFT-JWrcbm3o7mffWrnqQs3vb2hqixLPPEsAbU8t8y0/viewform', target='_blank') Zapisz się na listę mailingową
     .container-light-gray
       .container
-        h3.centered.vertical-space-m Opinie uczestników.
-        h5.centered Niektórzy twierdzą, że to stan umysłu, a nie warsztaty.
-        .opinions-holder.row.vertical-space-m
+        h2.h3.centered.vertical-space-m Opinie uczestników.
+        p.h5.centered Niektórzy twierdzą, że to stan umysłu, a nie warsztaty.
+        .opinions-holder.row.vertical-space-ml
           .opinions-col
-            .col-md-1.col-sm-1.hidden-xs
-              img.img-responsive(src='/img/static/homepage/us_adamjodlowski.png')
-            .col-md-5.col-sm-5.col-xs-12
+            .col-md-1.col-xs-2
+              img.img-responsive(src='/img/static/homepage/us_adamjodlowski-big.jpg' alt='')
+            .col-md-5.col-sm-4.col-xs-10
               p
                 em
                   | Intelektualna masakra, czyli sobota z @DevMeetingsPL, dziękuję panowie, do następnego!
-              strong @adamjodlowski
               p
                 a(href='http://twitter.com/adamjodlowski/status/69495869824704512', target='_blank')
                   | twitter.com/adamjodlowski/status/69...
+              p
+                strong @adamjodlowski
           .opinions-col
-            .col-md-1.col-sm-1.hidden-xs
-              img.img-responsive(src='/img/static/homepage/us_knapo.png')
-            .col-md-5.col-sm-5.col-xs-12
+            .col-md-1.col-xs-2
+              img.img-responsive(src='/img/static/homepage/us_knapo-big.jpg' alt='')
+            .col-md-5.col-sm-4.col-xs-10
               p
                 em
                   | long, tiring, but very productive and fantastic day at @DevMeetingsPL – thanks guys! cannot wait for next one!
-              strong @knapo
               p
                 a(href='http://twitter.com/knapo/status/82187412331184128', target='_blank')
                   | twitter.com/knapo/status/821...
-        .opinions-holder.row
+              p
+                strong @knapo
+        .opinions-holder.row.vertical-space-s
           .opinions-col
-            .col-md-1.col-sm-1.hidden-xs
-              img.img-responsive(src='/img/static/homepage/us_pawrog.png')
-            .col-md-5.col-sm-5.col-xs-12
+            .col-md-1.col-xs-2
+              img.img-responsive(src='/img/static/homepage/us_pawrog-big.JPG' alt='')
+            .col-md-5.col-sm-4.col-xs-10
               p
                 em
                   | It was awesome workshop on node.js and RingoJS today at @DevMeetingsPL I’m looking forward to repeat this kind of experience!
-              strong @pawrog
               p
                 a(href='http://twitter.com/pawrog/status/69506793721692161', target='_blank')
                   | twitter.com/pawrog/status/6950...
+              p
+                strong @pawrog
           .opinions-col
-            .col-md-1.col-sm-1.hidden-xs
-              img.img-responsive(src='/img/static/homepage/us_marcoos.png')
-            .col-md-5.col-sm-5.col-xs-125
+            .col-md-1.col-xs-2
+              img.img-responsive(src='/img/static/homepage/us_marcoos-big.jpg' alt='')
+            .col-md-5.col-sm-4.col-xs-10
               p
                 em
                   | No i po @DevMeetingsPL o SSJS. Dobrze spędzony czas, warsztaty świetnie zorganizowane.
-              strong @marcoos
               p
                 a(href='http://twitter.com/marcoos/status/82180367213273089', target='_blank')
                   | twitter.com/marcoos/status/8218...
+              p
+                strong @marcoos
         .vertical-space-m
     .container
       .community-holder.vertical-space-m
-        h4.centered Dołącz do społeczności DevMeetings.
-        .likebox-holder
-          iframe(src='//www.facebook.com/plugins/likebox.php?href=https%3A%2F%2Fwww.facebook.com%2Fdevmeetingspl&width=1100&height=258&colorscheme=light&show_faces=true&header=false&stream=false&show_border=false&appId=1431693610420997', scrolling='no', frameborder='0', style='border:none; overflow:hidden; width:1100px; height:258px;', allowtransparency='true')
+        h3.h4.centered Dołącz do społeczności DevMeetings.
+        .row
+          .col-sm-6.col-xs-12
+            .likebox-holder
+              <div class="fb-page" data-href="https://www.facebook.com/devmeetingspl/" data-tabs="timeline" data-width="500" data-height="350" data-small-header="true" data-adapt-container-width="true" data-hide-cover="false" data-show-facepile="false"><div class="fb-xfbml-parse-ignore"><blockquote cite="https://www.facebook.com/devmeetingspl/"><a href="https://www.facebook.com/devmeetingspl/">devmeetings.pl</a></blockquote></div></div>
+          .col-sm-6.col-xs-12
+            .likebox-holder
+              <a class="twitter-timeline"  href="https://twitter.com/DevMeetingsPL" data-widget-id="702836471137484800">Tweety użytkownika @DevMeetingsPL </a><script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+                          
         .vertical-space-m            
     .container-light-gray
       .container
         .sub-footer-holder.row.vertical-space-m
           .col-md-4.col-sm-4
             h5
-              a(href='/pl/info/about_devmeetings') O DevMeetings
+              img(src='/img/icon_pixels.png' alt='') 
+              | O DevMeetings
             p
               | DevMeetings to całodniowe warsztaty – przygotowywane przez programistów z pasją. Od 2011 roku zorganizowaliśmy ponad 30 spotkań, od ServerSide JavaScriptu, przez implementację gier w JavaScripcie, po Responsive Web Design.
             p
               a(href='/pl/info/about_devmeetings') Więcej o DevMeetings >
           .col-md-4.col-sm-4
             h5
-              a(href='/pl/info/pwyw') Pay What You Want
+              img(src='/img/icon_pixels.png' alt='') 
+              | Pay What You Want
             p
               | Przewodnią ideą DevMeetings jesta maksymalna dostępność szkoleń. Zdecydowaliśmy się więc na model “Pay What You Want” – możesz wziąć udział zupełnie bezpłatnie lub wspomóc inicjatywę przez płatną rejestrację.
             p
               a(href='/pl/info/pwyw') Więcej o Pay What You Want >
           .col-md-4.col-sm-4
-            h5 Współpraca
+            h5
+              img(src='/img/icon_pixels.png' alt='') 
+              | Współpraca
             p
               | Poszukujemy prelegentów, sponsorów, osoby chcące pomóc przy organizacji. Napisz do nas, jeśli chcesz wesprzeć naszą inicjatywę.
               | Kontakt: info (at) devmeetings (kropka) pl

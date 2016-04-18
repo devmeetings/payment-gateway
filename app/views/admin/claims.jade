@@ -3,134 +3,131 @@ extends ../angular-layout
 block content
     .container(ng-app="claims")
         div(ng-controller="ClaimsCtrl")
-            .well.clearfix
-                .form-group
-                    .pull-right
-                        a(
-                        ng-click="view.detailed = !view.detailed"
-                        )
-                            | Toggle Detailed View
-                        br
-                        a(
-                        ng-click="view.offlineRegistration = !view.offlineRegistration"
-                        )
-                            | Toggle add user without registrtation
-                        br
-                        a(
-                        ng-href="/admin/events/#{eventId}/invoices"
-                        )
-                            | Invoices
-
-                    button.btn.btn-primary(
-                    ng-class="{active: hideExpired}"
-                    ng-click="hideExpired = !hideExpired") Hide Expired
-                .form-group
-                    input.form-control(type="text", ng-model="search.$", placeholder="Search")
             .row
-                .col-xs-4
-                    p.lead !{event.title}, !{event.city}
-                    h4 Claims list.
+                .col-xs-2
+                    a(
+                    ng-href="/admin/events"
+                    ) < Lista wydarzeń
+                .col-xs-8
+                    h4 Lista biletów na !{event.title}, !{event.city}
                     ul.list-group
+                        li.list-group-item.list-group-item-heading.list-group-item-success
+                            h4 Liczba wszystkich biletów (opłacone + sponsora + vip): !{allTickets}
                         li.list-group-item.list-group-item-info
                             span.badge !{payedCount}
-                            | Payed claims
+                            | Liczba opłaconych biletów
                         li.list-group-item
                             span.badge !{pendingCount}
-                            | Pending claims
-                        li.list-group-item.list-group-item-success
+                            | Liczba biletów oczekujących na płatność (np. przelew)
+                        li.list-group-item.list-group-item-text
                             span.badge !{vip}
-                            | VIP claims
-                        li.list-group-item.list-group-item-success
+                            | Liczba biletów VIP
+                        li.list-group-item.list-group-item-text
                             span.badge !{sponsor}
-                            | Sponsor claims
-                .col-xs-8
-                    .well.clearfix
-                        h1 Invite user to devmeeting
-                        form(ng-submit="sendInvitation(view.inviteEmail)", name="form")
-                            .form-group
-                                label.control-label Uer email
-                                input.form-control(type="email", ng-model="view.inviteEmail", name="email", required)
-                            .form-group
-                                button.btn.btn-primary(type="submit", ng-disabled="form.$invalid") Send
+                            | Liczba biletów dla sponsorów
+            .row
+                .col-xs-6
+                    .panel.panel-primary(ng-if="!view.offlineRegistration")
+                        .panel-heading
+                            | Dodaj uczestnika devmeetingu
+                        .panel-body
+                            .row
+                                .col-xs-2.col-xs-offset-2
+                                    button.btn.btn-primary(
+                                    ng-click="addVIP()") VIP-a
+                                .col-xs-3
+                                    button.btn.btn-primary(
+                                    ng-click="addSponsor()") Od sponsora
+                                .col-xs-4
+                                    button.btn.btn-primary(
+                                    ng-click="addRegular()") Bez rejestracji
+                    .panel.panel-primary(ng-if="view.offlineRegistration")
+                        .panel-heading(ng-if="view.userToAdd==='VIP'") Dodaj VIP-a
+                        .panel-heading(ng-if="view.userToAdd==='SPONSOR'") Dodaj uczestnika od sponsora
+                        .panel-heading(ng-if="view.userToAdd==='REGULAR'") Dodaj uczestnika bez rejestracji
+                        .panel-body
+                            form.invoices.form-horizontal(ng-controller="OfflineClaimCtrl", ng-submit="addOfflineClaim()")
+                                .row
+                                    .col-xs-12
+                                        .form-group
+                                            label.col-sm-3.control-label Email:
+                                            .col-sm-6
+                                                input.form-control(ng-model="newClaim.user.email",name="email", type="text", required)
+                                        .form-group
+                                            label.col-sm-3.control-label Kwota:
+                                            .col-sm-6
+                                                input.form-control(ng-model="newClaim.amount",name="email", type="text", required)
+                                        .form-group
+                                            label.col-sm-3.control-label Imię i nazwisko
+                                            .col-sm-6
+                                                input.form-control(ng-model="newClaim.user.names",name="street", type="text")
+                                        .form-group
+                                            .checkbox
+                                                label.col-sm-3.control-label
+                                                    input(ng-model="newClaim.userNeedInvoice", type="checkbox")
+                                                    | Faktura?
+                                        .form-group(ng-if="newClaim.userNeedInvoice")
+                                            label.col-sm-3.control-label Nazwa:
+                                            .col-sm-6
+                                                input.form-control(ng-model="newClaim.invoice.recipientName",name="recipientName", type="text")
+                                        .form-group(ng-if="newClaim.userNeedInvoice")
+                                            label.col-sm-3.control-label Ulica:
+                                            .col-sm-6
+                                                input.form-control(ng-model="newClaim.invoice.street",name="street", type="text")
+                                        .form-group(ng-if="newClaim.userNeedInvoice")
+                                            label.col-sm-3.control-label Kod pocztowy:
+                                            .col-sm-6
+                                                input.form-control(ng-model="newClaim.invoice.postalCode",name="postalCode", type="text")
+                                        .form-group(ng-if="newClaim.userNeedInvoice")
+                                            label.col-sm-3.control-label Miasto:
+                                            .col-sm-6
+                                                input.form-control(ng-model="newClaim.invoice.city",name="city", type="text")
+                                        .form-group(ng-if="newClaim.userNeedInvoice")
+                                            label.col-sm-3.control-label NIP:
+                                            .col-sm-6
+                                                input.form-control(ng-model="newClaim.invoice.tin",name="tin", type="text")
+                                        .form-group
+                                            .col-sm-7.col-sm-offset-2
+                                                button.btn.btn-primary(type="submit") Dodaj uczestnika
+                                            .col-sm-2
+                                                button.btn.btn-default(ng-click="view.offlineRegistration=false") Anuluj
+                .col-xs-4
+                    .panel.panel-info
+                        .panel-heading
+                            | Zaproś uczestnika
+                        .panel-body
+                            form.form-inline(ng-submit="sendInvitation(view.inviteEmail)", name="form")
+                                .form-group
+                                    input.form-control(type="email", placeholder="Adres email", ng-model="view.inviteEmail", name="email", required)
+                                button.btn.btn-primary(type="submit", ng-disabled="form.$invalid") Zaproś
+                .col-xs-2
+                    a.btn.btn-block.btn-primary.btn-lg(
+                    ng-href="/admin/events/#{eventId}/invoices"
+                    )
+                        | Faktury
+            .well.clearfix
+                .form-group
+                    button.btn.btn-primary(
+                    ng-class="{active: hideExpired}"
+                    ng-click="hideExpired = !hideExpired") Pokaż wygasłe rezerwacje
+                .form-group
+                    input.form-control(type="text", ng-model="search.$", placeholder="Wyszukaj")
 
-            .well.clearfix(ng-if="view.offlineRegistration")
-                h4 Add user without registration
-                form.invoices.form-horizontal(ng-controller="OfflineClaimCtrl", ng-submit="addOfflineClaim()")
-                    .row
-                        .col-xs-12
-                            .form-group
-                                label.col-sm-2.control-label Email:
-                                .col-sm-7
-                                    input.form-control(ng-model="newClaim.user.email",name="email", type="text", required)
-                            .form-group
-                                label.col-sm-2.control-label Amount:
-                                .col-sm-7
-                                    input.form-control(ng-model="newClaim.amount",name="email", type="text", required)
-                            .form-group
-                                label.col-sm-2.control-label User name
-                                .col-sm-7
-                                    input.form-control(ng-model="newClaim.user.names",name="street", type="text")
-                            .form-group
-                                label.col-sm-2.control-label Payment status
-                                .col-sm-7
-                                    select(ng-model="newClaim.status")
-                                        option(value="pending") PENDING
-                                        option(value="offlinePending") OFFLINE_PENDING
-                                        option(value="payed") PAYED
-
-                            .form-group
-                                .checkbox
-                                    label.col-sm-2.control-label
-                                        input(ng-model="newClaim.extra.sponsor", type="checkbox")
-                                        | From sponsor?
-                            .form-group
-                                .checkbox
-                                    label.col-sm-2.control-label
-                                        input(ng-model="newClaim.extra.vip", type="checkbox")
-                                        | VIP?
-                            .form-group
-                                .checkbox
-                                    label.col-sm-2.control-label
-                                        input(ng-model="newClaim.userNeedInvoice", type="checkbox")
-                                        | Need invoice?
-                            .form-group(ng-if="newClaim.userNeedInvoice")
-                                label.col-sm-2.control-label Recipient name:
-                                .col-sm-7
-                                    input.form-control(ng-model="newClaim.invoice.recipientName",name="recipientName", type="text")
-                            .form-group(ng-if="newClaim.userNeedInvoice")
-                                label.col-sm-2.control-label Street:
-                                .col-sm-7
-                                    input.form-control(ng-model="newClaim.invoice.street",name="street", type="text")
-                            .form-group(ng-if="newClaim.userNeedInvoice")
-                                label.col-sm-2.control-label Postal code:
-                                .col-sm-7
-                                    input.form-control(ng-model="newClaim.invoice.postalCode",name="postalCode", type="text")
-                            .form-group(ng-if="newClaim.userNeedInvoice")
-                                label.col-sm-2.control-label City:
-                                .col-sm-7
-                                    input.form-control(ng-model="newClaim.invoice.city",name="city", type="text")
-                            .form-group(ng-if="newClaim.userNeedInvoice")
-                                label.col-sm-2.control-label TIN:
-                                .col-sm-7
-                                    input.form-control(ng-model="newClaim.invoice.tin",name="tin", type="text")
-                            .form-group
-                                .col-sm-7.col-sm-offset-5
-                                    button.btn.btn-primary(type="submit") Add user
             .row(ng-if="!view.detailed")
                 table.table.table-striped.table-hover.table-condensed
                     tr
                         th
-                            a(ng-click="sortBy('userData.names')") Name
+                            a(ng-click="sortBy('userData.names')") Imię i nazwisko
                         th
                             a(ng-click="sortBy('userData.email')") E-mail
                         th
-                            a(ng-click="sortBy('claimedTime')") Claimed Time
+                            a(ng-click="sortBy('claimedTime')") Data rejestracji
                         th
-                            a(ng-click="sortBy('validTill')") Valid Till
+                            a(ng-click="sortBy('validTill')") Ważny do
                         th
                             a(ng-click="sortBy('status')") Status
                         th
-                            a(ng-click="sortBy('amount')") Amount
+                            a(ng-click="sortBy('amount')") Kwota
                         th
 
                     tr(
@@ -143,7 +140,7 @@ block content
                         td {{claim.userData.email}}
                         td {{claim.claimedTime | date:'short'}}
                         td {{claim.validTill | date:'short' }}
-                        td {{claim.status }}
+                        td {{ showStatusDesc(claim.status) }}
                         td {{claim.amount }}
                         td(ng-init="row.confirmCancel=false")
                             | {{view.confirmCancel}}
@@ -239,7 +236,8 @@ append scripts
     script.
         angular.module("claims", ['angularMoment'])
                 .controller("OfflineClaimCtrl", function ($scope, $http, $window) {
-                    $scope.newClaim = {
+
+                    var regular = {
                         status: 'payed',
                         amount: 0,
                         extra: {
@@ -261,6 +259,20 @@ append scripts
                         }
                     };
 
+                    var vip = angular.copy(regular);
+                        vip.extra.vip = true;
+                    var sponsor = angular.copy(regular);
+                        sponsor.extra.sponsor = true;
+
+                    $scope.newClaim = regular;
+
+                    if ($scope.view.userToAdd === 'VIP') {
+                        $scope.newClaim = vip;
+                    }
+                    else if ($scope.view.userToAdd === 'SPONSOR') {
+                        $scope.newClaim = sponsor;
+                    }
+
                     $scope.addOfflineClaim = function () {
                         var evId = '!{eventId}';
                         $http.post('/admin/events/' + evId + '/add/claim/offline', $scope.newClaim).then(function () {
@@ -273,6 +285,20 @@ append scripts
                     $scope.search = {};
                     $scope.claims = !{claims};
                     $scope.view = {};
+
+                    $scope.addVIP = function (){
+                        $scope.view.offlineRegistration = true;
+                        $scope.view.userToAdd = 'VIP';
+                    }
+
+                    $scope.addSponsor = function (){
+                        $scope.view.offlineRegistration = true;
+                        $scope.view.userToAdd = 'SPONSOR';
+                    }
+                    $scope.addRegular = function () {
+                        $scope.view.offlineRegistration = true;
+                        $scope.view.userToAdd = 'REGULAR';
+                    }
 
                     $scope.getPostUrl = function (evId, claimId) {
                         var name = '/admin/events/' + evId + '/tickets/' + claimId + '/payment';
@@ -332,6 +358,29 @@ append scripts
                         $http.post('/admin/events/#{eventId}/invitation', {email: email}).then(function (){
                             $window.location.reload();
                         });
+                    }
+
+                    $scope.showStatusDesc = function (status) {
+                        switch (status) {
+                            case 'active':
+                                return 'Bilet zajety - w trakcie wypelniania';
+                            case 'invited':
+                                return 'Bilet wyslany jako zaproszenie';
+                            case 'creatingPayment':
+                                return 'Przed wyslaniem do PayU';
+                            case 'waiting':
+                                return 'Oczekiwanie na potwierdzenie z PayU';
+                            case 'pending':
+                                return 'PayU oczekuje na potwierdzenie z banku';
+                            case 'offlinePending':
+                                return ' Platnosc zostanie wykonana bez uzycia PayU';
+                            case 'payed':
+                                return 'Zaplacone';
+                            case 'expired':
+                                return 'Czas na wypelnienie wygasl';
+                            default:
+                                return status;
+                        }
                     }
 
                 });

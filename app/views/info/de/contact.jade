@@ -2,43 +2,60 @@ extends ../../layout-de
 
 block content
   
-  .container
-    .row
-      h3.centered.vertical-space-m Wir freuen uns auf Deine Kontaktaufnahme!
-    .row.vertical-space-m
-      .col-md-6
-        .container
-          .contact-holder
+  .container-full
+    .container
+      .row
+        h1.h2.centered.vertical-space-s Kontakt
+      .contact-holder
+        h5
+          span.fa.fa-compass
+          | &nbsp;Anfragen
+        p
+          | Hast Du Fragen zu einzelnen Themen, Terminen oder Locations? Wir helfen Dir gerne weiter:
+        p
+          strong
+            span.mailaddress(data-name='info' data-domain='devmeetings.de')
+        p Bei eiligen Angelegenheiten kannst Du uns auch anrufen:
+        p
+          strong +48 532 264 968(Mobilfunk)
+        .contact-text.vertical-space-m
+          h5
+            span.fa.fa-puzzle-piece
+            | &nbsp;Zusammenarbeit
+          p
+            | Bist Du an einer generellen Zusammenarbeit mit uns interessiert?<br/>
+            span.mailaddress(data-name='zusammenarbeit' data-domain='devmeetings.de')
+        .row.vertical-space-s.box-group
+          .col-md-4.col-sm-4
+            .box
+              .box-details
+                h5
+                  | Sponsoring
+                p Deine Firma will ein DevMeeting unterstützen?
+                p
+                  span.mailaddress(data-name='sponsoring' data-domain='devmeetings.de')
+          .col-md-4.col-sm-4
+            .box
+              .box-details
+                h5
+                  | Trainer
+                p Möchtest Du Trainer werden oder bei der Vorbereitung eines Workshops helfen?
+                p
+                  span.mailaddress(data-name='trener' data-domain='devmeetings.com')
+          .col-md-4.col-sm-4
+            .box
+              .box-details
+                h5
+                  | Konferenzräume
+                p Möchte Deine Firma einen Konferenzraum zur Verfügung stellen?
+                p
+                  span.mailaddress(data-name='locations' data-domain='devmeetings.org')
+        .contact-text.vertical-space-m
+          h5
+            span.fa.fa-envelope
+            | &nbsp;DevMeetings ist eine Initiative von
+          p PLAN Solutions GmbH & Co. KG
+          | Mergenthallerallee 73-75<br/>
+          | 65760 Eschborn<br/>
+        .vertical-space-m
 
-              h5 DevMeetings ist eine Initiative von
-              p PLAN Solutions GmbH & Co. KG
-              | Mergenthallerallee 73-75<br/>
-              | 65760 Eschborn<br/>
-            .vertical-space-l
-            h5
-              .fa.fa-compass
-              | &nbsp;Anfragen
-            p
-              | Hast Du Fragen zu den einzelnen Themen, Terminen, Locations?<br/>Wir sind unter der Email erreichbar:
-            p
-              strong
-                a.link(href='mailto:info@devmeetings.com') info@devmeetings.de
-
-            .contact-text.vertical-space-m
-              h5
-                .fa.fa-puzzle-piece
-                | &nbsp;Zusammenarbeit
-              p
-                | Bist Du an der generellen Zusammenarbeit mit uns interessiert?<br/>
-                a.link(href='mailto:zusammenarbeit@devmeetings.de') zusammenarbeit@devmeetings.de
-
-            .contact-text.vertical-space-s
-              h5
-                .fa.fa-puzzle-piece
-                | &nbsp;Sponsoring
-              p
-                | Deine Firma will DevMeetings unterstützen?<br/>
-                a.link(href='mailto:sponsoring@devmeetings.de') sponsoring@devmeetings.de
-            .vertical-space-xxl
-
-    

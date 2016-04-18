@@ -6,18 +6,18 @@ footer.footer
             ul.footer-ul
               li
                 a(href='http://facebook.com/devmeetingspl', target='_blank')
-                  .fa.fa-facebook.fa-fw
+                  span.fa.fa-facebook.fa-fw
                   | &nbsp;devmeetingspl
               li
                 a(href='http://twitter.com/devmeetingspl', target='_blank')
-                  .fa.fa-twitter.fa-fw
+                  span.fa.fa-twitter.fa-fw
                   | &nbsp;@devmeetingspl
           .col-md-3.col-sm-3
             h5 Płatności obsługuje
             ul.footer-ul
               li
                 a(href='http://payu.pl', target='_blank')
-                  img(src='/img/payu.png')
+                  img(src='/img/payu.png' alt='PayU')
                  
           .col-md-3.col-sm-3
             h5
@@ -27,8 +27,8 @@ footer.footer
               li ul. Rzeźnicza 28-31
               li 50-130 Wrocław
               li
-                .fa.fa-envelope.fa-fw
-                | &nbsp;info (at) devmeetings.com
+                span.fa.fa-envelope.fa-fw
+                span.mailaddress(data-name='info' data-domain='devmeetings.com')
 
           .col-md-3.col-sm-3
             h5
@@ -36,3 +36,5 @@ footer.footer
             ul.footer-ul
               li 
                 a(href='/pl/info/terms') Zapoznaj się z polityką prywatności i warunkami rejestracji.
+              li 
+                a(href='http://confcodeofconduct.com' target='blank') Code of Conduct

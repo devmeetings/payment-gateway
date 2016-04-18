@@ -1,0 +1,62 @@
+extends ../../layout-en
+
+block content
+  
+  .container-full
+    .container
+      .row
+        h1.h2.centered.vertical-space-s Contact
+      .contact-holder
+        h5
+          span.fa.fa-compass
+          | &nbsp;Help and info
+        p
+          | If you have any questions concerning the workshops, dates, registration or payment, we will happily answer them by e-mail: 
+        p
+          strong
+            span.mailaddress(data-name='info' data-domain='devmeetings.com')
+        p In urgent cases, please contact us by phone:
+        p
+          strong +49 30 2241 0733 (German phone number)
+        .contact-text.vertical-space-m
+          h5
+            span.fa.fa-puzzle-piece
+            | &nbsp;Cooperation
+          p
+            | If you are interested in cooperation with DevMeetings, we invite you to contact us through the chosen e-mail address or through:<br/>
+            span.mailaddress(data-name='cooperation' data-domain='devmeetings.org')
+        .row.vertical-space-s.box-group
+          .col-md-4.col-sm-4
+            .box
+              .box-details
+                h5
+                  | Sponsoring
+                p Does your company want to sponsor DevMeetings?
+                p
+                  span.mailaddress(data-name='sponsoring' data-domain='devmeetings.org')
+          .col-md-4.col-sm-4
+            .box
+              .box-details
+                h5
+                  | Trainers and mentors
+                p Do you want to become a trainer or help to prepare workshop topics?
+                p
+                  span.mailaddress(data-name='trainer' data-domain='devmeetings.org')
+          .col-md-4.col-sm-4
+            .box
+              .box-details
+                h5
+                  | Conference rooms / venue for workshops 
+                p Does your company want to provide a conference room for the workshop?
+                p
+                  span.mailaddress(data-name='venue' data-domain='devmeetings.org')
+        .contact-text.vertical-space-m
+          h5
+            span.fa.fa-envelope
+            | &nbsp;Company data
+          p DevMeetings are the initiative of:
+          | Piotr Zwolinski<br/>
+          | Wittelsbacherstr. 30<br/>
+          | 10707 Berlin / Germany
+        .vertical-space-m
+

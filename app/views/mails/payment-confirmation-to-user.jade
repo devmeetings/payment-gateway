@@ -1,0 +1,16 @@
+extends ./mail.jade
+
+block title
+  Potwierdzenie płatności za #{claim.event.title} (#{claim.amount} zł)
+
+block content
+  p Cześć!
+  p Potwierdzamy Twoją płatność za udział w DevMeetingu #{claim.event.title} (!{event.mail.city}, #{eventDay}).
+  if invoice.no
+    p
+      | Faktura nr. #{invoice.no} znajduje się w załączniku. <br/>W razie problemów prosimy o kontakt
+      | na adres registration@devmeetings.org.
+
+  p
+    | Pozdrawiamy!<br/>
+    | Zespół DevMeetings.pl

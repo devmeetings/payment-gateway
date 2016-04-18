@@ -2,7 +2,7 @@ extends ./mail.jade
 
 block content
     p Cześć!
-    P Już #{eventDay} widzimy się na DevMeetingu !{event.title} w Krakowie.
+    P Już #{eventDay} widzimy się na DevMeetingu !{event.title} w !{event.mail.city}.
     p
         strong Gdzie?<br/>
         | !{event.mail.location}
@@ -11,26 +11,20 @@ block content
         strong Kiedy?<br/>
         | Sobota, #{startDate}, prosimy o przybycie najpóźniej #{regDate}. Zakończenie ok. #{endDate}.
 
-    p
-        strong Jak przygotować się do DevMeetingu?<br/>
-        | - uczestnicy pracują na własnych laptopach<br/>
-        | - prosimy o instalację Google Chrome oraz node.js<br/>
-        | - Możesz również spróbować zainstalować "starter" z Angularem 2. Jeśli nie uda Ci się samodzielnie, 
-        | pomożemy na początku DevMeetingu. Link: https://github.com/kapke/angular2-starter<br/>
-        | - zapoznaj się ze wstępem do ES2015/ES6 oraz TypeScript. Na DevMeetingu poświęcimy tym tematom odrobinę czasu, 
-        | ale warto, żebyś zapoznał się z kluczowymi aspektami.
+    if event.mail.preparation
+        p
+            strong Jak przygotować się do DevMeetingu?<br/>
+            !{event.mail.preparation}
 
-    p
-        strong Partner DevMeetingu<br/>
-        | Delphi jest wiodącym światowym dostawcą rozwiązań elektronicznych i technologii 
-        | systemowych dla sektora motoryzacyjnego. Centrum Techniczne w Krakowie zajmuje się projektowaniem, 
-        | tworzeniem oprogramowania i testowaniem zaawansowanych systemów mikroprocesorowych. Poczynając od systemów 
-        | rozrywki czy sterowania gestami aż po systemy rozpoznawania otoczenia auta.
- 
-    
-    p
-        strong Kontakt do organizatora w dniu DevMeetingu<br/>
-        | Piotr Zwoliński, tel. 532 264 968
+    if event.mail.partner
+        p
+            strong Partner DevMeetingu<br/>
+            !{event.mail.partner}
+
+    if event.mail.contact
+        p
+            strong Kontakt do organizatora w dniu DevMeetingu<br/>
+            !{event.mail.contact}
 
     br
     br

@@ -16,6 +16,7 @@ var ClaimSchema = new Schema({
   },
   paidWithoutPayu: Boolean,
   needInvoice: Boolean,
+  reminderSend: Boolean,
   extra: {
     vip: Boolean,
     sponsor: Boolean

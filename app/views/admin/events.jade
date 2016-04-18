@@ -33,7 +33,7 @@ block content
                   ng-model='model.search'
                   placeholder='Search'
                   )
-        
+
         div(ng-if="!view.detailed")
           table.table.table-striped.table-hover.table-condensed
             tr
@@ -46,7 +46,7 @@ block content
               th Actions
 
             tr(ng-repeat="ev in events | filter:model.search")
-              td 
+              td
                 a(ng-href="/events/{{ev.name}}") {{ev.name}}
               td {{ev.title}}
               td {{ev.openDate | date:'short'}}
@@ -71,13 +71,13 @@ block content
           .col-sm-12(ng-repeat="ev in events | filter:model.search")
             .well.clearfix
               form(
-                method="post", 
+                method="post",
                 action="{{ getPostUrl(ev._id)}}"
                 )
                 .col-sm-6
                   .form-group
                     label.control-label Title
-                    input.form-control(type='text' value="{{ev.title}}" name="title") 
+                    input.form-control(type='text' value="{{ev.title}}" name="title")
                   .form-group
                     label.control-label Short Name
                     input.form-control(type='text' value="{{ev.name}}" readonly)
@@ -85,16 +85,27 @@ block content
                     label.control-label City
                     input.form-control(type='text' value="{{ev.city}}" name="city")
                   .form-group
-                    label.control-label Event Location (For mail)
+                    label.control-label Mail: Lokalizacja (Gdzie?)
                     textarea.form-control(
                       rows="4", name="location"
                     ) {{ev.mail.location}}
+                  .form-group
+                    label.control-label Mail: Odmieniona nazwa miasta
+                    br
+                    small Juz w ... widzimy sie na DevMeetingu ... w nazwa miasta
+                    input.form-control(type='text' value="{{ev.mail.city}}" name="mail_city")
 
                   .form-group
                     .checkbox
                       label
                         input(type='checkbox' ng-checked="ev.isVisible" name="isVisible")
                         | Visible?
+
+                  .form-group(ng-if="ev.mail.sended")
+                    h5 Mail z lokalizacja zostal wyslany
+                  .form-group(ng-if="!ev.mail.sended")
+                    h5
+                      strong Mail z lokalizacja nie zostal wyslany
                   .form-group
                     h3.text-muted Bilety: {{ev.ticketsLeft}} / {{ev.tickets}}
                 .col-sm-6
@@ -111,10 +122,22 @@ block content
                     input.form-control(type="text", value="{{ev.eventEndDate | date:'short'}}", name="eventEndDate")
 
                   .form-group
-                    label.control-label Event Partner (For mail)
+                    label.control-label Mail: Partner
                     textarea.form-control(
                       rows="4", name="partner"
                     ) {{ev.mail.partner}}
+
+                  .form-group
+                    label.control-label Mail: Jak przygotowac sie do DevMeetingu
+                    textarea.form-control(
+                    rows="4", name="preparation"
+                    ) {{ev.mail.preparation}}
+
+                  .form-group
+                    label.control-label Mail: Kontakt do organizatora w dniu DevMeetingu
+                    textarea.form-control(
+                    rows="4", name="contact"
+                    ) {{ev.mail.contact}}
 
                   .form-group
                     label.control-label Event substantive content (For diploma)
@@ -132,8 +155,8 @@ block content
                   ng-class="{'with-preview': showPreview}"
                     )
                   .col-xs-6(
-                    ng-if="showPreview" 
-                    marked="ev.description" 
+                    ng-if="showPreview"
+                    marked="ev.description"
                     )
                   .col-xs-6
                     textarea.form-control(

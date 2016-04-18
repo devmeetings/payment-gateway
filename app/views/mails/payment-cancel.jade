@@ -1,0 +1,16 @@
+extends ./mail.jade
+
+block title
+  Anulowanie rezerwacji na devmeeting #{claim.event.title}
+
+block content
+  p Cześć!
+  p Zarejestrowałeś się u nas na warsztaty #{claim.event.title} (#{eventDate}),
+  p Niestety w wyniku braku płatności musiliemy anulowac Twoją rezerwację.
+
+  p
+    | W przypadku pytań prosimy o kontakt na adres registration@devmeetings.org.
+
+  p
+    | Pozdrawiamy!<br/>
+    | Zespół DevMeetings.pl
