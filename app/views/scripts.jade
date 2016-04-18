@@ -8,3 +8,74 @@ script(async).
   $(function(){
     $('.videos').fitVids();
   });
+  $(function() {
+    $(window).on("load resize", function() {
+      if($(window).width() > 767) {
+        sameHeight(".box", ".photostory-holder", true);
+        sameHeight(".box", ".box-group", true);
+        sameHeight(".box", ".workshop-holder", true);
+        sameHeight(".box, .offer-or", ".offer-holder", true);
+      }
+    });
+    $(window).scroll(function () {
+      if($(window).scrollTop() > 100) {
+          $("body").addClass("fixed");
+        } else {
+          $("body").removeClass("fixed");
+        }
+    });
+    /* EMAILE */
+    var names = ["info", "piotr", "tomek", "sponsoring", "trener", "locations", "piotr.zwolinski", "wspolpraca", "salki", "cooperation", "trainer", "venue"];
+    var domains = ["devmeetings.org", "devmeetings.com", "devmeetings.de", "devmeetings.pl"];
+    $(".mailaddress").each(function() {
+      makeEmail($(this));
+    });
+  });
+  
+  function makeEmail(element) {
+    var name = element.attr("data-name");
+    var domain = element.attr("data-domain");
+    element.html('<a href="mailto:' + name + '@' + domain + '">' + name + '@' + domain + '</a>');
+  }
+
+  function sameHeight(blocks, parent, outer) {
+    var i = 0;
+    var maxVal;
+    if(parent == null) {
+      parent = "body";
+    } 
+    
+    jQuery(blocks).parents(parent).each(function() {
+    
+      maxVal = 0;
+      
+      jQuery(this).find(blocks).each(function() {
+        if(i == 0) {
+          if(outer) {
+            maxVal = jQuery(this).outerHeight();
+          } else {
+            maxVal = jQuery(this).height();
+          }
+        } else {
+          if(jQuery(this).outerHeight() > maxVal) {
+            if(outer) {
+              maxVal = jQuery(this).outerHeight();
+            } else {
+              maxVal = jQuery(this).height();
+            }
+          }
+        }
+        i++;
+      });
+      
+      jQuery(this).find(blocks).each(function() {
+        if(outer) {
+          jQuery(this).css("min-height", maxVal + "px");
+        } else {
+          jQuery(this).css("min-height", maxVal + "px");
+        }
+      });
+      
+    });
+    
+  }

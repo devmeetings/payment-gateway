@@ -4,26 +4,28 @@ block content
   
   .container-full
     .container
+      .row
+        h1.h2.centered.vertical-space-s Kontakt
       .contact-holder
         h5
-          .fa.fa-compass
+          span.fa.fa-compass
           | &nbsp;Pomoc i info
         p
           | Jeśli masz pytania odnośnie warsztatów, terminów, lokalizacji, rejestracji lub płatności, chętnie odpowiemy na nie mailem:
         p
           strong
-            a.link(href='mailto:info@devmeetings.com') info@devmeetings.com
+            span.mailaddress(data-name='info' data-domain='devmeetings.com')
         p W pilnych sprawach prosimy również o kontakt telefoniczny:
         p
           strong +48 532 264 968
         .contact-text.vertical-space-m
           h5
-            .fa.fa-puzzle-piece
+            span.fa.fa-puzzle-piece
             | &nbsp;Współpraca
           p
             | Jeśli jesteś zainteresowany współpracą z DevMeetings, zapraszamy do kontaktu przez wybrany adres email lub przez:<br/>
-            a.link(href='mailto:wspolpraca@devmeetings.com') wspolpraca@devmeetings.com
-        .row
+            span.mailaddress(data-name='wspolpraca' data-domain='devmeetings.com')
+        .row.vertical-space-s.box-group
           .col-md-4.col-sm-4
             .box
               .box-details
@@ -31,7 +33,7 @@ block content
                   | Sponsoring
                 p Twoja firma chce sponsorować DevMeetingi?
                 p
-                  a.link(href='mailto:sponsoring@devmeetings.com') sponsoring@devmeetings.com
+                  span.mailaddress(data-name='sponsoring' data-domain='devmeetings.com')
           .col-md-4.col-sm-4
             .box
               .box-details
@@ -39,7 +41,7 @@ block content
                   | Trenerzy
                 p Chciałbyś zostać trenerem lub pomóc w przygotowaniu tematów warsztatów?
                 p
-                  a.link(href='mailto:trener@devmeetings.com') trener@devmeetings.com
+                  span.mailaddress(data-name='trener' data-domain='devmeetings.com')
           .col-md-4.col-sm-4
             .box
               .box-details
@@ -47,10 +49,10 @@ block content
                   | Salki konferencyjne
                 p Twoja firma chce udostępnić salkę konferencyjną?
                 p
-                  a.link(href='mailto:salki@devmeetings.com') salki@devmeetings.com
-        .contact-text
+                  span.mailaddress(data-name='salki' data-domain='devmeetings.com')
+        .contact-text.vertical-space-m
           h5
-            .fa.fa-envelope
+            span.fa.fa-envelope
             | &nbsp;Dane firmowe
           p DevMeetings to inicjatywa firmy:
           | Developers Peak Sp. z o. o.<br/>

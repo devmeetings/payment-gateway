@@ -3,160 +3,205 @@ extends ../../layout-de
 block content
   
   .container-full
-    .container
-
-      h3.centered.vertical-space-m DevMeetings: Workshops für Softwareentwickler mit Leidenschaft.
-      h5.centered Community-driven, zugänglich dank "Pay What You Want"-Modell.
-      .workshop-holder.row.vertical-space-m
-        .col-md-8.col-md-offset-2
-          .videos 
-            <iframe width="854" height="510" src="https://www.youtube.com/embed/t4zh2gII5J8" frameborder="0" allowfullscreen></iframe>
+    .container-light-gray
+      .container.container-heading
+        h1.h3.centered.vertical-space-m.text-thin DevMeetings: 
+          strong Workshops 
+          | für Softwareentwickler mit Leidenschaft.
+        p.h5.centered.text-thin Gemeinschaftlich entwickelt und zugänglich für alle, dank <strong>„Pay What You Want“</strong> - Modell.
+        .workshop-holder.vertical-space-m
+          .col-md-8.col-md-offset-2
+            .videos 
+              <iframe width="854" height="510" src="https://www.youtube.com/embed/t4zh2gII5J8" allowfullscreen></iframe>
     .container            
       .row.vertical-space-m
-        h3.centered Nächste Themen
+        h2.h3.centered Nächste Themen
       .workshop-holder.row.vertical-space-m
-        .col-md-6.col-sm-12.col-xs-12.col-md-offset-3
+        .col-sm-6.col-xs-12
           .box
             .box-image
-              img.img-responsive.workshop-img(src='/img/static/workshops/es6_devmeeting_bln.png')
+              a(href='/de/info/ecmaScript6')
+                .workshop-img(style='background-image: url(/img/static/workshops/teaser1.png);' alt='')
+                  .workshop-inner
+                    img(src='/img/static/workshops/logo_es6.png' alt='')
+                    .workshop-subtitle(style='border-color: #f0da51') Dive into ECMAScript 2015 (ES6)
             .box-details
-              h4 ECMA Script 6, Berlin
+              a(href='/de/info/ecmaScript6')
+                h3.h4 ECMAScript 2015 (ES6)
               p
-                | DevMeeting für JavaScript und Webentwickler, die ECMAScript 2015 (ES6) lernen wollen. Lerne die wichtigsten Features von ES6, wie Generators, Classes, Modules und Promises auf dem ganztägigen DevMeeting in Berlin!
+                | Ein Workshop zur Erstellung von Apps mit Hilfe von ECMAScript 6. Ideal für Entwickler mit Kenntnissen in JavaScript, Java, PHP oder Ruby, die sofort in die neue Spachspezifikation einsteigen wollen.
               p
-                .fa.fa-map-marker.fa-lg.fa-fw
-                | &nbsp;<strong>Berlin</strong>
+                span.fa.fa-map-marker.fa-lg.fa-fw
+                | &nbsp;<strong>Kraków</strong>
               p
-                .fa.fa-calendar.fa-lg.fa-fw
-                | &nbsp; <strong>17 Oktober 2015</strong>
+                span.fa.fa-calendar.fa-lg.fa-fw
+                | &nbsp; <strong>20. Juni 2015</strong>
               p.btn-holder
-                .btn.btn-dev.disabled Anmeldung startet am 15 Sept.
+                a.btn.btn-dev(href='/de/info/ecmaScript6') Anmelden!
 
+        .col-sm-6.col-xs-12
+          .box
+            .box-image
+              a(href='/de/info/react')
+                .workshop-img(style='background-image: url(/img/static/workshops/teaser2.png);' alt='')
+                  .workshop-inner
+                    img(src='/img/static/workshops/logo_react.png' alt='')
+                    .workshop-subtitle(style='border-color: #62dafc') Efficient Webapps with React.js + Redux
+            .box-details
+              a(href='/de/info/react')
+                h3.h4 Effiziente Webapps mit React.js + Redux
+              p
+                | Ganztägiger Workshop zum Thema React.js im Zusammenspiel mit Redux (Implementierung des DI-Containers). Lerne die immer populärer werdende Facebook-Bibliothek kennen und lerne effiziente Single-Page Webapps zu erstellen.
+              p
+                span.fa.fa-map-marker.fa-lg.fa-fw
+                | &nbsp;<strong>Kraków</strong>
+              p
+                span.fa.fa-calendar.fa-lg.fa-fw
+                | &nbsp; <strong>20. Juni 2015</strong>
+              p.btn-holder
+                a.btn.btn-dev(href='/de/info/react') Anmelden!
+     
+      .workshop-holder.row
+        .col-sm-6.col-xs-12
+          .box
+            .box-image
+              a(href='/de/info/ionic')
+                .workshop-img(style='background-image: url(/img/static/workshops/teaser3.png);' alt='')
+                  .workshop-inner
+                    img(src='/img/static/workshops/logo_ionic.png' alt='')
+                    .workshop-subtitle(style='border-color: #4e8ff7') Hybrid Apps with Ionic Framework
+            .box-details
+              a(href='/de/info/ionic')
+                h3.h4 Hybrid-Apps mit dem Ionic Framework
+              p
+                | Workshop über die Erstellung von hybriden Mobile-Apps mit dem Ionic Framework. Lerne u.a. das SDK, die Erstellung eines User Interfaces, sowie den Zugriff zu den Hardware-Ressourcen mobiler Endgeräte kennen.
+              p
+                span.fa.fa-map-marker.fa-lg.fa-fw
+                | &nbsp;<strong>Kraków</strong>
+              p
+                span.fa.fa-calendar.fa-lg.fa-fw
+                | &nbsp; <strong>20. Juni 2015</strong>
+              p.btn-holder
+                a.btn.btn-dev(href='/de/info/ionic') Anmelden!
 
-      h3.centered Themen in Vorbereitung
-      .workshop-holder.row.vertical-space-m
-        .col-md-4.col-sm-4.col-xs-12
+        .col-sm-6.col-xs-12
           .box
             .box-image
-              img.img-responsive.workshop-img(src='/img/static/workshops/teaser_devm_ionic.png')
+              a(href='/de/info/angular-2')
+                .workshop-img(style='background-image: url(/img/static/workshops/teaser4.png);' alt='')
+                  .workshop-inner
+                    img(src='/img/static/workshops/logo_angular.png' alt='')
+                    .workshop-subtitle(style='border-color: #e23137') Moderne Webapps mit Angular 2
             .box-details
-              h4 Ionic Framework
+              a(href='/de/info/angular-2')
+                h3.h4 Teaser Angular 2
               p
-                | HTML5 Mobile Apps mit Ionic Framework entwickeln.
+                | Obwohl Angular 2 noch in der Beta-Phase steckt, nutzen es immer mehr Entwickler bereits produktiv. Lerne in unserem Workshop die Vorteile der neuen Version kennen.
               p
-                .fa.fa-map-marker.fa-lg.fa-fw
-                | &nbsp;Berlin, Hamburg, München, Köln<br/>
+                span.fa.fa-map-marker.fa-lg.fa-fw
+                | &nbsp;<strong>Kraków</strong>
               p
-                .fa.fa-calendar.fa-lg.fa-fw
-                | &nbsp;Oktober 2015
+                span.fa.fa-calendar.fa-lg.fa-fw
+                | &nbsp; <strong>20. Juni 2015</strong>
               p.btn-holder
-                .btn.btn-dev.disabled Anmeldung startet am 15 Sep
-        .col-md-4.col-sm-4.col-xs-12
-          .box
-            .box-image
-              img.img-responsive.workshop-img(src='/img/static/workshops/teaser_devm_angular_2.png')
-            .box-details
-              h4 Angular 2
-              p
-                | Angular 1.x wird immer mehr populär, jedoch nächste Generation des Frameworks kommt bald. Lerne Entwicklung von Angular 2 Apps mit TypeScript.
-              p
-                .fa.fa-map-marker.fa-lg.fa-fw
-                | &nbsp;Berlin, Hamburg, München, Köln<br/>
-              p
-                .fa.fa-calendar.fa-lg.fa-fw
-                | &nbsp;November 2015
-              p.btn-holder
-                .btn.btn-dev.disabled Anmeldung startet am 15 Okt
-        .col-md-4.col-sm-4.col-xs-12
-          .box
-            .box-image
-              img.img-responsive.workshop-img(src='/img/static/workshops/teaser_devm_react.png')
-            .box-details
-              h4 React + Flux
-              p
-                | React JS - das JavaScript Framework von Facebook wird immer mehr populär. Lerne React + Flux auf dem ganztägigen DevMeeting.
-              p
-                .fa.fa-map-marker.fa-lg.fa-fw
-                | &nbsp;Berlin, Hamburg, München, Köln<br/>
-              p
-                .fa.fa-calendar.fa-lg.fa-fw
-                | &nbsp;Dezemeber 2015
-              p.btn-holder
-                .btn.btn-dev.disabled Anmeldung startet am 15 Nov
+                a.btn.btn-dev(href='/de/info/angular-2') Anmelden!
+
     .container-light-gray
       .container
-        h3.centered.vertical-space-m Feedback der Teilnehmer
-        .opinions-holder.row.vertical-space-m
+        h2.h3.centered.vertical-space-m Feedback der Teilnehmer
+        .opinions-holder.row.vertical-space-ml
           .opinions-col
-            .col-md-1.col-sm-1.hidden-xs
-              img.img-responsive(src='/img/static/homepage/us_adamjodlowski.png')
-            .col-md-5.col-sm-5.col-xs-12
-              p
-                em
-                  | Intellektuelles Massaker. Samstag mit @DevMeetings, danke an Euch, bis zum nächsten Mal!
-              strong @adamjodlowski
-              p
-                a(href='http://twitter.com/adamjodlowski/status/69495869824704512', target='_blank')
-                  | twitter.com/adamjodlowski/status/69...
+            .col-md-1.col-xs-2
+              img.img-responsive(src='/img/static/homepage/blacke-s-big.jpg' alt='')
+            .col-md-5.col-sm-4.col-xs-10
+                p
+                  em
+                  | ...The tutorial format and mentoring was probably the best I've seen at a meetup of this kind so far. It was a very valuable experience!
+                p
+                  a(href='http://www.meetup.com/Seattle-Devmeetings/events/226985992/#event_comment-458693701', target='_blank')
+                    | meetup.com/Seattle-Devmeetings/events/...
+                p
+                  span
+                    strong Blake S.
+                  br
+                  strong Ecmascript 6, Seattle, WA
           .opinions-col
-            .col-md-1.col-sm-1.hidden-xs
-              img.img-responsive(src='/img/static/homepage/us_knapo.png')
-            .col-md-5.col-sm-5.col-xs-12
-              p
-                em
-                  | long, tiring, but very productive and fantastic day at @DevMeetingsPL – thanks guys! cannot wait for next one!
-              strong @knapo
-              p
-                a(href='http://twitter.com/knapo/status/82187412331184128', target='_blank')
-                  | twitter.com/knapo/status/821...
-        .opinions-holder.row
+            .col-md-1.col-xs-2
+              img.img-responsive(src='/img/static/homepage/tony-h-big.jpg' alt='')
+            .col-md-5.col-sm-4.col-xs-10
+                p
+                  em
+                  | Thanks for the meetup! Excellent material and help from the organisers. Even though I had no experience in web development I was able to follow along and learned a lot.
+                p
+                  a(href='http://www.meetup.com/AngularJS-Oslo/events/221099320/#event_comment-446442714', target='_blank')
+                    | meetup.com/AngularJS-Oslo/events/...
+                p
+                  span
+                    strong Tony H.
+                  br
+                  strong AngularJS, Oslo, Norway
+                  
+        .opinions-holder.row.vertical-space-s
           .opinions-col
-            .col-md-1.col-sm-1.hidden-xs
-              img.img-responsive(src='/img/static/homepage/us_pawrog.png')
-            .col-md-5.col-sm-5.col-xs-12
-              p
-                em
-                  | It was awesome workshop on node.js and RingoJS today at @DevMeetingsPL I’m looking forward to repeat this kind of experience!
-              strong @pawrog
-              p
-                a(href='http://twitter.com/pawrog/status/69506793721692161', target='_blank')
-                  | twitter.com/pawrog/status/6950...
+            .col-md-1.col-xs-2
+              img.img-responsive(src='/img/static/homepage/hs-big.jpg' alt='')
+            .col-md-5.col-sm-4.col-xs-10
+                p
+                  em
+                  | Awesome workshop.. thank you for doing yhis. It is a saturday very well spent...
+                p
+                  a(href='http://www.meetup.com/Seattle-Devmeetings/events/222682646/#event_comment-451146648', target='_blank')
+                    | meetup.com/Seattle-Devmeetings/events/...
+                p
+                  span
+                    strong HS
+                  br
+                  strong AngularJS, Seattle, WA
           .opinions-col
-            .col-md-1.col-sm-1.hidden-xs
-              img.img-responsive(src='/img/static/homepage/us_marcoos.png')
-            .col-md-5.col-sm-5.col-xs-125
-              p
-                em
-                  | Nach dem ServerSide JavaScript Workshops von @DevMeetings. Gut investierte Zeit, perfekt organisierter Workshop.
-              strong @marcoos
-              p
-                a(href='http://twitter.com/marcoos/status/82180367213273089', target='_blank')
-                  | twitter.com/marcoos/status/8218...
-        .vertical-space-m
-    
-
+            .col-md-1.col-xs-2
+              img.img-responsive(src='/img/static/homepage/paul-s-big.jpg' alt='')
+            .col-md-5.col-sm-4.col-xs-10
+                p
+                  em
+                    | Great workshop! Looking forward to the next meetup ;)
+                p
+                  a(href='http://www.meetup.com/AngularJS-Oslo/events/221099320/#event_comment-446456074', target='_blank')
+                    | meetup.com/AngularJS-Oslo/events/...
+                p
+                  span
+                    strong Paul S.
+                  br
+                  strong AngularJS, Oslo, Norway
+        .vertical-space-m  
     .container
-      .sub-footer-holder.row.vertical-space-m
-        .col-md-4.col-sm-4
-          h5
-            a(href='/de/info/about_devmeetings') Über DevMeetings
-          p
-            | DevMeeting ist ein ganztägiger Mix zwischen Workshop und Hackathon – vorbereitet durch Entwickler mit Leidenschaft. Seit 2011 haben wir mehr als 100 Events veranstaltet, von ServerSide JavaScript, über JavaScript Game-Entwicklung, bis zum Responsive Web Design.
-          p
-            a(href='/de/info/about_devmeetings') Mehr über DevMeetings >
-        .col-md-4.col-sm-4
-          h5
-            a(href='/de/info/pwyw') Pay What You Want
-          p
-            | Der Leitgedanke von DevMeetings ist die Offenheit und Verfügbarkeit der Workshops für alle, die Entwicklungsskills verstärken wollen. Deswegen haben wir das “Pay What You Want”–Modell eingeführt. Du kannst kostenlos teilnehmen oder die Initative finanziell unterstützen.
-          p
-            a(href='/de/info/pwyw') Mehr über Pay What You Want >
-        .col-md-4.col-sm-4
-          h5 Zusammenarbeit
-          p
-            | Wir suchen nach Mentoren, Sponsoren und leidenschaftlichen Entwicklern, die uns unterstützen wollen. Kontakt: info (at) devmeetings (punkt) org
-          p
-            a(href='/de/info/contact') Kontakt >
-      .vertical-space-m
+      .container
+        .sub-footer-holder.row.vertical-space-m
+          .col-md-4.col-sm-4
+            h5
+              img(src='/img/icon_pixels.png' alt='') 
+              | Über DevMeetings
+            p
+              | Ein DevMeeting ist ein ganztägiger Mix zwischen Workshop und Hackathon – vorbereitet durch Entwickler mit Leidenschaft. Seit 2011 haben wir bereits mehr als 100 DevMeetings  veranstaltet, z.B. über die Themen Responsive Webdesign, ServerSide, JavaScript Game-Entwicklung und vieles mehr.
+            p
+              a(href='/de/info/about_devmeetings') Mehr über DevMeetings >
+          .col-md-4.col-sm-4
+            h5
+              img(src='/img/icon_pixels.png' alt='') 
+              | Pay What You Want
+            p
+              | Der Leitgedanke von DevMeetings ist die Offenheit und Verfügbarkeit der Workshops für alle, die ihre Entwicklungsskills erweitern wollen. Deswegen haben wir das “Pay What You Want”-Modell eingeführt. Jeder entscheidet selbst, ob er kostenlos teilnimmt oder die Initiative finanziell unterstützen möchte.
+            p
+              a(href='/de/info/pwyw') Mehr über Pay What You Want >
+          .col-md-4.col-sm-4
+            h5
+              img(src='/img/icon_pixels.png' alt='') 
+              | Zusammenarbeit
+            p
+              | Wir suchen nach Mentoren, Sponsoren und leidenschaftlichen Entwicklern, die uns unterstützen wollen. Kontakt: 
+              | 
+              span.mailaddress(data-name='info' data-domain='devmeetings.org') .
+            p
+              a(href='/de/info/contact') Kontakt >
+        .vertical-space-m
 
 

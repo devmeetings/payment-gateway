@@ -1,14 +1,40 @@
-footer.footer(style="min-height: 60px;")
+footer.footer
     .container
         .row
-          .col-md-6.col-sm-6
-            h5 (c) 2011-2015 DevMeetings.de
-          .col-md-6.col-sm-6(style="text-align: right;")
+          .col-md-3.col-sm-3
+            h5 Social
+            ul.footer-ul
+              li
+                a(href='http://facebook.com/devmeetingsde', target='_blank')
+                  span.fa.fa-facebook.fa-fw
+                  | &nbsp;devmeetingspl
+              li
+                a(href='http://twitter.com/devmeetingsde', target='_blank')
+                  span.fa.fa-twitter.fa-fw
+                  | &nbsp;@devmeetingspl
+          .col-md-3.col-sm-3
+            h5 Zahlungen werden durchgeführt von
+            ul.footer-ul
+              li
+                a(href='http://payu.pl', target='_blank')
+                  img(src='/img/payu.png' alt='PayU')
+                 
+          .col-md-3.col-sm-3
             h5
-              a(href='/de/info/codeofconduct') Code of conduct
-              |&nbsp;|&nbsp;
               a(href='/de/info/contact') Kontakt
-              |&nbsp;|&nbsp;
-              a(href='/de/info/terms') AGBs
-              |&nbsp;|&nbsp;
-              a(href='/de/info/imprint') Impressum
+            ul.footer-ul
+              li Developers Peak Sp. z o. o.
+              li ul. Rzeźnicza 28-31
+              li 50-130 Wrocław
+              li
+                span.fa.fa-envelope.fa-fw
+                span.mailaddress(data-name='info' data-domain='devmeetings.com')
+
+          .col-md-3.col-sm-3
+            h5
+              a(href='/de/info/terms') Legal
+            ul.footer-ul
+              li 
+                a(href='/de/info/terms') Datenschutz & Anmeldebedingungen
+              li 
+                a(href='http://confcodeofconduct.com' target='blank') Code Of Conduct
