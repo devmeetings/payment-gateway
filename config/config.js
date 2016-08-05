@@ -25,7 +25,7 @@ var config = {
     },
     payu: null,
     port: 3000,
-    db: 'mongodb://localhost/payment-gateway-test',
+    db: 'mongodb://localhost/payment-gateway-staging',
     sentryDsn: false
   },
 
