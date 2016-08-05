@@ -39,7 +39,7 @@
     src: "/srv/_packages/payments_{{payments_version}}.tar.gz"
 
 - name: Installing Modules
-  npm: 
+  npm:
     path: "/srv/{{ server_name }}/"
 
 - name: Run On Startup
@@ -61,7 +61,7 @@
   sudo: yes
   sudo_user: payments
   environment:
-    NODE_ENV: "production"
+    NODE_ENV: "{{payments_env}}"
     PORT: "{{payments_port}}"
 
 
