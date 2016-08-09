@@ -24,4 +24,17 @@ module.exports = function (router) {
 
   });
 
+  router.get('/event/:name/tickets-left', function (req, res) {
+
+    Event.findOne({
+      name: req.params.name
+    }).exec(function (err, event){
+      if (event) {
+        res.status(200).send(event.ticketsLeft.toString());
+      }
+      else {
+        res.status(404).send('No event');
+      }
+    });
+  })
 };
