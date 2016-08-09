@@ -43,7 +43,7 @@ router.get('/events/:name', function (req, res, next) {
       return res.send(404);
     }
 
-    ev.description = marked(ev.description);
+   // ev.description = marked(ev.description);
 
     res.render('event', {
       title: ev.title,
