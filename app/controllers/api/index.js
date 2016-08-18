@@ -4,4 +4,5 @@ module.exports = function (app) {
   app.use('/api', router);
 
   require('./events')(router);
+  require('./countries')(router);
 };
