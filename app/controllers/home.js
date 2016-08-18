@@ -5,6 +5,7 @@ var intercept = require('../utils/intercept');
 var Event = require('../models/event');
 var Claims = require('../models/claims');
 var invoiceApi = require('../controllers/invoice').api;
+var ticketTranslations = require('../utils/ticket_translations');
 // var crypto = require('crypto');
 
 module.exports = function (app) {
@@ -81,7 +82,12 @@ router.post('/events/:id/invoice/:claim', function (req, res, next) {
 });
 
 router.get('/events/:id/tickets/:claim', function (req, res, next) {
+   res.redirect('/events/' + req.params.id + '/tickets/' + req.params.claim + '/pl');
+});
+
+router.get('/events/:id/tickets/:claim/:lang', function (req, res, next) {
   // TODO [ToDr] Display some meaningful message if status is wrong
+  req.i18n.changeLanguage('pl');
   Claims.findOne({
     _id: req.params.claim,
     event: req.params.id,
@@ -96,6 +102,7 @@ router.get('/events/:id/tickets/:claim', function (req, res, next) {
     if (claim.status === Claims.STATUS.ACTIVE || claim.status === Claims.STATUS.INVITED) {
       res.render('event-ticket_fill', {
         claim: claim,
+        translation : JSON.stringify(ticketTranslations(req.t)),
         claim_json: JSON.stringify(claim)
       });
     } else if (claim.status === Claims.STATUS.PAYED) {
@@ -117,15 +124,24 @@ router.post('/events/:name/tickets', function (req, res, next) {
   function createClaim (ev) {
     var now = new Date();
     var validTill = new Date(now.getTime() + CLAIM_TIME);
-    Claims.create({
-      event: ev._id,
-      claimedTime: new Date(),
-      validTill: validTill,
-      status: Claims.STATUS.ACTIVE
-    }, intercept(next, function (claim) {
-      res.cookie('claim', ev._id + ':' + claim._id, {expires: validTill});
-      res.redirect('/events/' + ev._id + '/tickets/' + claim._id);
-    }));
+      Event.findOne({
+          _id: ev._id
+      }).populate('country').exec(intercept(next, function (event) {
+          if (!event) {
+              return res.send(404);
+          }
+          Claims.create({
+              event: ev._id,
+              vatRate: event.country.vatRate,
+              claimedTime: new Date(),
+              validTill: validTill,
+              status: Claims.STATUS.ACTIVE
+          }, intercept(next, function (claim) {
+              res.cookie('claim', ev._id + ':' + claim._id, {expires: validTill});
+              res.redirect('/events/' + ev._id + '/tickets/' + claim._id + '/pl');
+          }));
+      }));
+
   }
 
   function tryToClaimTicket (ev) {
