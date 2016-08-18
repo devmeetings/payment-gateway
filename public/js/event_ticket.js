@@ -1,5 +1,6 @@
 /* globals React,moment,claim */
-(function (R, D) {
+(function (R, D, T) {
+
   var InputField = R.createClass({
     getDefaultProps: function () {
       return {
@@ -148,9 +149,9 @@
       return (
         <div>
           <div className='alert alert-warning'>
-            <h4 className='noHeaderMargins'>Prosimy o wypełnienie formularza.</h4>
+            <h4 className='noHeaderMargins'>{T.ticket.alert.header}</h4>
 
-            <p>Aby się zarejestrować, musisz dokończyć rejestrację <strong>{timeLeft}</strong>.</p>
+            <p>{T.ticket.alert.paragraph} <strong>{timeLeft}</strong>.</p>
           </div>
 
           <div className='well'>
@@ -217,4 +218,4 @@
     <TicketComponent claim={claim}/>,
     document.querySelector('.ticket')
   );
-}(React, React.DOM));
+}(React, React.DOM, Translator));
