@@ -10,6 +10,11 @@ var EventSchema = new Schema({
     unique: true,
     index: true
   },
+  country: {
+      type: Schema.Types.ObjectId,
+      ref: 'country',
+      index: true
+  },
   city: String,
   isVisible: Boolean,
   title: String,
