@@ -1,0 +1,8 @@
+{
+  "ticket" : {
+    "alert": {
+      "header": "Prosimy o wypełnienie formularza.",
+      "paragraph" : "Aby się zarejestrować, musisz dokończyć rejestrację"
+    }
+  }
+}

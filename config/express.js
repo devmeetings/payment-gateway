@@ -1,6 +1,9 @@
 var express = require('express');
 var glob = require('glob');
 
+var i18next = require('i18next');
+var i18Middleware = require('i18next-express-middleware');
+var i18Backend = require('i18next-node-fs-backend');
 var raven = require('raven');
 var logger = require('morgan');
 var favicon = require('serve-favicon');
@@ -10,6 +13,17 @@ var compress = require('compression');
 var methodOverride = require('method-override');
 
 module.exports = function (app, config) {
+  i18next
+      .use(i18Backend)
+      .init({
+        backend: {
+          loadPath: config.root + '/locales/{{lng}}/{{ns}}.json'
+        },
+        lng: 'pl'
+      });
+
+  app.use(i18Middleware.handle(i18next));
+
   app.set('views', config.root + '/app/views');
   app.set('view engine', 'jade');
 
