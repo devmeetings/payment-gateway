@@ -22,6 +22,7 @@ var ClaimSchema = new Schema({
     sponsor: Boolean
   },
   amount: Number,
+  vatRate: Number,
   invoice: {
     invoiceNo: String,
     deliveryDate: Date,
@@ -51,7 +52,7 @@ ClaimSchema.virtual('date')
 
 ClaimSchema.virtual('amountNet')
     .get(function () {
-      return (this.amount / 1.23).toFixed(2).replace('.', ',');
+      return (this.amount / ((100+this.vatRate)/100).toFixed(2)).toFixed(2).replace('.', ',');
     });
 
 ClaimSchema.virtual('amountDiff')
