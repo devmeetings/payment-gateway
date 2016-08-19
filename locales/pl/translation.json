@@ -1,8 +1,20 @@
 {
-  "ticket" : {
+  "ticket": {
     "alert": {
       "header": "Prosimy o wypełnienie formularza.",
-      "paragraph" : "Aby się zarejestrować, musisz dokończyć rejestrację"
-    }
+      "paragraph": "Aby się zarejestrować, musisz dokończyć rejestrację",
+      "timeout": "Czas, który miałeś na dokończenie rejestracji skończył się.",
+      "timeoutInfoPart1": "Możesz spróbować zarejestrować się jeszcze raz.",
+      "timeoutInfoPart2": "W razie problemów, prosimy o maila: registration@devmeetings.org.",
+    },
+    "title": "Rejestrujesz się na DevMeeting",
+    "mail": "Adres e-mail",
+    "names": "Imię i nazwisko",
+    "payment": {
+      "title": "Płatność (Pay What You Want)",
+      "decleredAmount": "Deklarowana kwota",
+      "diplomaInfo": "(Jeśli wpłacisz 100 zł lub więcej, otrzymasz wysokiej jakości wydrukowany certyfikat)"
+    },
+    "btnConfirm": "Potwierdź rejestrację"
   }
 }
