@@ -149,9 +149,9 @@
       return (
         <div>
           <div className='alert alert-warning'>
-            <h4 className='noHeaderMargins'>{T.ticket.alert.header}</h4>
+            <h4 className='noHeaderMargins'>{T.alert.header}</h4>
 
-            <p>{T.ticket.alert.paragraph} <strong>{timeLeft}</strong>.</p>
+            <p>{T.alert.paragraph} <strong>{timeLeft}</strong>.</p>
           </div>
 
           <div className='well'>
