@@ -118,8 +118,9 @@ router.get('/events/:id/tickets/:claim/:lang', function (req, res, next) {
   }));
 });
 
-router.post('/events/:name/tickets', function (req, res, next) {
+router.post('/events/:name/tickets/:lang?', function (req, res, next) {
   var CLAIM_TIME = 2 * 60 * 1000;
+  var lang = req.params.lang || 'pl';
 
   function createClaim (ev) {
     var now = new Date();
