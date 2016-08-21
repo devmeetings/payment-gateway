@@ -37,7 +37,7 @@ router.get('/', function (req, res) {
 
 
 router.get('/events', function (req, res, next) {
-  Event.find().sort({eventStartDate: 'desc'}).exec(intercept(next, function (events) {
+  Event.find().sort({eventStartDate: 'desc'}).populate('country').exec(intercept(next, function (events) {
     res.render('admin/events', {
       title: 'Events',
       events: JSON.stringify(events)

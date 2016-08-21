@@ -39,6 +39,7 @@ block content
             tr
               th Short
               th Title
+              th Country
               th Registration Date
               th Event Date
               th Tickets Left
@@ -49,6 +50,8 @@ block content
               td
                 a(ng-href="/events/{{ev.name}}") {{ev.name}}
               td {{ev.title}}
+              td(ng-if="ev.country") {{ev.country.name}}
+              td(ng-if="!ev.country")
               td {{ev.openDate | date:'short'}}
               td {{ev.eventStartDate | date:'short'}}
               td {{ev.ticketsLeft }}
