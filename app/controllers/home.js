@@ -133,7 +133,7 @@ router.post('/events/:name/tickets/:lang?', function (req, res, next) {
           }
           Claims.create({
               event: ev._id,
-              vatRate: event.country.vatRate,
+              vatRate: event.country ? event.country.vatRate : 23,
               claimedTime: new Date(),
               validTill: validTill,
               status: Claims.STATUS.ACTIVE
