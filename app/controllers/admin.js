@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 var intercept = require('../utils/intercept');
 var Event = require('../models/event');
+var Country = require('../models/country');
 var moment = require('moment');
 var Mailer = require('../utils/mailer');
 var Claims = require('../models/claims');
@@ -35,6 +36,14 @@ router.get('/', function (req, res) {
   res.redirect('/admin/events');
 });
 
+router.get('/countries', function (req, res, next) {
+  Country.find().sort({eventStartDate: 'desc'}).exec(intercept(next, function (countries) {
+    res.render('admin/countries', {
+      title: 'Countries',
+      countries: JSON.stringify(countries)
+    });
+  }));
+});
 
 router.get('/events', function (req, res, next) {
   Event.find().sort({eventStartDate: 'desc'}).populate('country').exec(intercept(next, function (events) {
@@ -136,6 +145,22 @@ router.post('/events/:ev', function (req, res, next) {
     }
   }, intercept(next, function (isUpdated) {
     res.redirect('/admin/events');
+  }));
+});
+
+
+router.post('/country/:cr', function (req, res, next) {
+  Country.update({
+    _id: req.params.cr
+  }, {
+    $set: {
+      name: req.body.name,
+      vatRate: req.body.vatRate,
+      currency: req.body.currency,
+      paymentMethod: req.body.paymentMethod
+    }
+  }, intercept(next, function (isUpdated) {
+    res.redirect('/admin/countries');
   }));
 });
 

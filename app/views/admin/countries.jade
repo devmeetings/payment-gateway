@@ -1,0 +1,151 @@
+extends ../angular-layout
+
+block content
+
+  .container(ng-app="countries")
+    .row.ng-cloak
+      .col-xs-12(
+          ng-controller="CountriesCtrl"
+        )
+        .well.clearfix
+          .form-group.clearfix
+            .pull-right
+              a(
+                  ng-click="view.detailed = !view.detailed"
+                )
+                  | Toggle Detailed View
+              br
+              a(
+                ng-href="/admin/events"
+                )
+                | Events
+          .form-group
+            .input-group
+              .input-group-addon
+                span.fa.fa-search
+              input.form-control(
+                  type='text'
+                  ng-model='model.search'
+                  placeholder='Search'
+                  )
+
+        div(ng-if="!view.detailed")
+          table.table.table-striped.table-hover.table-condensed
+            tr
+              th Name
+              th Vat Rate
+              th Currency
+              th paymentMethod
+              th
+
+            tr(ng-repeat="cr in countries | filter:model.search")
+              td {{cr.name}}
+              td {{cr.vatRate}}
+              td {{cr.currency}}
+              td {{cr.paymentMethod}}
+              td
+                a.btn.btn-link.btn-xs(
+                    ng-click="model.search=cr.name;view.detailed=true"
+                  )
+                  | Edytuj
+
+        div(ng-if="view.detailed")
+          .col-sm-12(ng-repeat="cr in countries | filter:model.search")
+            .well.clearfix
+              form(
+                method="post",
+                action="{{ getPostUrl(cr._id)}}"
+                )
+                .col-sm-6
+                  .form-group
+                    label.control-label Name
+                    input.form-control(type='text' value="{{cr.name}}" name="name")
+                  .form-group
+                    label.control-label Vat Rate
+                    input.form-control(type='text' value="{{cr.vatRate}}" name="vatRate")
+                  .form-group
+                    label.control-label Currency
+                    input.form-control(type='text' value="{{cr.currency}}" name="currency")
+                  .form-group
+                    label.control-label Payment Method
+                    select.form-control(name="paymentMethod" ng-model="cr.paymentMethod")
+                      option(value="PayU") PayU
+                      option(value="Paymill") Paymill
+                br
+                p.text-right
+                  button.btn.btn-danger(type="submit") Uaktualnij
+    .row.ng-cloak
+      .col-xs-12(
+        ng-controller="NewCountryCtrl"
+      )
+        button.pull-right.btn.btn-primary(
+            ng-show="!showNew"
+            ng-click="showNew = true"
+          )
+            | Nowy
+        br
+        br
+        .col-md-8.col-md-offset-2.col-sm-10.col-sm-offset-1(ng-if="showNew")
+          .well.clearfix
+            form(ng-submit="newCountry(data)", name="form")
+              .form-group
+                label.control-label Name
+                input.form-control(type="text", ng-model="data.name", name="id", required)
+              .form-group
+                label.control-label Vat rate
+                input.form-control(type="text", ng-model="data.vatRate", name="vatRate", required)
+              .form-group
+                label.control-label Currency
+                input.form-control(type="text", ng-model="data.currency", name="currency", required)
+              .form-group
+                label.control-label Payment Method
+                select.form-control(name="paymentMethod" ng-model="data.paymentMethod")
+                  option(value="PayU") PayU
+                  option(value="Paymill") Paymill
+
+              .form-group
+                button.btn.btn-primary.btn-lg(type="submit", ng-disabled="form.$invalid")
+                  | Create Country
+append css
+  style.
+    .event-preview.with-preview {
+      height: 100vh;
+    }
+    .event-preview.with-preview .col-xs-6 {
+      height: 100%;
+      overflow-y: auto;
+    }
+    .event-preview.with-preview textarea {
+      height: 100%;
+    }
+
+append scripts
+  script.
+    angular.module('countries',[]).controller('NewCountryCtrl', function($scope, $http, $window) {
+      $scope.data = {
+        name: '',
+        vatRate: '',
+        currency: ''
+      };
+
+      $scope.newCountry = function(data) {
+        $http.post('/api/countries', data).then(function(){
+          $window.location.reload();
+        }, function(err) {
+          console.error(err);
+          alert("error while adding");
+        });
+      };
+    }).controller('CountriesCtrl', function($scope, $sce){
+      $scope.model = {};
+      $scope.view = {};
+      $scope.countries = !{countries};
+
+      $scope.getPostUrl = function(id) {
+        var url = '/admin/country/' + id;
+        $sce.trustAsUrl(url);
+        return url;
+      };
+    });
+
+
