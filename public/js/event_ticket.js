@@ -52,7 +52,7 @@
           <div className='col-md-offset-3 col-md-9'>
             <div className='checkbox'>
               <label>
-                <input type='checkbox' name={this.props.name} onChange={this.props.onChange}/> Chcę otrzymać fakturę VAT
+                <input type='checkbox' name={this.props.name} onChange={this.props.onChange}/> {T.invoice.wantToReceiveInvoice}
               </label>
             </div>
           </div>
@@ -68,13 +68,13 @@
       var disabled = !this.props.showInvoiceData;
       return (
         <fieldset className={componentClass}>
-          <h4>Dane do faktury</h4>
-          <InputField name='recipientName' title='Nazwa firmy / Imię i nazwisko'
-                      placeholder='Nazwa firmy / Imię i nazwisko' disabled={disabled}/>
-          <InputField name='tin' title='NIP' placeholder='NIP' disabled={disabled}/>
-          <InputField name='street' title='Ulica, nr' placeholder='Ulica, nr' disabled={disabled}/>
-          <InputField name='postalCode' title='Kod pocztowy' placeholder='Kod pocztowy' disabled={disabled}/>
-          <InputField name='city' title='Miejscowość' placeholder='Miejscowość' disabled={disabled}/>
+          <h4>{T.invoice.title}</h4>
+          <InputField name='recipientName' title={T.invoice.recipientName}
+                      placeholder={T.invoice.recipientName} disabled={disabled}/>
+          <InputField name='tin' title={T.invoice.tin} placeholder={T.invoice.tin} disabled={disabled}/>
+          <InputField name='street' title={T.invoice.street} placeholder={T.invoice.street} disabled={disabled}/>
+          <InputField name='postalCode' title={T.invoice.postalCode} placeholder={T.invoice.postalCode} disabled={disabled}/>
+          <InputField name='city' title={T.invoice.city} placeholder={T.invoice.city} disabled={disabled}/>
         </fieldset>
       );
     }
@@ -126,11 +126,10 @@
             <div className='alert alert-danger'>
               <h4 className='noHeaderMargins'>
                 <div className='pull-left fa fa-thumbs-o-down fa-4x'></div>
-                Czas, który miałeś na dokończenie rejestracji skończył się.
+                {T.alert.timeout}
               </h4>
               <h5 className='text-muted'>
-                Możesz spróbować zarejestrować się jeszcze raz.<br/>W razie problemów, prosimy o maila:
-                registration@devmeetings.org.
+                {T.alert.timeoutInfoPart1}<br/>{T.alert.timeoutInfoPart2}
               </h5>
             </div>
             <div className='vertical-space-xxl'></div>
@@ -140,7 +139,7 @@
 
       var inputField;
       if (this.state.ownPayment) {
-        inputField = <InputField name='payment' title='Twoja kwota' placeholder='' type='number'/>;
+        inputField = <InputField name='payment' title='{T.yourAmount}' placeholder='' type='number'/>;
       }
 
       var eventStartDate = moment(this.props.claim.event.eventStartDate);
@@ -155,7 +154,7 @@
           </div>
 
           <div className='well'>
-            <h5 className='noHeaderMargins text-muted'>Rejestrujesz się na DevMeeting</h5>
+            <h5 className='noHeaderMargins text-muted'>{T.title}</h5>
 
             <h3 className='noHeaderMargins'>{this.props.claim.event.title}</h3>
             <h5 className='noHeaderMargins'>{eventStartDate.format('LL')}
@@ -163,19 +162,19 @@
             <hr/>
             <form method='post' className='form-horizontal clearfix'>
               <fieldset>
-                <h4>Dane kontaktowe</h4>
-                <InputField name='email' type='email' title='E-mail' placeholder='Adres e-mail'/>
-                <InputField name='names' title='Imię i nazwisko' placeholder='Imię i nazwisko'/>
+                <h4>{T.contactData}</h4>
+                <InputField name='email' type='email' title={T.mail} placeholder={T.mail}/>
+                <InputField name='names' title={T.names} placeholder={T.names}/>
                 <CheckField onChange={this.toggleInvoiceData} name='showInvoiceData'/>
               </fieldset>
               <InvoiceComponent showInvoiceData={this.state.showInvoiceData}/>
 
               <fieldset>
-                <h4>Płatność (Pay What You Want)</h4>
+                <h4>{T.payment.title}</h4>
 
                 <div className='form-group'>
                   <label className='col-md-3 control-label'>
-                    Deklarowana kwota
+                    {T.payment.declaredAmount}
                   </label>
 
                   <div className='col-md-9'>
@@ -186,7 +185,7 @@
                       <span>75 zł</span>
                     </RadioField>
                     <RadioField name='payment' value='100' type='' checked onChange={this.changeValue}>
-                      <span>100 zł (Jeśli wpłacisz 100 zł lub więcej, otrzymasz wysokiej jakości wydrukowany certyfikat)</span>
+                      <span>100 zł {T.payment.diplomaInfo}</span>
                     </RadioField>
                     <RadioField name='payment' value='150' type='radio-success' onChange={this.changeValue}>
                       <span>150 zł</span>
@@ -204,7 +203,7 @@
 
               <div className='pull-right'>
                 <button className='btn btn-dev btn-lg' type='submit'>
-                  Potwierdź rejestrację
+                  {T.btnConfirm}
                 </button>
               </div>
             </form>

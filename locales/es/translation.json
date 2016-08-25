@@ -1,0 +1,30 @@
+{
+  "ticket": {
+    "alert": {
+      "header": "Por favor, rellene el formulario.",
+      "paragraph": "Para registrarse, debe completar el registro",
+      "timeout": "El tiempo que cubra el registro terminó.",
+      "timeoutInfoPart1": "Usted puede tratar de registrarse de nuevo.",
+      "timeoutInfoPart2": "En caso de cualquier problema, por favor E-mail: registration@devmeetings.org."
+    },
+    "invoice": {
+      "wantToReceiveInvoice": "Quiero recibir una factura con IVA",
+      "title": "Los datos de factura",
+      "recipientName": "Nombre de la Empresa / Nombre",
+      "tin": "NIP",
+      "street": "Calle No.",
+      "postalCode": "Zip",
+      "city": "Ciudad"
+    },
+    "title": "La inscripción está en DevMeeting",
+    "contactData": "Los datos de contacto",
+    "mail": "E-mail",
+    "names": "Nombre",
+    "payment": {
+      "title": "El pago (Pay What You Want)",
+      "declaredAmount": "Cntidad declarada",
+      "diplomaInfo": "(Si deposita 100 PLN o más, obtendrá certificado impreso de alta calidad)"
+    },
+    "btnConfirm": "Confirmar la inscripción"
+  }
+}

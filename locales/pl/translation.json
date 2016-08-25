@@ -7,14 +7,25 @@
       "timeoutInfoPart1": "Możesz spróbować zarejestrować się jeszcze raz.",
       "timeoutInfoPart2": "W razie problemów, prosimy o maila: registration@devmeetings.org."
     },
+    "invoice": {
+      "wantToReceiveInvoice": "Chcę otrzymać fakturę VAT",
+      "title": "Dane do faktury",
+      "recipientName": "Nazwa firmy / Imię i nazwisko",
+      "tin": "NIP",
+      "street": "Ulica, nr",
+      "postalCode": "Kod pocztowy",
+      "city": "Miejscowość"
+    },
     "title": "Rejestrujesz się na DevMeeting",
+    "contactData": "Dane kontaktowe",
     "mail": "Adres e-mail",
     "names": "Imię i nazwisko",
     "payment": {
       "title": "Płatność (Pay What You Want)",
-      "decleredAmount": "Deklarowana kwota",
+      "declaredAmount": "Deklarowana kwota",
       "diplomaInfo": "(Jeśli wpłacisz 100 zł lub więcej, otrzymasz wysokiej jakości wydrukowany certyfikat)"
     },
+    "yourAmount": "Twoja kwota",
     "btnConfirm": "Potwierdź rejestrację"
   }
 }

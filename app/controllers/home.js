@@ -87,35 +87,51 @@ router.get('/events/:id/tickets/:claim', function (req, res, next) {
 
 router.get('/events/:id/tickets/:claim/:lang', function (req, res, next) {
   // TODO [ToDr] Display some meaningful message if status is wrong
-  req.i18n.changeLanguage('pl');
-  Claims.findOne({
-    _id: req.params.claim,
-    event: req.params.id,
-    status: {
-      $in: [Claims.STATUS.INVITED, Claims.STATUS.ACTIVE, Claims.STATUS.WAITING, Claims.STATUS.CREATING_PAYMENT, Claims.STATUS.PENDING, Claims.STATUS.PAYED]
-    }
-  }).populate('event').exec(intercept(next, function (claim) {
-    if (!claim) {
-      return res.send(404);
-    }
+  req.i18n.changeLanguage(req.params.lang, setUpClaim);
 
-    if (claim.status === Claims.STATUS.ACTIVE || claim.status === Claims.STATUS.INVITED) {
-      res.render('event-ticket_fill', {
-        claim: claim,
-        translation : JSON.stringify(ticketTranslations(req.t)),
-        claim_json: JSON.stringify(claim)
-      });
-    } else if (claim.status === Claims.STATUS.PAYED) {
-      res.render('event-ok', {
-        claim: claim
-      });
-    } else {
-      res.render('event-ticket_inprogress', {
-        claim: claim,
-        STATUS: Claims.STATUS
-      });
+  function setUpClaim(err){
+    if (err) {
+      return  res.redirect('/events/' + req.params.id + '/tickets/' + req.params.claim + '/pl');
     }
-  }));
+    Claims.findOne({
+      _id: req.params.claim,
+      event: req.params.id,
+      status: {
+        $in: [Claims.STATUS.INVITED, Claims.STATUS.ACTIVE, Claims.STATUS.WAITING, Claims.STATUS.CREATING_PAYMENT, Claims.STATUS.PENDING, Claims.STATUS.PAYED]
+      }
+    }).populate('event').exec(intercept(next, function (claim) {
+      if (!claim) {
+        return res.send(404);
+      }
+
+      if (claim.status === Claims.STATUS.ACTIVE || claim.status === Claims.STATUS.INVITED) {
+        var claimForClient = {
+          validTill: claim.validTill,
+          event: {
+            eventStartDate: claim.event.eventStartDate,
+            eventEndDate: claim.event.eventEndDate,
+            title: claim.event.title
+          }
+        };
+
+        res.render('event-ticket_fill', {
+          lang: req.params.lang,
+          claim: claim,
+          translation : JSON.stringify(ticketTranslations(req.t)),
+          claim_json: JSON.stringify(claimForClient)
+        });
+      } else if (claim.status === Claims.STATUS.PAYED) {
+        res.render('event-ok', {
+          claim: claim
+        });
+      } else {
+        res.render('event-ticket_inprogress', {
+          claim: claim,
+          STATUS: Claims.STATUS
+        });
+      }
+    }));
+  }
 });
 
 router.post('/events/:name/tickets/:lang?', function (req, res, next) {
@@ -139,7 +155,7 @@ router.post('/events/:name/tickets/:lang?', function (req, res, next) {
               status: Claims.STATUS.ACTIVE
           }, intercept(next, function (claim) {
               res.cookie('claim', ev._id + ':' + claim._id, {expires: validTill});
-              res.redirect('/events/' + ev._id + '/tickets/' + claim._id + '/pl');
+              res.redirect('/events/' + ev._id + '/tickets/' + claim._id + '/' + lang);
           }));
       }));
 
