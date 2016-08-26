@@ -23,7 +23,7 @@
     "payment": {
       "title": "Płatność (Pay What You Want)",
       "declaredAmount": "Deklarowana kwota",
-      "diplomaInfo": "(Jeśli wpłacisz 100 zł lub więcej, otrzymasz wysokiej jakości wydrukowany certyfikat)"
+      "diplomaInfo": "(Jeśli wpłacisz 100 PLN lub więcej, otrzymasz wysokiej jakości wydrukowany certyfikat)"
     },
     "yourAmount": "Twoja kwota",
     "btnConfirm": "Potwierdź rejestrację"

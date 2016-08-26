@@ -23,7 +23,7 @@
     "payment": {
       "title": "Payment (Pay What You Want)",
       "declaredAmount": "Declared amount",
-      "diplomaInfo": "(If you deposit 100 zł or more, you will get high quality printed certificate)"
+      "diplomaInfo": "(If you deposit GBP zł or more, you will get high quality printed certificate)"
     },
     "btnConfirm": "Confirm registration"
   }

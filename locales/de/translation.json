@@ -23,7 +23,7 @@
     "payment": {
       "title": "Die Zahlung (Pay What You Want)",
       "declaredAmount": "Angegebene Betrag",
-      "diplomaInfo": "Wenn Sie 100 zł einzahlen oder mehr beträgt, werden Sie qualitativ hochwertige gedruckte Zertifikat erhalten)"
+      "diplomaInfo": "Wenn Sie 100 EUR einzahlen oder mehr beträgt, werden Sie qualitativ hochwertige gedruckte Zertifikat erhalten)"
     },
     "btnConfirm": "Potwierdź rejestrację"
   }

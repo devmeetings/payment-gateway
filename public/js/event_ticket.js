@@ -179,19 +179,19 @@
 
                   <div className='col-md-9'>
                     <RadioField name='payment' value='50' type='radio-danger' onChange={this.changeValue}>
-                      <span>50 zł</span>
+                      <span>50 {claim.currency}</span>
                     </RadioField>
                     <RadioField name='payment' value='75' type='radio-danger' onChange={this.changeValue}>
-                      <span>75 zł</span>
+                      <span>75 {claim.currency}</span>
                     </RadioField>
                     <RadioField name='payment' value='100' type='' checked onChange={this.changeValue}>
-                      <span>100 zł {T.payment.diplomaInfo}</span>
+                      <span>100 {claim.currency} {T.payment.diplomaInfo}</span>
                     </RadioField>
                     <RadioField name='payment' value='150' type='radio-success' onChange={this.changeValue}>
-                      <span>150 zł</span>
+                      <span>150 {claim.currency}</span>
                     </RadioField>
                     <RadioField name='payment' value='200' type='radio-success' onChange={this.changeValue}>
-                      <span>200 zł</span>
+                      <span>200 {claim.currency}</span>
                     </RadioField>
                     <RadioField name='payment' value='-1' type='' onChange={this.changeValue}>
                       <span>Inna</span>

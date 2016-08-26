@@ -23,7 +23,7 @@
     "payment": {
       "title": "El pago (Pay What You Want)",
       "declaredAmount": "Cntidad declarada",
-      "diplomaInfo": "(Si deposita 100 PLN o más, obtendrá certificado impreso de alta calidad)"
+      "diplomaInfo": "(Si deposita 100 EUR o más, obtendrá certificado impreso de alta calidad)"
     },
     "btnConfirm": "Confirmar la inscripción"
   }
