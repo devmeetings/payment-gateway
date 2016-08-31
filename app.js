@@ -18,7 +18,7 @@ models.forEach(function (model) {
 });
 var app = express();
 
-require('./config/express')(app, config);
+require('./config/express')(app, config, db);
 
 scheduler.startScheduler(app);
 
