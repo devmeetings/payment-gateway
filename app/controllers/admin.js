@@ -148,6 +148,13 @@ router.post('/events/:ev', function (req, res, next) {
   }));
 });
 
+router.delete('/country/:cr', function (req, res, next) {
+  Country.remove({
+    _id: req.params.cr
+  }, intercept(next, function () {
+    res.send('ok');
+  }));
+});
 
 router.post('/country/:cr', function (req, res, next) {
   Country.update({
@@ -157,6 +164,7 @@ router.post('/country/:cr', function (req, res, next) {
       name: req.body.name,
       vatRate: req.body.vatRate,
       currency: req.body.currency,
+      code: req.body.code,
       paymentMethod: req.body.paymentMethod
     }
   }, intercept(next, function (isUpdated) {

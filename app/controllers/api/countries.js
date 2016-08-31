@@ -3,6 +3,7 @@ var errors = require('domain').create();
 
 module.exports = function (router) {
   router.post('/countries', function (req, res, next) {
+        req.body.code = req.body.code.toLowerCase();
         Country.create(req.body, errors.intercept(function (ev) {
           res.send(ev);
         }));

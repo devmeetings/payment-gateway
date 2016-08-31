@@ -32,14 +32,15 @@ block content
         div(ng-if="!view.detailed")
           table.table.table-striped.table-hover.table-condensed
             tr
-              th Name
-              th Vat Rate
-              th Currency
-              th paymentMethod
+              th Nazwa (kod translacji)
+              th Stawka VAT
+              th Waluta
+              th Metoda płatności
+              th
               th
 
             tr(ng-repeat="cr in countries | filter:model.search")
-              td {{cr.name}}
+              td {{cr.name}} ({{cr.code}})
               td {{cr.vatRate}}
               td {{cr.currency}}
               td {{cr.paymentMethod}}
@@ -48,6 +49,11 @@ block content
                     ng-click="model.search=cr.name;view.detailed=true"
                   )
                   | Edytuj
+              td
+                a.btn.btn-link.btn-xs(
+                ng-click="deleteCountry(cr._id,cr.name)"
+                )
+                  | Usuń
 
         div(ng-if="view.detailed")
           .col-sm-12(ng-repeat="cr in countries | filter:model.search")
@@ -58,22 +64,28 @@ block content
                 )
                 .col-sm-6
                   .form-group
-                    label.control-label Name
+                    label.control-label Nazwa
                     input.form-control(type='text' value="{{cr.name}}" name="name")
                   .form-group
-                    label.control-label Vat Rate
-                    input.form-control(type='text' value="{{cr.vatRate}}" name="vatRate")
+                    label.control-label Stawka VAT
+                    input.form-control(type='number' value="{{cr.vatRate}}" name="vatRate")
                   .form-group
-                    label.control-label Currency
+                    label.control-label Waluta
                     input.form-control(type='text' value="{{cr.currency}}" name="currency")
                   .form-group
-                    label.control-label Payment Method
+                    label.control-label Kod translacji
+                    input.form-control(type='text' value="{{cr.code}}" name="code")
+                  .form-group
+                    label.control-label Metoda płatności
                     select.form-control(name="paymentMethod" ng-model="cr.paymentMethod")
                       option(value="PayU") PayU
                       option(value="Paymill") Paymill
                 br
                 p.text-right
                   button.btn.btn-danger(type="submit") Uaktualnij
+                br
+                p.text-right
+                  button.btn.btn-cancel(type="button", ng-click="model.search='';view.detailed=false") Anuluj
     .row.ng-cloak
       .col-xs-12(
         ng-controller="NewCountryCtrl"
@@ -89,23 +101,26 @@ block content
           .well.clearfix
             form(ng-submit="newCountry(data)", name="form")
               .form-group
-                label.control-label Name
+                label.control-label Nazwa
                 input.form-control(type="text", ng-model="data.name", name="id", required)
               .form-group
-                label.control-label Vat rate
-                input.form-control(type="text", ng-model="data.vatRate", name="vatRate", required)
+                label.control-label Stakwa VAT
+                input.form-control(type="number", ng-model="data.vatRate", name="vatRate", required)
               .form-group
-                label.control-label Currency
+                label.control-label Waluta
                 input.form-control(type="text", ng-model="data.currency", name="currency", required)
               .form-group
-                label.control-label Payment Method
+                label.control-label Kod translacji
+                input.form-control(type="text", ng-model="data.code", name="code", required)
+              .form-group
+                label.control-label Metoda płatności
                 select.form-control(name="paymentMethod" ng-model="data.paymentMethod")
                   option(value="PayU") PayU
                   option(value="Paymill") Paymill
 
               .form-group
                 button.btn.btn-primary.btn-lg(type="submit", ng-disabled="form.$invalid")
-                  | Create Country
+                  | Stwórz kraj
 append css
   style.
     .event-preview.with-preview {
@@ -125,7 +140,8 @@ append scripts
       $scope.data = {
         name: '',
         vatRate: '',
-        currency: ''
+        currency: '',
+        code: ''
       };
 
       $scope.newCountry = function(data) {
@@ -136,7 +152,7 @@ append scripts
           alert("error while adding");
         });
       };
-    }).controller('CountriesCtrl', function($scope, $sce){
+    }).controller('CountriesCtrl', function($scope, $sce, $http, $window){
       $scope.model = {};
       $scope.view = {};
       $scope.countries = !{countries};
@@ -146,6 +162,19 @@ append scripts
         $sce.trustAsUrl(url);
         return url;
       };
+
+      $scope.deleteCountry = function (id, name) {
+        if (confirm('Czy usunąć kraj: ' + name + ' ?')) {
+            var url = '/admin/country/' + id;
+            $sce.trustAsUrl(url);
+            $http.delete(url).then(function () {
+              $window.location.reload();
+            }, function (err) {
+              console.error(err);
+              alert("error while deleting");
+            });
+        }
+      }
     });
 
 

@@ -5,6 +5,7 @@ var CountrySchema = new Schema({
   name: String,
   vatRate: Number,
   currency: String,
+  code: String,
   paymentMethod: {
     type: String,
     enum: ['PayU', 'Paymill']
