@@ -243,7 +243,7 @@ function findClaimById (id, cb, next) {
     Claims.findById(id).populate('event').exec(intercept(next, cb));
 }
 
-router.post('/events/:id/tickets/:claim', function (req, res, next) {
+router.post('/events/:id/tickets/:claim([a-z0-9]{24})', function (req, res, next) {
     var paymentAmount = req.body.payment[0] === '-1' ? req.body.payment[1] : req.body.payment;
     if (parseFloat(paymentAmount) < 1) {
         return next('Wrong payment amount');
