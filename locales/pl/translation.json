@@ -1,4 +1,6 @@
-{
+{ "invoice": {
+  "productName": "Nazwa produktu"
+},
   "ticket": {
     "alert": {
       "header": "Prosimy o wypełnienie formularza.",
