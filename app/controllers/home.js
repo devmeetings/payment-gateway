@@ -3,6 +3,7 @@ var router = express.Router();
 var marked = require('marked');
 var intercept = require('../utils/intercept');
 var Event = require('../models/event');
+var Country = require('../models/country');
 var Claims = require('../models/claims');
 var invoiceApi = require('../controllers/invoice').api;
 var ticketTranslations = require('../utils/ticket_translations');
@@ -82,23 +83,16 @@ router.post('/events/:id/invoice/:claim', function (req, res, next) {
 });
 
 router.get('/events/:id/tickets/:claim', function (req, res, next) {
-    res.redirect('/events/' + req.params.id + '/tickets/' + req.params.claim + '/pl');
-});
-
-router.get('/events/:id/tickets/:claim/:lang', function (req, res, next) {
     // TODO [ToDr] Display some meaningful message if status is wrong
-    req.i18n.changeLanguage(req.params.lang, prepareData);
 
-    function prepareData(err){
-        if (err) {
-            return res.redirect('/events/' + req.params.id + '/tickets/' + req.params.claim + '/pl');
-        }
-        Event.findOne({
-            _id: req.params.id
-        }).populate('country').exec(intercept(next, function (event) {
-            setUpClaim(event);
-        }));
-    }
+    console.log('req.languages ' +req.languages);
+
+    Event.findOne({
+        _id: req.params.id
+    }).populate('country').exec(intercept(next, function (event) {
+        setUpClaim(event);
+    }));
+
 
     function setUpClaim (event) {
         Claims.findOne({
@@ -143,9 +137,19 @@ router.get('/events/:id/tickets/:claim/:lang', function (req, res, next) {
     }
 });
 
-router.post('/events/:name/tickets/:lang?', function (req, res, next) {
+router.post('/events/:name/tickets/:lang([a-z]{2,3})', function (req, res, next) {
     var CLAIM_TIME = 2 * 60 * 1000;
     var lang = req.params.lang || 'pl';
+
+    Country.findOne({
+        code: lang.toLowerCase()
+    }, intercept(next, function (country) {
+
+        if (!country) {
+            lang = 'pl';
+        }
+        req.i18n.changeLanguage(lang, prepareClaim);
+    }));
 
     function createClaim (ev) {
         var now = new Date();
@@ -164,7 +168,7 @@ router.post('/events/:name/tickets/:lang?', function (req, res, next) {
                 status: Claims.STATUS.ACTIVE
             }, intercept(next, function (claim) {
                 res.cookie('claim', ev._id + ':' + claim._id, {expires: validTill});
-                res.redirect('/events/' + ev._id + '/tickets/' + claim._id + '/' + lang);
+                res.redirect('/events/' + ev._id + '/tickets/' + claim._id);
             }));
         }));
 
@@ -195,34 +199,43 @@ router.post('/events/:name/tickets/:lang?', function (req, res, next) {
         }));
     }
 
-    Event.findOne({
-        name: req.params.name
-    }, intercept(next, function (ev) {
-        if (!ev) {
-            return res.send(404);
-        }
-        if (!ev.canRegisterByForm) {
+    function prepareClaim (err) {
+        if (err) {
             return res.send(404);
         }
 
-        if (req.cookies.claim) {
-            var cookieParts = req.cookies.claim.split(':');
-            if (cookieParts.length === 2) {
-                Claims.findOne({
-                    _id: cookieParts[1],
-                    event: cookieParts[0],
-                    status: Claims.STATUS.ACTIVE
-                }).exec(intercept(next, function (claim) {
-                    if (!claim) {
-                        tryToClaimTicket(ev);
-                    } else {
-                        res.redirect('/events/' + cookieParts[0] + '/tickets/' + cookieParts[1]);
-                        return;
-                    }
-                }));
+        req.session.lng = lang;
+
+        Event.findOne({
+            name: req.params.name
+        }, intercept(next, function (ev) {
+            if (!ev) {
+                return res.send(404);
             }
-        } else {
-            tryToClaimTicket(ev);
-        }
-    }));
+            if (!ev.canRegisterByForm) {
+                return res.send(404);
+            }
+
+            if (req.cookies.claim) {
+                var cookieParts = req.cookies.claim.split(':');
+                if (cookieParts.length === 2) {
+                    Claims.findOne({
+                        _id: cookieParts[1],
+                        event: cookieParts[0],
+                        status: Claims.STATUS.ACTIVE
+                    }).exec(intercept(next, function (claim) {
+                        if (!claim) {
+                            tryToClaimTicket(ev);
+                        } else {
+                            res.redirect('/events/' + cookieParts[0] + '/tickets/' + cookieParts[1]);
+                            return;
+                        }
+                    }));
+                }
+            } else {
+                tryToClaimTicket(ev);
+            }
+        }));
+    }
+
 });
