@@ -80,6 +80,7 @@ block content
                     select.form-control(name="paymentMethod" ng-model="cr.paymentMethod")
                       option(value="PayU") PayU
                       option(value="Paymill") Paymill
+                      option(value="PayPal") PayPal
                 br
                 p.text-right
                   button.btn.btn-danger(type="submit") Uaktualnij
@@ -116,7 +117,8 @@ block content
                 label.control-label Metoda płatności
                 select.form-control(name="paymentMethod" ng-model="data.paymentMethod")
                   option(value="PayU") PayU
-                  option(value="Paymill") Paymill
+                  option(value="Paymill") Paymill (not available)
+                  option(value="PayPal") PayPal
 
               .form-group
                 button.btn.btn-primary.btn-lg(type="submit", ng-disabled="form.$invalid")
