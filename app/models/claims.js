@@ -37,7 +37,8 @@ var ClaimSchema = new Schema({
   },
   payment: {
     id: String,
-    url: String
+    url: String,
+    paypalToken: String
   },
   userData: {
     email: String,

@@ -1,5 +1,8 @@
 var express = require('express');
 var config = require('../../config/config');
+var paypal = require('paypal-rest-sdk');
+var async = require('async');
+
 var router = express.Router();
 var moment = require('moment');
 var intercept = require('../utils/intercept');
@@ -19,7 +22,7 @@ module.exports = function (app) {
     app.use('/', router);
 };
 
-router.post('/tickets/:claim/notify', function (req, res, next) {
+function generatePaymentConfirmation (req, res, next, claim, cb) {
     function sendMailWithPaymentConfirmation (claim, file, invoiceNo, cb) {
         var attachments = [];
         if (file) {
@@ -29,10 +32,10 @@ router.post('/tickets/:claim/notify', function (req, res, next) {
         }
         sendMail('mails/payment-confirmation', Mailer.from, Mailer.bcc, {
             claim: claim
-        }, function (){
+        }, function () {
             var dates = claimDates(claim);
 
-            sendMail('mails/payment-confirmation-to-user', Mailer.from,  claim.userData.email, {
+            sendMail('mails/payment-confirmation-to-user', Mailer.from, claim.userData.email, {
                 claim: claim,
                 endDate: dates.endDate.format('LLL'),
                 eventDate: dates.eventDate.format('LLL'),
@@ -53,6 +56,38 @@ router.post('/tickets/:claim/notify', function (req, res, next) {
                 }));
         }
     }
+
+    invoiceApi.getDataForExistingInvoice(claim).then(function (data) {
+
+        if (claim.event.mail.sended) {
+            mailEventLocation.sendLocationMail(claim.event._id, claim._id, false, res, next, function () {
+            });
+        }
+
+
+        if (data) {
+
+            var fullUrl = req.protocol + '://' + req.get('host') + '/admin/claims/get/invoice/single';
+
+            invoiceApi.generateInvoice(fullUrl, data, function (file, invoiceNo) {
+                sendMailWithPaymentConfirmation(claim, file, invoiceNo, function () {
+                    cb();
+                });
+            });
+        }
+        else {
+
+            sendMailWithPaymentConfirmation(claim, null, null, function () {
+                cb();
+            });
+
+        }
+
+
+    });
+}
+
+router.post('/tickets/:claim/notify', function (req, res, next) {
 
     var order = req.body.order;
     var claimId = order.extOrderId;
@@ -75,34 +110,9 @@ router.post('/tickets/:claim/notify', function (req, res, next) {
             }
             // send mail with confirmation
             Claims.findById(claimId).populate('event').exec(intercept(next, function (claim) {
-                invoiceApi.getDataForExistingInvoice(claim).then(function (data) {
-
-                    if (claim.event.mail.sended) {
-                        mailEventLocation.sendLocationMail(claim.event._id, claim._id, false, res, next, function () { });
-                    }
-
-
-                    if (data) {
-
-                        var fullUrl = req.protocol + '://' + req.get('host') + '/admin/claims/get/invoice/single';
-
-                        invoiceApi.generateInvoice(fullUrl, data, function (file, invoiceNo) {
-                            sendMailWithPaymentConfirmation(claim, file, invoiceNo, function () {
-                                res.send(200);
-                            });
-                        });
-                    }
-                    else {
-
-                        sendMailWithPaymentConfirmation(claim, null, null, function () {
-                            res.send(200);
-                        });
-
-                    }
-
-
+                generatePaymentConfirmation(req, res, next, claim, function () {
+                    res.send(200);
                 });
-
             }));
         }));
     } else if (order.status === 'PENDING') {
@@ -160,20 +170,116 @@ function extractNames (name) {
     };
 }
 
+function getPayPalPaymentDetails (req, res, next, claim) {
+    console.log('----------------------------------------------------------');
+    console.log('--------------  PAYMENT DETAILS REQUEST  ----------------');
+    console.log('----------------------------------------------------------');
+    console.log(JSON.stringify(req.body));
+    paypal.payment.get(req.query.paymentId, function (error, payment) {
+        if (error !== null) {
+            console.log('ERROR');
+            console.log(error);
+            res.json(error);
+        } else {
+            console.log('----------------------------------------------------------');
+            console.log('--------------  PAYMENT DETAILS RESPONSE  ----------------');
+            console.log('----------------------------------------------------------');
+            console.log(JSON.stringify(payment));
+
+            executePayPalPayment(req, res, next, payment, claim);
+
+        }
+    });
+
+}
+
+
+function createPayPalPaymentForClaim (req, res, next, claim) {
+
+    var pmtData = {
+        intent: 'sale',
+        redirect_urls: {
+            return_url: config.app.url + '/events/' + req.params.id + '/tickets/' + req.params.claim + '/pp/return',
+            cancel_url: config.app.url + '/events/' + req.params.id + '/tickets/' + req.params.claim + '/pp/cancel'
+        },
+        payer: {
+            payment_method: 'paypal'
+        },
+        transactions: [{
+            amount: {
+                total: claim.amount,
+                currency: 'USD'
+            },
+            description: 'Opłata za udział w ' + claim.event.title,
+            item_list: {
+                items: [{
+                    quantity: 1,
+                    name: 'Opłata za udział w ' + claim.event.title,
+                    price: claim.amount,
+                    currency: 'USD'
+                }]
+            }
+        }]
+    };
+
+
+    async.waterfall([
+        function (callback) {
+            paypal.generate_token(function (err, token) {
+                if (err) {
+                    console.log('generate_token ERROR: ');
+                    console.log(err);
+                    callback(err);
+                } else {
+                    console.log('----------------------------------------------------------');
+                    console.log('----------       ACCESS TOKEN RESPONSE          ----------');
+                    console.log('----------------------------------------------------------');
+                    console.log(JSON.stringify(token));
+                    callback(null, token);
+                }
+            });
+        },
+        function (token, callback) {
+            paypal.payment.create(pmtData, function (err, response) {
+                if (err) {
+                    console.log('create payment ERROR: ');
+                    console.log(err);
+                    callback(err);
+                } else {
+                    console.log('----------------------------------------------------------');
+                    console.log('----------     CREATE PAYMENT RESPONSE          ----------');
+                    console.log('----------------------------------------------------------');
+                    console.log(JSON.stringify(response));
+
+                    var url = response.links[1].href;
+                    var tmpAr = url.split('EC-');
+                    var token = {};
+                    token.redirectUrl = 'https://www.sandbox.paypal.com/checkoutnow?token=EC-' + tmpAr[1];
+                    token.token = 'EC-' + tmpAr[1];
+                    console.log('------ Token Split ------');
+                    console.log(token);
+
+                    callback(null, token);
+                }
+            });
+        }], function (err, result) {
+        if (err) {
+            console.log('An ERROR occured!');
+            console.log(err);
+            res.json(err);
+        } else {
+            console.log('----------------------------------------------------------');
+            console.log('----------        RESPONSE TO CLIENT           ----------');
+            console.log('----------------------------------------------------------');
+            console.log(JSON.stringify(result));
+            res.json(result);
+        }
+    });
+}
+
+
 function createPaymentForClaim (req, res, next, claim, postfix) {
     postfix = postfix || '';
-
-    //var daysToPay = 2;
-    //var timeToPayInSeconds = daysToPay * 3600 * 24;
-    //
-    //var eventDate = moment(claim.event.eventStartDate);
-    //var endDate = moment(new Date(Date.now() + 1000 * timeToPayInSeconds));
-    //
-    ////polnoc z czwartku na piatek to ostatni moment na dokonanie oplaty po tym czasie rezerwacja jest kasowana
-    //var lastDateToPay = eventDate.clone().subtract(1,'days').hour(0).minute(0).second(0);
-    //if (lastDateToPay.isBefore(endDate)) {
-    //    endDate = lastDateToPay;
-    //}
 
     var dates = claimDates(claim);
 
@@ -243,7 +349,7 @@ function findClaimById (id, cb, next) {
     Claims.findById(id).populate('event').exec(intercept(next, cb));
 }
 
-router.post('/events/:id/tickets/:claim([a-z0-9]{24})', function (req, res, next) {
+function initPayment (req, res, next, cb) {
     var paymentAmount = req.body.payment[0] === '-1' ? req.body.payment[1] : req.body.payment;
     if (parseFloat(paymentAmount) < 1) {
         return next('Wrong payment amount');
@@ -307,9 +413,108 @@ router.post('/events/:id/tickets/:claim([a-z0-9]{24})', function (req, res, next
                 }
 
                 findClaimById(req.params.claim, function (claim) {
-                    createPaymentForClaim(req, res, next, claim);
+                    console.log('fire cb!!!');
+                    cb(req, res, next, claim);
                 }, next);
             }));
         }
     }));
+}
+
+router.post('/events/:id/tickets/:claim([a-z0-9]{24})', function (req, res, next) {
+    initPayment(req, res, next, function (req, res, next, claim) {
+        createPaymentForClaim(req, res, next, claim);
+    });
 });
+
+router.post('/events/:id/tickets/:claim([a-z0-9]{24})/pp', function (req, res, next) {
+    initPayment(req, res, next, function (req, res, next, claim) {
+        createPayPalPaymentForClaim(req, res, next, claim);
+    });
+});
+
+router.get('/events/:id/tickets/:claim([a-z0-9]{24})/pp/cancel', function (req, res, next) {
+    findClaimById(req.params.claim, function (claim) {
+        if (!claim) {
+            return res.send(404);
+        }
+        res.clearCookie('claim', {});
+
+        Event.update({
+            _id: claim.event._id
+        }, {
+            $inc: {
+                ticketsLeft: 1
+            }
+        }).exec();
+
+        res.redirect(config.app.url + '/events/' + claim.event.name);
+    });
+});
+
+
+router.get('/events/:id/tickets/:claim([a-z0-9]{24})/pp/return', function (req, res, next) {
+
+    findClaimById(req.params.claim, function (claim) {
+        if (!claim) {
+            return res.send(404);
+        }
+
+        var dates = claimDates(claim);
+
+        claim.status = Claims.STATUS.WAITING;
+        claim.validTill = dates.endDate;
+        claim.payment = {
+            id: req.query.paymentId,
+            paypalToken: req.query.token
+        };
+        claim.save(intercept(next, function () {
+            res.render('mails/event-confirmation', {
+                claim: claim,
+                appUrl: config.app.url,
+                endDate: dates.endDate.format('LLL'),
+                eventDate: dates.eventDate.format('LLL')
+            }, intercept(next, function (mailText) {
+                Mailer.sendMail({
+                    from: Mailer.from,
+                    to: claim.userData.email,
+                    bcc: Mailer.bcc,
+                    subject: 'Potwierdzenie rejestracji na ' + claim.event.title,
+                    html: mailText
+                }, intercept(next, function (info) {
+                    getPayPalPaymentDetails(req, res, next, claim);
+                }));
+            }));
+        }));
+
+    }, next);
+});
+
+function executePayPalPayment (req, res, next, pmtDetails, claim) {
+
+    console.log('----------------------------------------------------------');
+    console.log('---------------  EXECUTE PAYMENT REQUEST -----------------');
+    console.log('----------------------------------------------------------');
+    var execute_details = {'payer_id': pmtDetails.payer.payer_info.payer_id};
+    console.log(JSON.stringify(execute_details));
+    console.log(JSON.stringify(pmtDetails.id));
+    paypal.payment.execute(pmtDetails.id, execute_details, function (err, response) {
+        if (err) {
+            console.log('execute payment ERROR: ');
+            console.log(err);
+            res.json(err);
+        } else {
+            console.log('----------------------------------------------------------');
+            console.log('---------------  EXECUTE PAYMENT RESPONSE ----------------');
+            console.log('----------------------------------------------------------');
+            console.log(JSON.stringify(response));
+
+            claim.status = Claims.STATUS.PAYED;
+            claim.save(intercept(next, function () {
+                generatePaymentConfirmation(req, res, next, claim, function (){
+                    res.redirect(config.app.url + '/events/' + req.params.id + '/tickets/' + req.params.claim);
+                });
+            }));
+        }
+    });
+};

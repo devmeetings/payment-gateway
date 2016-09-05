@@ -7,20 +7,24 @@ block content
   p Cześć!
   p Potwierdzamy Twoją rejestrację na #{claim.event.title} (#{eventDate}).
 
-  p
-    strong Dziękujemy za deklarację płatności&nbsp;
-    | w formule Pay What You Want oraz&nbsp;
-    strong prosimy o wpłatę zadeklarowanej kwoty&nbsp;
-    | najpóźniej do <strong>#{endDate}</strong>.
+  if claim.payment.paypalToken
+    p
+      strong Dziękujemy za deklarację płatności&nbsp;
+      | w formule Pay What You Want oraz&nbsp;
+      strong prosimy o wpłatę zadeklarowanej kwoty&nbsp;
+      | najpóźniej do <strong>#{endDate}</strong>.
+  else
+    p
+      strong Dziękujemy za deklarację płatności w formule Pay What You Want.
 
-  strong Link do informacji nt. Twojej rezerwacji oraz możliwość pobrania faktury:<br/>
+  strong Link do informacji nt. Twojej rezerwacji:<br/>
     a(
       href="#{appUrl}/events/#{claim.event._id}/tickets/#{claim._id}"
       ) Twoja rezerwacja
   p
     strong Faktura?<br/>
     | Faktura zostanie wysłana mailem po dokonaniu płatności, jeżeli zostały podane dane do faktury.
-    | W innymn przypadku, jeśli życzysz sobie fakturę, prześlij proszę dane łącznie z NIPem na adres registration@devmeetings.org.
+    | W innymn przypadku, jeśli życzysz sobie fakturę, prześlij proszę dane łącznie z numerem NIP na adres registration@devmeetings.org.
 
   p
     strong Co dalej?<br/>

@@ -21,7 +21,7 @@ var config = {
     root: rootPath,
     app: {
       name: 'payment-gateway',
-      url: 'http://devmeetings.pl'
+      url: 'http://reg-test.devmeetings.pl'
     },
     payu: null,
     port: 3000,

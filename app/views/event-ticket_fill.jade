@@ -13,5 +13,43 @@ append scripts
   script.
     var claim = !{claim_json};
     var Translator = !{translation};
-  script(type='text/jsx', src='/js/event_ticket.js')
+  if paymentMethod == "paypal"
+    script(type='text/jsx', src='/js/event_ticket_paypal.js')
+    script.
+      window.paypalCheckoutReady = function () {
+      $('#checkout-form').submit(function (e){
+          e.preventDefault();
+      if (e.target.checkValidity()) {
+
+        var action = $.post(window.location.href + '/pp', $('#checkout-form').serialize());
+
+        action.done(function (data) {
+          if (data.token) {
+          paypal.checkout.initXO();
+            paypal.checkout.startFlow(data.token);
+          }
+          else {
+            paypal.checkout.closeFlow();
+            $('div.container.vertical-padding-m').replaceWith($(data).get(16));
+          }
+
+        });
+
+        action.fail(function () {
+          paypal.checkout.closeFlow();
+        });
+      }
+      });
+
+              paypal.checkout.setup('ACW83GPVWEB3Q', {
+                environment: 'sandbox',
+                container: 'paypal-btn',
+                click: function (){
+                  //leave empty, paypal invoke submit event of the form
+                }
+              });
+      };
+    script(src="//www.paypalobjects.com/api/checkout.js", async)
+  else
+    script(type='text/jsx', src='/js/event_ticket.js')
 

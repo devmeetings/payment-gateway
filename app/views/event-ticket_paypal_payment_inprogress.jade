@@ -1,0 +1,26 @@
+extends layout
+
+block content
+
+  .container.vertical-padding-s
+    .row
+      .col-md-8.col-md-offset-2.col-sm-10.col-sm-offset-1
+        .vertical-space-l
+        h4.noHeaderMargins
+          | Szczegoly transakcji.
+        br
+
+        .vertical-space-m
+        form(
+          method="post"
+          action="/events/#{eventId}/tickets/#{claimId}/pp/payment"
+          )
+          p
+            button.btn.btn(type="submit", style="padding-left:2px; margin-left: 5px")
+              | Potwierdzam i płacę
+
+        .vertical-space-xl
+        hr
+        h5.text-muted.noHeaderMargins W razie jakichkolwiek problemów skontaktuj się z nami pod adresem <code>registration@devmeetings.org</code>
+
+        .vertical-space-xl

@@ -1,7 +1,9 @@
 var express = require('express');
 var glob = require('glob');
 var session = require('express-session');
-const MongoStore = require('connect-mongo')(session);
+var MongoStore = require('connect-mongo')(session);
+var paypal = require('paypal-rest-sdk');
+var ppconfig = require('./ppconfig/sandbox');
 
 var i18next = require('i18next');
 var i18Middleware = require('i18next-express-middleware');
@@ -15,6 +17,15 @@ var compress = require('compression');
 var methodOverride = require('method-override');
 
 module.exports = function (app, config, mongooseConnection) {
+
+    paypal.configure({
+        'mode': 'sandbox', //sandbox or live
+        'client_id': ppconfig.client_id,
+        'client_secret': ppconfig.client_secret,
+        'grant_type': 'client_credentials',
+        'content_type': 'application/x-www-form-urlencoded'
+    });
+
     app.use(session({
         secret: 'ThIsiSATRueSSecre1t',
         saveUninitialized: false, // don't create session until something stored

@@ -119,6 +119,7 @@ router.get('/events/:id/tickets/:claim', function (req, res, next) {
 
                 res.render('event-ticket_fill', {
                     lang: req.params.lang,
+                    paymentMethod: event.country.paymentMethod.toLowerCase(),
                     claim: claim,
                     translation: JSON.stringify(ticketTranslations(req.t)),
                     claim_json: JSON.stringify(claimForClient)
@@ -138,7 +139,7 @@ router.get('/events/:id/tickets/:claim', function (req, res, next) {
 });
 
 router.post('/events/:name/tickets/:lang([a-z]{2,3})', function (req, res, next) {
-    var CLAIM_TIME = 2 * 60 * 1000;
+    var CLAIM_TIME = 20 * 60 * 1000;
     var lang = req.params.lang || 'pl';
 
     Country.findOne({

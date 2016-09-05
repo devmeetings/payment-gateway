@@ -8,7 +8,7 @@ var CountrySchema = new Schema({
   code: String,
   paymentMethod: {
     type: String,
-    enum: ['PayU', 'Paymill']
+    enum: ['PayU', 'Paymill', 'PayPal']
   }
 });
 

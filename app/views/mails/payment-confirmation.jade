@@ -6,11 +6,14 @@ block title
 block content
   p Cześć!
   p Potwierdzamy płatność za #{claim.event.title}.
-  
+
   p
     | E-mail: #{claim.userData.email} <br>
     | User: #{claim.userData.names} <br>
     | Kwota: #{claim.amount} zł <br>
+  if claim.payment.paypalToken
+    | PayPal: #{claim.payment.id} <br>
+  else
     | PayuId: #{claim.payment.id} <br>
 
   p
