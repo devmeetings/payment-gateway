@@ -142,6 +142,8 @@ router.post('/events/:name/tickets/:lang([a-z]{2,3})', function (req, res, next)
     var CLAIM_TIME = 20 * 60 * 1000;
     var lang = req.params.lang || 'pl';
 
+    console.log('------------- INIT REGISTRATION ----------------');
+
     Country.findOne({
         code: lang.toLowerCase()
     }, intercept(next, function (country) {
@@ -149,6 +151,7 @@ router.post('/events/:name/tickets/:lang([a-z]{2,3})', function (req, res, next)
         if (!country) {
             lang = 'pl';
         }
+        console.log('------------- SET UP LANG ----------------', lang);
         req.i18n.changeLanguage(lang, prepareClaim);
     }));
 
