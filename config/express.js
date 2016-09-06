@@ -37,6 +37,7 @@ module.exports = function (app, config, mongooseConnection) {
         .use(i18Middleware.LanguageDetector)
         .use(i18Backend)
         .init({
+            debug: true,
             detection: {
                 order: ['session'],
                 lookupSession: 'lng',
