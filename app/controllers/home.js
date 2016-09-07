@@ -82,7 +82,7 @@ router.post('/events/:id/invoice/:claim', function (req, res, next) {
     }));
 });
 
-router.get('/events/:id/tickets/:claim', function (req, res, next) {
+router.get('/events/:id/tickets/:claim([a-z0-9]{24})', function (req, res, next) {
     // TODO [ToDr] Display some meaningful message if status is wrong
 
     console.log('req.languages ' +req.languages);
@@ -138,7 +138,7 @@ router.get('/events/:id/tickets/:claim', function (req, res, next) {
     }
 });
 
-router.post('/events/:name/tickets/:lang([a-z]{2,3})', function (req, res, next) {
+router.get('/events/:name/tickets/:lang([a-z]{2,3})', function (req, res, next) {
     var CLAIM_TIME = 20 * 60 * 1000;
     var lang = req.params.lang || 'pl';
 
