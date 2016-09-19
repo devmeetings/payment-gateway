@@ -13,15 +13,15 @@ module.exports = function (app) {
     app.use('/', router);
 };
 
-router.get('/', function (req, res) {
-    res.redirect('/pl');
-});
-
-require('../../config/config').languages.map(function (lang) {
-    router.get('/' + lang, function (req, res) {
-        res.render('info/' + lang + '/index');
-    });
-});
+// router.get('/', function (req, res) {
+//     res.redirect('/pl');
+// });
+//
+// require('../../config/config').languages.map(function (lang) {
+//     router.get('/' + lang, function (req, res) {
+//         res.render('info/' + lang + '/index');
+//     });
+// });
 
 router.get('/events', function (req, res, next) {
     Event.find({
@@ -101,7 +101,7 @@ router.get('/events/:id/tickets/:claim([a-z0-9]{24})', function (req, res, next)
             status: {
                 $in: [Claims.STATUS.INVITED, Claims.STATUS.ACTIVE, Claims.STATUS.WAITING, Claims.STATUS.CREATING_PAYMENT, Claims.STATUS.PENDING, Claims.STATUS.PAYED]
             }
-        }).exec(intercept(next, function (claim) {
+        }).populate('event').exec(intercept(next, function (claim) {
             if (!claim) {
                 return res.send(404);
             }
@@ -117,8 +117,15 @@ router.get('/events/:id/tickets/:claim([a-z0-9]{24})', function (req, res, next)
                     currency: event.country.currency
                 };
 
+                var locale = {
+                    en: 'en_GB',
+                    de: 'de_DE',
+                    es: 'es_ES',
+                    pl: 'pl_PL'
+                };
+
                 res.render('event-ticket_fill', {
-                    lang: req.params.lang,
+                    lang: locale[req.params.lang || 'pl'],
                     paymentMethod: event.country.paymentMethod.toLowerCase(),
                     claim: claim,
                     translation: JSON.stringify(ticketTranslations(req.t)),
@@ -223,18 +230,23 @@ router.get('/events/:name/tickets/:lang([a-z]{2,3})', function (req, res, next) 
             if (req.cookies.claim) {
                 var cookieParts = req.cookies.claim.split(':');
                 if (cookieParts.length === 2) {
-                    Claims.findOne({
-                        _id: cookieParts[1],
-                        event: cookieParts[0],
-                        status: Claims.STATUS.ACTIVE
-                    }).exec(intercept(next, function (claim) {
-                        if (!claim) {
-                            tryToClaimTicket(ev);
-                        } else {
-                            res.redirect('/events/' + cookieParts[0] + '/tickets/' + cookieParts[1]);
-                            return;
-                        }
-                    }));
+                    if (ev._id !== cookieParts[0]) { // user open register form for different event
+                        res.clearCookie('claim', {});
+                        tryToClaimTicket(ev);
+                    } else {
+                        Claims.findOne({
+                            _id: cookieParts[1],
+                            event: cookieParts[0],
+                            status: Claims.STATUS.ACTIVE
+                        }).exec(intercept(next, function (claim) {
+                            if (!claim) {
+                                tryToClaimTicket(ev);
+                            } else {
+                                res.redirect('/events/' + cookieParts[0] + '/tickets/' + cookieParts[1]);
+                                return;
+                            }
+                        }));
+                    }
                 }
             } else {
                 tryToClaimTicket(ev);
