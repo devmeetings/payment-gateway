@@ -6,7 +6,7 @@ var async = require('async');
 var router = express.Router();
 var moment = require('moment');
 var intercept = require('../utils/intercept');
-var Mailer = require('../utils/mailer');
+var Country = require('../models/country');
 var Payu = require('../../config/payu');
 var Claims = require('../models/claims');
 var Event = require('../models/event');
@@ -15,6 +15,8 @@ var createInvoiceForClaim = require('./admin').createInvoiceForClaim;
 var invoiceApi = require('./invoice').api;
 var mailEventLocation = require('./mail-event-location').api;
 var claimDates = require('../utils/claim-dates');
+var mailRenderer = require('../utils/mail-renderer');
+var mailSender = require('../utils/event-mail-sender');
 
 moment.locale('pl');
 
@@ -24,37 +26,17 @@ module.exports = function (app) {
 
 function generatePaymentConfirmation (req, res, next, claim, cb) {
     function sendMailWithPaymentConfirmation (claim, file, invoiceNo, cb) {
-        var attachments = [];
-        if (file) {
-            attachments.push({
-                path: file
-            });
-        }
-        sendMail('mails/payment-confirmation', Mailer.from, Mailer.bcc, {
-            claim: claim
-        }, function () {
-            var dates = claimDates(claim);
+        var options = {
+            claim: claim,
+            file: file,
+            invoiceNo: invoiceNo,
+            res: res,
+            next: next,
+            lng: req.session.lng,
+            cb: cb
+        };
 
-            sendMail('mails/payment-confirmation-to-user', Mailer.from, claim.userData.email, {
-                claim: claim,
-                endDate: dates.endDate.format('LLL'),
-                eventDate: dates.eventDate.format('LLL'),
-                invoice: {no: invoiceNo}
-            }, cb);
-        });
-
-        function sendMail (template, from, to, data, cb) {
-            res.render(template, data,
-                intercept(next, function (mailText) {
-                    Mailer.sendMail({
-                        from: from,
-                        to: to,
-                        subject: 'Potwierdzenie płatności: ' + claim.amount + ' zł',
-                        html: mailText,
-                        attachments: attachments
-                    }, intercept(next, cb));
-                }));
-        }
+        mailSender.sendPaymentConfirmationMail(options);
     }
 
     invoiceApi.getDataForExistingInvoice(claim).then(function (data) {
@@ -70,16 +52,12 @@ function generatePaymentConfirmation (req, res, next, claim, cb) {
             var fullUrl = req.protocol + '://' + req.get('host') + '/admin/claims/get/invoice/single';
 
             invoiceApi.generateInvoice(fullUrl, data, function (file, invoiceNo) {
-                sendMailWithPaymentConfirmation(claim, file, invoiceNo, function () {
-                    cb();
-                });
+                sendMailWithPaymentConfirmation(claim, file, invoiceNo, cb);
             });
         }
         else {
 
-            sendMailWithPaymentConfirmation(claim, null, null, function () {
-                cb();
-            });
+            sendMailWithPaymentConfirmation(claim, null, null, cb);
 
         }
 
@@ -136,7 +114,7 @@ router.post('/tickets/:claim/notify', function (req, res, next) {
 
 // Regenerate payment - user action
 // TODO [ToDr] I think that some more security is necessary here
-router.post('/events/:id/tickets/:claim/payment', function (req, res, next) {
+router.post('/events/:id([a-z0-9]{24})/tickets/:claim([a-z0-9]{24})/payment', function (req, res, next) {
     Claims.findOne({
         _id: req.params.claim,
         event: req.params.id
@@ -194,7 +172,7 @@ function getPayPalPaymentDetails (req, res, next, claim) {
 }
 
 
-function createPayPalPaymentForClaim (req, res, next, claim) {
+function createPayPalPaymentForClaim (req, res, next, claim, country) {
 
     var pmtData = {
         intent: 'sale',
@@ -208,15 +186,15 @@ function createPayPalPaymentForClaim (req, res, next, claim) {
         transactions: [{
             amount: {
                 total: claim.amount,
-                currency: 'USD'
+                currency: country.currency.toUpperCase()
             },
-            description: 'Opłata za udział w ' + claim.event.title,
+            description: req.t('participationFee') + claim.event.title,
             item_list: {
                 items: [{
                     quantity: 1,
-                    name: 'Opłata za udział w ' + claim.event.title,
+                    name: req.t('participationFee') + claim.event.title,
                     price: claim.amount,
-                    currency: 'USD'
+                    currency: country.currency.toUpperCase()
                 }]
             }
         }]
@@ -283,23 +261,14 @@ function createPaymentForClaim (req, res, next, claim, postfix) {
 
     var dates = claimDates(claim);
 
-    function sendMailAndRenderResponse (claim) {
-        res.render('mails/event-confirmation', {
+    function sendEventConfirmationMail (claim) {
+        var options = {
             claim: claim,
-            appUrl: config.app.url,
-            endDate: dates.endDate.format('LLL'),
-            eventDate: dates.eventDate.format('LLL')
-        }, intercept(next, function (mailText) {
-            Mailer.sendMail({
-                from: Mailer.from,
-                to: claim.userData.email,
-                bcc: Mailer.bcc,
-                subject: 'Potwierdzenie rejestracji na ' + claim.event.title,
-                html: mailText
-            }, intercept(next, function (info) {
-                res.redirect(claim.payment.url);
-            }));
-        }));
+            res: res,
+            next: next,
+            lng: req.session.lng
+        };
+        mailSender.sendEventConfirmationMail(options);
     }
 
     function updateClaimWithPaymentDetails (claim, orderId, redirectUri) {
@@ -309,7 +278,7 @@ function createPaymentForClaim (req, res, next, claim, postfix) {
             id: orderId,
             url: redirectUri
         };
-        claim.save(intercept(next, sendMailAndRenderResponse));
+        claim.save(intercept(next, sendEventConfirmationMail));
     }
 
     var names = extractNames(claim.userData.names);
@@ -413,7 +382,6 @@ function initPayment (req, res, next, cb) {
                 }
 
                 findClaimById(req.params.claim, function (claim) {
-                    console.log('fire cb!!!');
                     cb(req, res, next, claim);
                 }, next);
             }));
@@ -429,7 +397,9 @@ router.post('/events/:id/tickets/:claim([a-z0-9]{24})', function (req, res, next
 
 router.post('/events/:id/tickets/:claim([a-z0-9]{24})/pp', function (req, res, next) {
     initPayment(req, res, next, function (req, res, next, claim) {
-        createPayPalPaymentForClaim(req, res, next, claim);
+        Country.findById(claim.event.country).exec(intercept(next, function (country){
+            createPayPalPaymentForClaim(req, res, next, claim, country);
+        }));
     });
 });
 
@@ -469,22 +439,17 @@ router.get('/events/:id/tickets/:claim([a-z0-9]{24})/pp/return', function (req, 
             paypalToken: req.query.token
         };
         claim.save(intercept(next, function () {
-            res.render('mails/event-confirmation', {
+
+            var options = {
                 claim: claim,
-                appUrl: config.app.url,
-                endDate: dates.endDate.format('LLL'),
-                eventDate: dates.eventDate.format('LLL')
-            }, intercept(next, function (mailText) {
-                Mailer.sendMail({
-                    from: Mailer.from,
-                    to: claim.userData.email,
-                    bcc: Mailer.bcc,
-                    subject: 'Potwierdzenie rejestracji na ' + claim.event.title,
-                    html: mailText
-                }, intercept(next, function (info) {
+                res: res,
+                next: next,
+                lng: req.session.lng,
+                cb: function () {
                     getPayPalPaymentDetails(req, res, next, claim);
-                }));
-            }));
+                }
+            };
+            mailSender.sendEventConfirmationMail(options);
         }));
 
     }, next);
@@ -511,8 +476,8 @@ function executePayPalPayment (req, res, next, pmtDetails, claim) {
 
             claim.status = Claims.STATUS.PAYED;
             claim.save(intercept(next, function () {
-                generatePaymentConfirmation(req, res, next, claim, function (){
-                    res.redirect(config.app.url + '/events/' + req.params.id + '/tickets/' + req.params.claim);
+                generatePaymentConfirmation(req, res, next, claim, function () {
+                   res.redirect(config.app.url + '/events/' + req.params.id + '/tickets/' + req.params.claim);
                 });
             }));
         }

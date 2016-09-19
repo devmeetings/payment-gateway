@@ -1,6 +1,7 @@
-{ "invoice": {
-  "productName": "Nazwa produktu"
-},
+{
+  "invoice": {
+    "productName": "Nazwa produktu"
+  },
   "ticket": {
     "alert": {
       "header": "Prosimy o wypełnienie formularza.",
@@ -28,6 +29,7 @@
       "diplomaInfo": "(Jeśli wpłacisz 100 PLN lub więcej, otrzymasz wysokiej jakości wydrukowany certyfikat)"
     },
     "yourAmount": "Twoja kwota",
-    "btnConfirm": "Potwierdź rejestrację"
+    "btnConfirm": "Potwierdź rejestrację",
+    "participationFee": "Opłata za udział w "
   }
 }
