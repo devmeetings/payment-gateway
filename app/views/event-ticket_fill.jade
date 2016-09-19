@@ -13,6 +13,7 @@ append scripts
   script.
     var claim = !{claim_json};
     var Translator = !{translation};
+    var lang = '!{lang}';
   if paymentMethod == "paypal"
     script(type='text/jsx', src='/js/event_ticket_paypal.js')
     script.
@@ -44,6 +45,7 @@ append scripts
               paypal.checkout.setup('ACW83GPVWEB3Q', {
                 environment: 'sandbox',
                 container: 'paypal-btn',
+                locale:  lang,
                 click: function (){
                   //leave empty, paypal invoke submit event of the form
                 }
