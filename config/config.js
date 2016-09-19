@@ -14,7 +14,8 @@ var config = {
     payu: null,
     port: 3000,
     db: 'mongodb://localhost/payment-gateway-development',
-    sentryDsn: false
+    sentryDsn: false,
+    mailTemplateURL: 'http://fronteos.mydevil.net/projects/_test/devmeetings/wp-json/mail/'
   },
 
   test: {
@@ -26,7 +27,8 @@ var config = {
     payu: null,
     port: 3000,
     db: 'mongodb://localhost/payment-gateway-staging',
-    sentryDsn: false
+    sentryDsn: false,
+    mailTemplateURL: 'http://fronteos.mydevil.net/projects/_test/devmeetings/wp-json/mail/'
   },
 
   production: {
@@ -41,7 +43,8 @@ var config = {
     },
     port: 3000,
     db: 'mongodb://localhost/payment-gateway-production',
-    sentryDsn: 'https://08525662ea9f4e4a9aaaec77999ae3cb:21f7694047b84f868e44a0baa0d81b3a@app.getsentry.com/51486'
+    sentryDsn: 'https://08525662ea9f4e4a9aaaec77999ae3cb:21f7694047b84f868e44a0baa0d81b3a@app.getsentry.com/51486',
+    mailTemplateURL: 'http://fronteos.mydevil.net/projects/_test/devmeetings/wp-json/mail/'
   }
 };
 
