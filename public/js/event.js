@@ -63,7 +63,7 @@ window.Event = (function (R, D) {
               <h5>{messageText}</h5>
               <form
         action={'/events/' + this.props.event.name + '/tickets/pl'}
-        method='post'>
+        method='get'>
                 <div className='progress'>
                   <div style={progressLeft} className='progress-bar progress-bar-warning'></div>
                   <div style={progress} className='progress-bar progress-bar-info'></div>
