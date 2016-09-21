@@ -7,6 +7,7 @@ var Country = require('../models/country');
 var Claims = require('../models/claims');
 var invoiceApi = require('../controllers/invoice').api;
 var ticketTranslations = require('../utils/ticket_translations');
+var config = require('../../config/config');
 // var crypto = require('crypto');
 
 module.exports = function (app) {
@@ -22,8 +23,14 @@ module.exports = function (app) {
 //         res.render('info/' + lang + '/index');
 //     });
 // });
+function enableInDevelopmentMiddleware(req, res, next) {
+    if (config.env !== 'development') {
+        return res.send(404);
+    }
+    next();
+}
 
-router.get('/events', function (req, res, next) {
+router.get('/events', enableInDevelopmentMiddleware, function (req, res, next) {
     Event.find({
         isVisible: true
     }, intercept(next, function (events) {
@@ -37,7 +44,7 @@ router.get('/events', function (req, res, next) {
     }));
 });
 
-router.get('/events/:name', function (req, res, next) {
+router.get('/events/:name', enableInDevelopmentMiddleware,  function (req, res, next) {
     Event.findOne({
         name: req.params.name
     }, intercept(next, function (ev) {
