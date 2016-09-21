@@ -139,7 +139,7 @@
 
       var inputField;
       if (this.state.ownPayment) {
-        inputField = <InputField name='payment' title='{T.yourAmount}' placeholder='' type='number'/>;
+        inputField = <InputField name='payment' title={T.yourAmount} placeholder='' type='number'/>;
       }
 
       var eventStartDate = moment(this.props.claim.event.eventStartDate);
@@ -194,7 +194,7 @@
                       <span>200 {claim.currency}</span>
                     </RadioField>
                     <RadioField name='payment' value='-1' type='' onChange={this.changeValue}>
-                      <span>Inna</span>
+                      <span>{T.payment.another}</span>
                     </RadioField>
                     {inputField}
                   </div>

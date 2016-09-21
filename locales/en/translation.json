@@ -1,4 +1,12 @@
 {
+
+  "about_devmeetings": "ABOUT",
+  "contact": "CONTACT",
+  "payments": "Payments supports",
+  "footer_contact": "Contakt",
+  "regulations": "Terms and conditions",
+  "privacy": "Read the privacy policy and terms of registration.",
+  "poland": "POLAND",
   "ticket": {
     "alert": {
       "header": "Please fill out the form",
@@ -11,7 +19,7 @@
       "wantToReceiveInvoice": "I want to receive a VAT invoice",
       "title": "Invoice data",
       "recipientName": "Company Name / Name",
-      "tin": "NIP",
+      "tin": "VAT ID",
       "street": "Street No.",
       "postalCode": "Zip",
       "city": "City"
@@ -23,8 +31,11 @@
     "payment": {
       "title": "Payment (Pay What You Want)",
       "declaredAmount": "Declared amount",
-      "diplomaInfo": "(If you deposit GBP zł or more, you will get high quality printed certificate)"
+      "diplomaInfo": "(If you deposit GBP zł or more, you will get high quality printed certificate)",
+      "another": "Another"
     },
-    "btnConfirm": "Confirm registration"
+    "btnConfirm": "Confirm registration",
+    "yourAmount": "Your amount",
+    "participationFee": "Participation fee "
   }
 }

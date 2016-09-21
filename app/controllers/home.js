@@ -30,6 +30,12 @@ function enableInDevelopmentMiddleware(req, res, next) {
     next();
 }
 
+function setLocalesMidleware (req, res, next) {
+    res.locals.lng =  req.session.lng || 'pl';
+    res.locals.paymentMethod =  req.session.country ? req.session.country.paymentMethod.toLowerCase(): 'payu';
+    next();
+}
+
 router.get('/events', enableInDevelopmentMiddleware, function (req, res, next) {
     Event.find({
         isVisible: true
@@ -44,7 +50,7 @@ router.get('/events', enableInDevelopmentMiddleware, function (req, res, next) {
     }));
 });
 
-router.get('/events/:name', enableInDevelopmentMiddleware,  function (req, res, next) {
+router.get('/events/:name', enableInDevelopmentMiddleware, setLocalesMidleware,  function (req, res, next) {
     Event.findOne({
         name: req.params.name
     }, intercept(next, function (ev) {
@@ -89,7 +95,7 @@ router.post('/events/:id/invoice/:claim', function (req, res, next) {
     }));
 });
 
-router.get('/events/:id/tickets/:claim([a-z0-9]{24})', function (req, res, next) {
+router.get('/events/:id/tickets/:claim([a-z0-9]{24})', setLocalesMidleware, function (req, res, next) {
     // TODO [ToDr] Display some meaningful message if status is wrong
 
     console.log('req.languages ' +req.languages);
@@ -132,7 +138,7 @@ router.get('/events/:id/tickets/:claim([a-z0-9]{24})', function (req, res, next)
                 };
 
                 res.render('event-ticket_fill', {
-                    lang: locale[req.params.lang || 'pl'],
+                    lang: locale[res.locals.lng],
                     paymentMethod: event.country.paymentMethod.toLowerCase(),
                     claim: claim,
                     translation: JSON.stringify(ticketTranslations(req.t)),
@@ -178,6 +184,9 @@ router.get('/events/:name/tickets/:lang([a-z]{2,3})', function (req, res, next) 
             if (!event) {
                 return res.send(404);
             }
+
+            req.session.country = event.country;
+
             Claims.create({
                 event: ev._id,
                 vatRate: event.country ? event.country.vatRate : 23,

@@ -1,4 +1,11 @@
 {
+  "about_devmeetings": "O DEVMEETINGS",
+  "contact": "KONTAKT",
+  "payments": "Płatności obsługuje",
+  "footer_contact": "Kontakt",
+  "regulations": "Regulamin",
+  "privacy": "Zapoznaj się z polityką prywatności i warunkami rejestracji.",
+  "poland": "POLSKA",
   "invoice": {
     "productName": "Nazwa produktu"
   },
@@ -26,10 +33,11 @@
     "payment": {
       "title": "Płatność (Pay What You Want)",
       "declaredAmount": "Deklarowana kwota",
-      "diplomaInfo": "(Jeśli wpłacisz 100 PLN lub więcej, otrzymasz wysokiej jakości wydrukowany certyfikat)"
+      "diplomaInfo": "(Jeśli wpłacisz 100 PLN lub więcej, otrzymasz wysokiej jakości wydrukowany certyfikat)",
+      "another": "Inna"
     },
-    "yourAmount": "Twoja kwota",
     "btnConfirm": "Potwierdź rejestrację",
+    "yourAmount": "Twoja kwota",
     "participationFee": "Opłata za udział w "
   }
 }

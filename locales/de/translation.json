@@ -1,4 +1,11 @@
 {
+  "about_devmeetings": "ÜBER DEVMEETINGS",
+  "contact": "KONTAKT",
+  "payments": "Die Zahlungen unterstützt",
+  "footer_contact": "Kontakt",
+  "regulations": "Vorschriften",
+  "privacy": "Lesen Sie die Datenschutzerklärung und Anmeldebedingungen ."
+  "poland": "POLEN",
   "ticket": {
     "alert": {
       "header": "Bitte füllen Sie das Formular aus.",
@@ -11,7 +18,7 @@
       "wantToReceiveInvoice": "Quiero recibir una factura con IVA...",
       "title": "Rechnungsdaten",
       "recipientName": "Firmenname / Bezeichnung",
-      "tin": "NIP",
+      "tin": "VAT ID",
       "street": "Street No.",
       "postalCode": "Zip",
       "city": "Stadt"
@@ -23,8 +30,11 @@
     "payment": {
       "title": "Die Zahlung (Pay What You Want)",
       "declaredAmount": "Angegebene Betrag",
-      "diplomaInfo": "Wenn Sie 100 EUR einzahlen oder mehr beträgt, werden Sie qualitativ hochwertige gedruckte Zertifikat erhalten)"
+      "diplomaInfo": "Wenn Sie 100 EUR einzahlen oder mehr beträgt, werden Sie qualitativ hochwertige gedruckte Zertifikat erhalten)",
+      "another": "Ein anderer"
     },
-    "btnConfirm": "Potwierdź rejestrację"
+    "btnConfirm": "Potwierdź rejestrację",
+    "yourAmount": "Ihre Höhe",
+    "participationFee": "Teilnahmegebühr "
   }
 }

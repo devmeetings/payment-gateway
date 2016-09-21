@@ -19,6 +19,7 @@ module.exports = function (translator) {
     result.payment.title = translator('ticket.payment.title');
     result.payment.declaredAmount = translator('ticket.payment.declaredAmount');
     result.payment.diplomaInfo = translator('ticket.payment.diplomaInfo');
+    result.payment.another = translator('ticket.payment.another');
     result.invoice.title = translator('ticket.invoice.title');
     result.invoice.recipientName = translator('ticket.invoice.recipientName');
     result.invoice.tin = translator('ticket.invoice.tin');
@@ -26,6 +27,7 @@ module.exports = function (translator) {
     result.invoice.postalCode = translator('ticket.invoice.postalCode');
     result.invoice.city = translator('ticket.invoice.city');
     result.invoice.wantToReceiveInvoice = translator('ticket.invoice.wantToReceiveInvoice');
+    result.yourAmount = translator('ticket.yourAmount');
 
     return result;
 };

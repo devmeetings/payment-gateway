@@ -62,7 +62,7 @@ window.Event = (function (R, D) {
               Aby wziąć udział w DevMeetingu<br/>musisz się zarejestrować.
               <h5>{messageText}</h5>
               <form
-        action={'/events/' + this.props.event.name + '/tickets/pl'}
+        action={'/events/' + this.props.event.name + '/tickets/es'}
         method='get'>
                 <div className='progress'>
                   <div style={progressLeft} className='progress-bar progress-bar-warning'></div>

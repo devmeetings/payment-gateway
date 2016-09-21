@@ -1,4 +1,11 @@
 {
+  "about_devmeetings": "SOBRE NOSOTROS",
+  "contact": "CONTACTO",
+  "payments": "Pagos soportes",
+  "footer_contact": "Contacto",
+  "regulations": "Reglamento",
+  "privacy":  "Lea la política de privacidad y condiciones de registro.",
+  "poland": "POLONIA",
   "ticket": {
     "alert": {
       "header": "Por favor, rellene el formulario.",
@@ -11,7 +18,7 @@
       "wantToReceiveInvoice": "Quiero recibir una factura con IVA",
       "title": "Los datos de factura",
       "recipientName": "Nombre de la Empresa / Nombre",
-      "tin": "NIP",
+      "tin": "VAT ID",
       "street": "Calle No.",
       "postalCode": "Zip",
       "city": "Ciudad"
@@ -23,8 +30,11 @@
     "payment": {
       "title": "El pago (Pay What You Want)",
       "declaredAmount": "Cntidad declarada",
-      "diplomaInfo": "(Si deposita 100 EUR o más, obtendrá certificado impreso de alta calidad)"
+      "diplomaInfo": "(Si deposita 100 EUR o más, obtendrá certificado impreso de alta calidad)",
+      "another": "Ein anderer"
     },
-    "btnConfirm": "Confirmar la inscripción"
+    "btnConfirm": "Confirmar la inscripción",
+    "yourAmount": "La cantidad de su",
+    "participationFee": "Cuota de participación "
   }
 }
