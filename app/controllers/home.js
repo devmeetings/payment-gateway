@@ -14,9 +14,9 @@ module.exports = function (app) {
     app.use('/', router);
 };
 
-// router.get('/', function (req, res) {
-//     res.redirect('/pl');
-// });
+router.get('/', function (req, res) {
+     res.redirect(config.redirectUrl);
+});
 //
 // require('../../config/config').languages.map(function (lang) {
 //     router.get('/' + lang, function (req, res) {
@@ -25,7 +25,7 @@ module.exports = function (app) {
 // });
 function enableInDevelopmentMiddleware(req, res, next) {
     if (config.env !== 'development') {
-        return res.send(404);
+        res.redirect(config.redirectUrl);
     }
     next();
 }

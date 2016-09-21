@@ -7,6 +7,7 @@ var languages = ['pl', 'en', 'de'];
 var config = {
   development: {
     root: rootPath,
+    redirectUrl:'http://fronteos.mydevil.net/projects/_test/devmeetings',
     app: {
       name: 'payment-gateway',
       url: 'http://localhost:3000'
@@ -20,6 +21,7 @@ var config = {
 
   test: {
     root: rootPath,
+    redirectUrl:'http://fronteos.mydevil.net/projects/_test/devmeetings',
     app: {
       name: 'payment-gateway',
       url: 'http://reg-test.devmeetings.pl'
@@ -33,6 +35,7 @@ var config = {
 
   production: {
     root: rootPath,
+    redirectUrl:'http://devmeetings.com',
     app: {
       name: 'payment-gateway',
       url: 'http://devmeetings.com'
