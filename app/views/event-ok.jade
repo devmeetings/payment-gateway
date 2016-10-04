@@ -1,4 +1,4 @@
-extends layout
+extends layout-general
 
 block content
 
@@ -7,15 +7,15 @@ block content
       .col-md-8.col-md-offset-2.col-sm-10.col-sm-offset-1
         .vertical-space-l
         .alert.alert-info
-          h4.noHeaderMargins
+          h4.noHeaderMargins= t('ticket.success.header')
+            |  #{claim.event.title}.
             .pull-left.fa.fa-thumbs-o-up.fa-4x
-            | Zarejestrowałeś się na DevMeeting #{claim.event.title}.
-          h5
-            | Otrzymaliśmy płatność za Twój bilet, a potwierdzenie przesłaliśmy mailem.
+          h5= t('ticket.success.info')
         hr
-        h5.text-muted.noHeaderMargins W razie jakichkolwiek problemów skontaktuj się z nami pod adresem <code>registration@devmeetings.org</code>
-        h5.text-muted.noHeaderMargins
-          | Id twojego biletu:
+        h5.text-muted.noHeaderMargins= t('ticket.success.contact')
+          |  <code>registration@devmeetings.org</code>
+        h5.text-muted.noHeaderMargins= t('ticket.success.claimId')
+          |:
           code #{claim._id}
 
         .vertical-space-xl
