@@ -6,6 +6,7 @@
   "regulations": "Regulamin",
   "privacy": "Zapoznaj się z polityką prywatności i warunkami rejestracji.",
   "poland": "POLSKA",
+  "serviceName": "Udział w DevMeetingu",
   "invoice": {
     "productName": "Nazwa produktu"
   },
@@ -33,11 +34,18 @@
     "payment": {
       "title": "Płatność (Pay What You Want)",
       "declaredAmount": "Deklarowana kwota",
-      "diplomaInfo": "(Jeśli wpłacisz 100 PLN lub więcej, otrzymasz wysokiej jakości wydrukowany certyfikat)",
+      "diplomaInfo1": "(Jeśli wpłacisz ",
+      "diplomaInfo2": " lub więcej, otrzymasz wysokiej jakości wydrukowany certyfikat)",
       "another": "Inna"
     },
     "btnConfirm": "Potwierdź rejestrację",
     "yourAmount": "Twoja kwota",
-    "participationFee": "Opłata za udział w "
+    "participationFee": "Opłata za udział w ",
+    "success": {
+      "header": "Zarejestrowałeś się na DevMeeting",
+      "info": "Otrzymaliśmy płatność za Twój bilet, a potwierdzenie przesłaliśmy mailem.",
+      "contact": "W razie jakichkolwiek problemów skontaktuj się z nami pod adresem",
+      "claimId": "Id twojego biletu"
+    }
   }
 }

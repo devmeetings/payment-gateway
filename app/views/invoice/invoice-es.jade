@@ -1,0 +1,157 @@
+doctype html
+html
+    head
+        link(rel='stylesheet', href='/components/bootstrap/dist/css/bootstrap.css')
+        append css
+            style.
+                @media print {
+                    @page {
+                        size: A4;
+                    }
+                }
+
+                body {
+                    margin-top: 0px;
+                    margin-left: 0px;
+                }
+
+                .page {
+                    padding: 0;
+                    margin: 0 auto;
+                    page-break-after: always;
+                    font-family: 'Times New Roman', sans-serif;;
+                }
+
+                .container > .row {
+                   margin-top: 10px;
+                }
+
+                .belt {
+                   position: absolute;
+                   top: 0;
+                   right: 2px;
+                   z-index: -1;
+                }
+
+                .belt img {
+                   width: 287px;
+                   height: 800px;
+                }
+
+                table, .panel {
+                   font-size: 11px;
+                }
+
+                p.info {
+                    position:absolute;
+                    bottom:0;
+                    left:0;
+                }
+
+body
+        .page
+           .belt
+              img(src="/img/faktura_pasek.jpg")
+           p.info
+            small * Fecha de entrega se entiende como la fecha de presentación o de la finalización de la entrega de los bienes / prestación de servicios
+           .container
+               .row
+                  .col-xs-12
+                     p.text-left
+                      small Presentado por #{data.invoice.dateOfInvoice}, Wroclaw
+               .row
+                  .col-xs-5.col-xs-offset-7
+                     p
+                        strong Factura nr&nbsp;
+                         span.invoice-no #{data.invoice.invoiceNo}
+                     .row
+                        .col-xs-6
+                           | Fecha de entrega*: <br/>
+                           | Pago: <br/>
+                           | Madurez:
+                        .col-xs-6
+                           | #{data.invoice.deliveryDate} <br/>
+                           | #{data.paymentMethod} <br/>
+                           | #{data.invoice.dateOfPayment}
+
+               .row
+                  .col-xs-7
+                     p
+                        strong Vendedor:
+                     .row
+                        .col-xs-12
+                           | Developers Peak Sp. z o. o.<br/>
+                           | ul. Rzeźnicza 28-31<br/>
+                           | 50-130 Wrocław<br/>
+                           | Polonia
+                           | NIP 8971800894
+                  .col-xs-5
+                     p
+                        strong Comprador:
+                     .row
+                        .col-xs-12
+                           | #{data.buyer.invoice.recipientName}<br/>
+                           | #{data.buyer.invoice.street}<br/>
+                           | #{data.buyer.invoice.postalCode} #{data.buyer.invoice.city}<br/>
+                           | NIP #{data.buyer.invoice.tin}
+           .container
+              .row
+                 .col-xs-12
+                    table.table
+                       tr
+                          th Ordinal
+                          th Nombre del producto
+                          th Número
+                          th Unidad
+                          th Precio neto
+                          th Valor neto
+                          th Tipo de IVA
+                          th El importe del IVA
+                          th Valor bruto
+                       tr
+                          td 1
+                          td #{data.serviceName}
+                          td 1
+                          td pieza
+                          td #{data.invoice.amountNet} EUR
+                          td #{data.invoice.amountNet} EUR
+                          td 21%
+                          td #{data.invoice.amountDiff} EUR
+                          td #{data.invoice.amountGross} EUR
+                       tr
+                          td.text-right(colspan=4)
+                              strong
+                                | Junto:
+                          td #{data.invoice.amountNet} EUR
+                          td #{data.invoice.amountNet} EUR
+                          td
+                          td #{data.invoice.amountDiff} EUR
+                          td #{data.invoice.amountGross} EUR
+
+              .row
+                 .col-xs-9
+                    .panel.panel-default
+                       .panel-body
+                          .row
+                             .col-xs-6
+                                | Pagado:
+                             .col-xs-6
+                                strong #{data.invoice.amountPayed} EUR
+                          .row
+                             .col-xs-6
+                                | Pago restante:
+                             .col-xs-6
+                                strong #{data.invoice.amountStillToPay} EUR
+                          .row
+                             .col-xs-6
+                                | Cuenta bancaria:
+                             .col-xs-6
+                                | mBank SA 43 1140 2004 0000 3702 7521 7540
+                       .panel-body
+                          .row
+                             .col-xs-6
+                               | La factura sin la firma del destinatario
+                             .col-xs-6
+                               | La persona autorizada para emitir una factura con IVA
+                               br
+                               strong Piotr Zwoliński

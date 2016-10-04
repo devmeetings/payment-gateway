@@ -1,0 +1,157 @@
+doctype html
+html
+    head
+        link(rel='stylesheet', href='/components/bootstrap/dist/css/bootstrap.css')
+        append css
+            style.
+                @media print {
+                    @page {
+                        size: A4;
+                    }
+                }
+
+                body {
+                    margin-top: 0px;
+                    margin-left: 0px;
+                }
+
+                .page {
+                    padding: 0;
+                    margin: 0 auto;
+                    page-break-after: always;
+                    font-family: 'Times New Roman', sans-serif;;
+                }
+
+                .container > .row {
+                   margin-top: 10px;
+                }
+
+                .belt {
+                   position: absolute;
+                   top: 0;
+                   right: 2px;
+                   z-index: -1;
+                }
+
+                .belt img {
+                   width: 287px;
+                   height: 800px;
+                }
+
+                table, .panel {
+                   font-size: 11px;
+                }
+
+                p.info {
+                    position:absolute;
+                    bottom:0;
+                    left:0;
+                }
+
+body
+        .page
+           .belt
+              img(src="/img/faktura_pasek.jpg")
+           p.info
+            small * Lieferdatum wird als dem Tag der Anmeldung oder dem Abschluss der Lieferung von Waren / Erbringung von Dienstleistungen zu verstehen
+           .container
+               .row
+                  .col-xs-12
+                     p.text-left
+                      small Angeboten von #{data.invoice.dateOfInvoice}, Wroclaw
+               .row
+                  .col-xs-5.col-xs-offset-7
+                     p
+                        strong Rechnung nr&nbsp;
+                         span.invoice-no #{data.invoice.invoiceNo}
+                     .row
+                        .col-xs-6
+                           | Liefertermin*: <br/>
+                           | Zahlung: <br/>
+                           | Reife:
+                        .col-xs-6
+                           | #{data.invoice.deliveryDate} <br/>
+                           | #{data.paymentMethod} <br/>
+                           | #{data.invoice.dateOfPayment}
+
+               .row
+                  .col-xs-7
+                     p
+                        strong Verkäufer:
+                     .row
+                        .col-xs-12
+                           | Developers Peak Sp. z o. o.<br/>
+                           | ul. Rzeźnicza 28-31<br/>
+                           | 50-130 Wrocław<br/>
+                           | POLEN
+                           | NIP 8971800894
+                  .col-xs-5
+                     p
+                        strong Käufer:
+                     .row
+                        .col-xs-12
+                           | #{data.buyer.invoice.recipientName}<br/>
+                           | #{data.buyer.invoice.street}<br/>
+                           | #{data.buyer.invoice.postalCode} #{data.buyer.invoice.city}<br/>
+                           | NIP #{data.buyer.invoice.tin}
+           .container
+              .row
+                 .col-xs-12
+                    table.table
+                       tr
+                          th Lp.
+                          th Produktname
+                          th Anzahl
+                          th Einheit
+                          th Netto-Preis
+                          th Nettowert
+                          th Mehrwertsteuersatz
+                          th Die Mehrwertsteuer
+                          th Bruttowert
+                       tr
+                          td 1
+                          td #{data.serviceName}
+                          td 1
+                          td Stück
+                          td #{data.invoice.amountNet} EUR
+                          td #{data.invoice.amountNet} EUR
+                          td 19%
+                          td #{data.invoice.amountDiff} EUR
+                          td #{data.invoice.amountGross} EUR
+                       tr
+                          td.text-right(colspan=4)
+                              strong
+                                | Zusammen:
+                          td #{data.invoice.amountNet} EUR
+                          td #{data.invoice.amountNet} EUR
+                          td
+                          td #{data.invoice.amountDiff} EUR
+                          td #{data.invoice.amountGross} EUR
+
+              .row
+                 .col-xs-9
+                    .panel.panel-default
+                       .panel-body
+                          .row
+                             .col-xs-6
+                                | Bezahlt:
+                             .col-xs-6
+                                strong #{data.invoice.amountPayed} EUR
+                          .row
+                             .col-xs-6
+                                | Restzahlung:
+                             .col-xs-6
+                                strong #{data.invoice.amountStillToPay} EUR
+                          .row
+                             .col-xs-6
+                                | Bankkonto:
+                             .col-xs-6
+                                | mBank SA 43 1140 2004 0000 3702 7521 7540
+                       .panel-body
+                          .row
+                             .col-xs-6
+                               | Die Rechnung ohne die Unterschrift des Empfängers
+                             .col-xs-6
+                               | Die Person, die berechtigt eine Rechnung mit Mehrwertsteuer auszustellen
+                               br
+                               strong Piotr Zwoliński

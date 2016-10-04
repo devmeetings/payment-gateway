@@ -1,0 +1,157 @@
+doctype html
+html
+    head
+        link(rel='stylesheet', href='/components/bootstrap/dist/css/bootstrap.css')
+        append css
+            style.
+                @media print {
+                    @page {
+                        size: A4;
+                    }
+                }
+
+                body {
+                    margin-top: 0px;
+                    margin-left: 0px;
+                }
+
+                .page {
+                    padding: 0;
+                    margin: 0 auto;
+                    page-break-after: always;
+                    font-family: 'Times New Roman', sans-serif;;
+                }
+
+                .container > .row {
+                   margin-top: 10px;
+                }
+
+                .belt {
+                   position: absolute;
+                   top: 0;
+                   right: 2px;
+                   z-index: -1;
+                }
+
+                .belt img {
+                   width: 287px;
+                   height: 800px;
+                }
+
+                table, .panel {
+                   font-size: 11px;
+                }
+
+                p.info {
+                    position:absolute;
+                    bottom:0;
+                    left:0;
+                }
+
+body
+        .page
+           .belt
+              img(src="/img/faktura_pasek.jpg")
+           p.info
+            small * Delivery date is understood as the date of filing or the completion of delivery of goods / performance of services
+           .container
+               .row
+                  .col-xs-12
+                     p.text-left
+                      small Offered by #{data.invoice.dateOfInvoice}, Wroclaw
+               .row
+                  .col-xs-5.col-xs-offset-7
+                     p
+                        strong Invoice nr&nbsp;
+                         span.invoice-no #{data.invoice.invoiceNo}
+                     .row
+                        .col-xs-6
+                           | Delivery date*: <br/>
+                           | Payment method: <br/>
+                           | Date of payment:
+                        .col-xs-6
+                           | #{data.invoice.deliveryDate} <br/>
+                           | #{data.paymentMethod} <br/>
+                           | #{data.invoice.dateOfPayment}
+
+               .row
+                  .col-xs-7
+                     p
+                        strong Dealer:
+                     .row
+                        .col-xs-12
+                           | Developers Peak Sp. z o. o.<br/>
+                           | ul. Rzeźnicza 28-31<br/>
+                           | 50-130 Wrocław<br/>
+                           | POLAND
+                           | NIP 8971800894
+                  .col-xs-5
+                     p
+                        strong Buyer:
+                     .row
+                        .col-xs-12
+                           | #{data.buyer.invoice.recipientName}<br/>
+                           | #{data.buyer.invoice.street}<br/>
+                           | #{data.buyer.invoice.postalCode} #{data.buyer.invoice.city}<br/>
+                           | NIP #{data.buyer.invoice.tin}
+           .container
+              .row
+                 .col-xs-12
+                    table.table
+                       tr
+                          th Ordinal
+                          th Product name
+                          th Quantity
+                          th Unit
+                          th Net price
+                          th The net value
+                          th VAT rate
+                          th The amount of VAT
+                          th Gross value
+                       tr
+                          td 1
+                          td #{data.serviceName}
+                          td 1
+                          td item
+                          td #{data.invoice.amountNet} GBP
+                          td #{data.invoice.amountNet} GBP
+                          td 20%
+                          td #{data.invoice.amountDiff} GBP
+                          td #{data.invoice.amountGross} GBP
+                       tr
+                          td.text-right(colspan=4)
+                              strong
+                                | Total:
+                          td #{data.invoice.amountNet} GBP
+                          td #{data.invoice.amountNet} GBP
+                          td
+                          td #{data.invoice.amountDiff} GBP
+                          td #{data.invoice.amountGross} GBP
+
+              .row
+                 .col-xs-9
+                    .panel.panel-default
+                       .panel-body
+                          .row
+                             .col-xs-6
+                                | Paid:
+                             .col-xs-6
+                                strong #{data.invoice.amountPayed} GBP
+                          .row
+                             .col-xs-6
+                                | Left to pay:
+                             .col-xs-6
+                                strong #{data.invoice.amountStillToPay} GBP
+                          .row
+                             .col-xs-6
+                                | Bank account:
+                             .col-xs-6
+                                | mBank SA 43 1140 2004 0000 3702 7521 7540
+                       .panel-body
+                          .row
+                             .col-xs-6
+                               | The invoice without the recipient's signature
+                             .col-xs-6
+                               | The person authorized to issue a VAT invoice
+                               br
+                               strong Piotr Zwoliński

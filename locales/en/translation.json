@@ -7,6 +7,7 @@
   "regulations": "Terms and conditions",
   "privacy": "Read the privacy policy and terms of registration.",
   "poland": "POLAND",
+  "serviceName": "Participation in DevMeeting",
   "ticket": {
     "alert": {
       "header": "Please fill out the form",
@@ -31,11 +32,18 @@
     "payment": {
       "title": "Payment (Pay What You Want)",
       "declaredAmount": "Declared amount",
-      "diplomaInfo": "(If you deposit GBP zł or more, you will get high quality printed certificate)",
+      "diplomaInfo1": "(If you deposit ",
+      "diplomaInfo2":" or more, you will get high quality printed certificate)",
       "another": "Another"
     },
     "btnConfirm": "Confirm registration",
     "yourAmount": "Your amount",
-    "participationFee": "Participation fee "
+    "participationFee": "Participation fee ",
+    "success": {
+      "header": "You have registered for DevMeeting",
+      "info": "We have received payment for your ticket, and we sent a confirmation e-mail.",
+      "contact": "If you have any problems please contact us at",
+      "claimId": "Id your ticket"
+    }
   }
 }

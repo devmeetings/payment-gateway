@@ -6,6 +6,7 @@
   "regulations": "Vorschriften",
   "privacy": "Lesen Sie die Datenschutzerklärung und Anmeldebedingungen ."
   "poland": "POLEN",
+  "serviceName": "Die Teilnahme an DevMeeting",
   "ticket": {
     "alert": {
       "header": "Bitte füllen Sie das Formular aus.",
@@ -30,11 +31,18 @@
     "payment": {
       "title": "Die Zahlung (Pay What You Want)",
       "declaredAmount": "Angegebene Betrag",
-      "diplomaInfo": "Wenn Sie 100 EUR einzahlen oder mehr beträgt, werden Sie qualitativ hochwertige gedruckte Zertifikat erhalten)",
+      "diplomaInfo1": "Wenn Sie ",
+      "diplomaInfo2": " einzahlen oder mehr beträgt, werden Sie qualitativ hochwertige gedruckte Zertifikat erhalten)"
       "another": "Ein anderer"
     },
     "btnConfirm": "Potwierdź rejestrację",
     "yourAmount": "Ihre Höhe",
-    "participationFee": "Teilnahmegebühr "
+    "participationFee": "Teilnahmegebühr ",
+    "success": {
+      "header": "Sie haben nach DevMeeting registriert",
+      "info": "Wir haben für Ihr Ticket erhalten Zahlung, und wir schickten eine Bestätigungs-E-Mail.",
+      "contact": "Wenn Sie Probleme haben, bitte kontaktieren Sie uns unter",
+      "claimId": "Id Ihr Ticket"
+    }
   }
 }
