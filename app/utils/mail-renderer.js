@@ -24,7 +24,7 @@ module.exports = function (mailPath, lang, variables, cb) {
                         mailText = mailText.replace(reg, '');
                         foundKey = true;
                     } else if (key === condititionalKey && variables[key] === false) {
-                        reg = new RegExp("%"+condititionalKey+"%(\w|\W)*%"+condititionalKey+"%");
+                        reg = new RegExp("%"+condititionalKey+"%(\\w|\\W)*%"+condititionalKey+"%");
                         mailText = mailText.replace(reg, '');
                         foundKey = true;
                     }
