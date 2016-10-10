@@ -250,6 +250,9 @@ router.post('/claims/get/invoice/:mode', function (req, res, next) {
 
 function generateInvoice(url, data,cb){
     var phantom = require('phantom');
+    var phantomjs = require('phantomjs');
+
+    console.log('CREATE INVOICE');
     phantom.create(function (ph) {
         ph.createPage(function (page) {
             page.setPaperSize({
@@ -294,6 +297,9 @@ function generateInvoice(url, data,cb){
                 }
             });
         });
+    },  {
+        binary: phantomjs.path,
+        dnodeOpts: {weak: false}
     });
 }
 
@@ -485,9 +491,9 @@ router.post('/claims/invoice', function (req, res, next) {
 });
 
 
-function getDataForExistingInvoice (claim) {
+function getDataForExistingInvoice (claim, req) {
     var order = {};
-    var serviceName = 'Udział w DevMeetingu ' + claim.event.title;
+    var serviceName = req.t('serviceName') + ' ' + claim.event.title;
     var buyer = {
         names: claim.userData.names,
         email: claim.userData.email,
@@ -504,7 +510,7 @@ function getDataForExistingInvoice (claim) {
 
     order = {
         status: 'COMPLETED',
-        paymentMethod: claim.paidWithoutPayu ? 'Przelew' : 'Payu',
+        paymentMethod: claim.payment.paypalToken ? 'PayPal' : (claim.paidWithoutPayu ? 'Przelew' : 'Payu'),
         paidWithoutPayu: claim.paidWithoutPayu,
         orderId: claim.payment.id,
         buyer: buyer,
