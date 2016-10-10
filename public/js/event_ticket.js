@@ -185,7 +185,7 @@
                       <span>75 {claim.currency}</span>
                     </RadioField>
                     <RadioField name='payment' value='100' type='' checked onChange={this.changeValue}>
-                      <span>100 {claim.currency} {T.payment.diplomaInfo}</span>
+                      <span>100 {claim.currency} {T.payment.diplomaInfo1} 100 {claim.currency} {T.payment.diplomaInfo2} </span>
                     </RadioField>
                     <RadioField name='payment' value='150' type='radio-success' onChange={this.changeValue}>
                       <span>150 {claim.currency}</span>
