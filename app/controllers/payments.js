@@ -24,10 +24,11 @@ module.exports = function (app) {
     app.use('/', router);
 };
 
-function generatePaymentConfirmation (req, res, next, claim, cb) {
-    function sendMailWithPaymentConfirmation (claim, file, invoiceNo, cb) {
+function generatePaymentConfirmation (req, res, next, claim, pmtDetails, cb) {
+    function sendMailWithPaymentConfirmation (claim, pmtDetails, file, invoiceNo, cb) {
         var options = {
             claim: claim,
+            currency: pmtDetails.transactions[0].amount.currency.toLowerCase(),
             file: file,
             invoiceNo: invoiceNo,
             res: res,
@@ -39,7 +40,7 @@ function generatePaymentConfirmation (req, res, next, claim, cb) {
         mailSender.sendPaymentConfirmationMail(options);
     }
 
-    invoiceApi.getDataForExistingInvoice(claim).then(function (data) {
+    invoiceApi.getDataForExistingInvoice(claim, req).then(function (data) {
 
         if (claim.event.mail.sended) {
             mailEventLocation.sendLocationMail(claim.event._id, claim._id, false, res, next, function () {
@@ -52,12 +53,12 @@ function generatePaymentConfirmation (req, res, next, claim, cb) {
             var fullUrl = req.protocol + '://' + req.get('host') + '/admin/claims/get/invoice/single';
 
             invoiceApi.generateInvoice(fullUrl, data, function (file, invoiceNo) {
-                sendMailWithPaymentConfirmation(claim, file, invoiceNo, cb);
+                sendMailWithPaymentConfirmation(claim, pmtDetails, file, invoiceNo, cb);
             });
         }
         else {
 
-            sendMailWithPaymentConfirmation(claim, null, null, cb);
+            sendMailWithPaymentConfirmation(claim, pmtDetails, null, null, cb);
 
         }
 
@@ -188,11 +189,11 @@ function createPayPalPaymentForClaim (req, res, next, claim, country) {
                 total: claim.amount,
                 currency: country.currency.toUpperCase()
             },
-            description: req.t('participationFee') + claim.event.title,
+            description: req.t('ticket.participationFee') + claim.event.title,
             item_list: {
                 items: [{
                     quantity: 1,
-                    name: req.t('participationFee') + claim.event.title,
+                    name: req.t('ticket.participationFee') + claim.event.title,
                     price: claim.amount,
                     currency: country.currency.toUpperCase()
                 }]
@@ -382,6 +383,9 @@ function initPayment (req, res, next, cb) {
                 }
 
                 findClaimById(req.params.claim, function (claim) {
+                    if (!claim) {
+                        return res.send(404);
+                    }
                     cb(req, res, next, claim);
                 }, next);
             }));
@@ -476,9 +480,12 @@ function executePayPalPayment (req, res, next, pmtDetails, claim) {
 
             claim.status = Claims.STATUS.PAYED;
             claim.save(intercept(next, function () {
-                generatePaymentConfirmation(req, res, next, claim, function () {
+                generatePaymentConfirmation(req, res, next, claim, pmtDetails, function () {
                    res.redirect(config.app.url + '/events/' + req.params.id + '/tickets/' + req.params.claim);
+                   console.log('----------------- WSYLANO Potwierdzenie Platnosi -------------------------');
                 });
+
+
             }));
         }
     });
