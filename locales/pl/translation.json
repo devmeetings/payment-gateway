@@ -7,6 +7,15 @@
   "privacy": "Zapoznaj się z polityką prywatności i warunkami rejestracji.",
   "poland": "POLSKA",
   "serviceName": "Udział w DevMeetingu",
+  "eventDaysWeek": {
+    "sunday": "w najbliższą niedzielę",
+    "monday": "w najbliższy poniedziałek",
+    "tuesday": "w najbliższy wtorek",
+    "wednesday": "w najbliższą środę",
+    "thursday": "w najbliższy czwartek",
+    "friday": "w najbliższy piątek",
+    "saturday": "w najbliższż sobotę"
+  },
   "invoice": {
     "productName": "Nazwa produktu"
   },
