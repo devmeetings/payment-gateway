@@ -15,8 +15,7 @@ var createInvoiceForClaim = require('./admin').createInvoiceForClaim;
 var invoiceApi = require('./invoice').api;
 var mailEventLocation = require('./mail-event-location').api;
 var claimDates = require('../utils/claim-dates');
-var mailRenderer = require('../utils/mail-renderer');
-var mailSender = require('../utils/event-mail-sender');
+var mailSender = require('../services/mail/event-mail-sender');
 
 moment.locale('pl');
 

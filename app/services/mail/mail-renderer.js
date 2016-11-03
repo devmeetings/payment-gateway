@@ -1,11 +1,18 @@
 'use strict';
 
 var request = require('request');
-var utf8Converter = require('./utf8-converter');
-var config = require('../../config/config');
+var utf8Converter = require('./../../utils/utf8-converter');
+var config = require('../../../config/config');
 
-module.exports = function (mailPath, lang, variables, cb) {
-    request(config.mailTemplateURL + mailPath + '?lang=' + lang, function (error, response, body) {
+module.exports = function (options, cb) {
+
+    var mailPath = options.path;
+    var lang = options.lang;
+    var variables = options.variables || {};
+
+    var url = config.mailTemplateURL + mailPath + (lang ? '?lang=' + lang:'');
+
+    request(url, function (error, response, body) {
         if (!error && response.statusCode === 200) {
             var mailText = response.body;
             mailText = mailText.replace(/^[\s\uFEFF\xA0"]+|[\s\uFEFF\xA0"]+$/g, '');
@@ -50,4 +57,4 @@ module.exports = function (mailPath, lang, variables, cb) {
             cb(mailText);
         }
     });
-}
+};
