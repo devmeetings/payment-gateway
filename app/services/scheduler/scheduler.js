@@ -1,7 +1,7 @@
 var schedule = require('node-schedule');
 var Event = require('../../models/event');
 var Claims = require('../../models/claims');
-var Mailer = require('../../utils/mailer');
+var mailSender = require('../../services/mail/event-mail-sender');
 var claimDates = require('../../utils/claim-dates');
 var config = require('../../../config/config');
 
@@ -53,21 +53,14 @@ function closeWaiting (app) {
 
             if (noOfUpdatedItems) {
 
-              var dates = claimDates(claim);
+              var options = {
+                claim:claim,
+                res: res,
+                next: next,
+                lng: req.session.lng,
+              };
 
-              app.render('mails/payment-cancel', {
-                claim: claim,
-                appUrl: config.app.url,
-                endDate: dates.endDate.format('LLL'),
-                eventDate: dates.eventDate.format('LLL')
-              }, function (err, mailText){
-                Mailer.sendMail({
-                  from: Mailer.from,
-                  to: claim.userData.email,
-                  subject: 'Anulowanie rezerwacji',
-                  html: mailText
-                });
-              });
+              mailSender.sendPaymentCancelMail(options);
 
               Event.update({
                 _id: claim.event._id
@@ -106,21 +99,30 @@ function sendReminderForWaitingStatus(app) {
     }
     claims.forEach(function (claim) {
 
-      var dates = claimDates(claim);
+      var options = {
+        claim:claim,
+        res: res,
+        next: next,
+        lng: req.session.lng,
+      };
 
-      app.render('mails/payment-reminder', {
-        claim: claim,
-        appUrl: config.app.url,
-        endDate: dates.endDate.format('LLL'),
-        eventDate: dates.eventDate.format('LLL')
-      }, function (err, mailText){
-        Mailer.sendMail({
-          from: Mailer.from,
-          to: claim.userData.email,
-          subject: 'Przypomnienie o rezerwacji',
-          html: mailText
-        });
-      });
+      mailSender.sendPaymentReminderMail(options);
+
+      //var dates = claimDates(claim);
+
+      // app.render('mails/payment-reminder', {
+      //   claim: claim,
+      //   appUrl: config.app.url,
+      //   endDate: dates.endDate.format('LLL'),
+      //   eventDate: dates.eventDate.format('LLL')
+      // }, function (err, mailText){
+      //   Mailer.sendMail({
+      //     from: Mailer.from,
+      //     to: claim.userData.email,
+      //     subject: 'Przypomnienie o rezerwacji',
+      //     html: mailText
+      //   });
+      // });
 
 
 
