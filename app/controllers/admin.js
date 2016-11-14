@@ -4,7 +4,7 @@ var intercept = require('../utils/intercept');
 var Event = require('../models/event');
 var Country = require('../models/country');
 var moment = require('moment');
-var Mailer = require('../utils/mailer');
+var mailSender = require('../services/mail/event-mail-sender');
 var Claims = require('../models/claims');
 var Q = require('q');
 var Payu = require('../../config/payu');
@@ -461,7 +461,7 @@ router.post('/events/:ev/add/claim/offline', function (req, res, next) {
 
 router.post('/events/:ev/invitation', function (req, res, next) {
 
-    var CLAIM_TIME = 48 * 60 * 60 * 1000;
+    var CLAIM_TIME = config.claim_time;
 
     function createClaim (ev) {
         var now = new Date();
@@ -476,23 +476,32 @@ router.post('/events/:ev/invitation', function (req, res, next) {
             }
         }, intercept(next, function (claim) {
 
-            res.render('mails/registration-invitation', {
-                claim: claim,
-                event:ev,
-                appUrl: config.app.url,
-                eventDate: moment(ev.eventStartDate).format('LLL'),
-                endDate: moment(new Date(Date.now() + CLAIM_TIME)).format('LLL'),
-            }, intercept(next, function (mailText) {
-                Mailer.sendMail({
-                    from: Mailer.from,
-                    to: req.body.email,
-                    bcc: Mailer.bcc,
-                    subject: 'Możliwość rejestracji na ' + ev.title,
-                    html: mailText
-                }, intercept(next, function (info) {
-                    res.send(200);
-                }));
-            }));
+          var options = {
+            claim:claim,
+            res: res,
+            next: next,
+            lng: req.session.lng,
+          };
+
+          mailSender.sendRegistrationInvitationMail(options);
+
+            // res.render('mails/registration-invitation', {
+            //     claim: claim,
+            //     event:ev,
+            //     appUrl: config.app.url,
+            //     eventDate: moment(ev.eventStartDate).format('LLL'),
+            //     endDate: moment(new Date(Date.now() + CLAIM_TIME)).format('LLL'),
+            // }, intercept(next, function (mailText) {
+            //     Mailer.sendMail({
+            //         from: Mailer.from,
+            //         to: req.body.email,
+            //         bcc: Mailer.bcc,
+            //         subject: 'Możliwość rejestracji na ' + ev.title,
+            //         html: mailText
+            //     }, intercept(next, function (info) {
+            //         res.send(200);
+            //     }));
+            // }));
 
         }));
     }
