@@ -1,9 +1,11 @@
 'use strcit';
 
 var sendMail = require('./send-mail-with-mail-renderer');
+var claimDates = require('../../utils/claim-dates');
 
 module.exports = function sendPaymentReminderMail(options){
 
+    var dates = claimDates(options.claim);
     var mailConfig = {
         path: 'payment-reminder',
         lng: options.lng,

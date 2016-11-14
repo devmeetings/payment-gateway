@@ -2,7 +2,6 @@ var schedule = require('node-schedule');
 var Event = require('../../models/event');
 var Claims = require('../../models/claims');
 var mailSender = require('../../services/mail/event-mail-sender');
-var claimDates = require('../../utils/claim-dates');
 var config = require('../../../config/config');
 
 function startScheduler (app) {
@@ -107,24 +106,6 @@ function sendReminderForWaitingStatus(app) {
       };
 
       mailSender.sendPaymentReminderMail(options);
-
-      //var dates = claimDates(claim);
-
-      // app.render('mails/payment-reminder', {
-      //   claim: claim,
-      //   appUrl: config.app.url,
-      //   endDate: dates.endDate.format('LLL'),
-      //   eventDate: dates.eventDate.format('LLL')
-      // }, function (err, mailText){
-      //   Mailer.sendMail({
-      //     from: Mailer.from,
-      //     to: claim.userData.email,
-      //     subject: 'Przypomnienie o rezerwacji',
-      //     html: mailText
-      //   });
-      // });
-
-
 
       Claims.update({
         _id: claim._id

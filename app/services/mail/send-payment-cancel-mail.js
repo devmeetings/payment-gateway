@@ -1,9 +1,11 @@
 'use strcit';
 
 var sendMail = require('./send-mail-with-mail-renderer');
+var claimDates = require('../../utils/claim-dates');
 
 module.exports = function sendPaymentCancelMail(options){
 
+    var dates = claimDates(options.claim);
     var mailConfig = {
         path: 'payment-cancel',
         lng: options.lng,
