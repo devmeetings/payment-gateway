@@ -5,7 +5,7 @@ var errors = require('domain').create();
 module.exports = function (router) {
   router.post('/events', function (req, res, next) {
         Country.findOne({
-          name: req.body.country.toLowerCase()
+          name_code: req.body.country.toLowerCase()
         }).exec(function (err, country) {
           if (err || !country) {
             res.status(404).send();
