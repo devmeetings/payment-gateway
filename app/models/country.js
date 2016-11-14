@@ -3,6 +3,7 @@ var Schema = mongoose.Schema;
 
 var CountrySchema = new Schema({
   name: String,
+  name_code: String,
   vatRate: Number,
   currency: String,
   code: String,
