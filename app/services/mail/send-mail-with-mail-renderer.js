@@ -1,6 +1,7 @@
 'user strict';
 
 var Mailer = require('./../../utils/mailer');
+var intercept = require('../../utils/intercept');
 var mailRenderer = require('./mail-renderer');
 
 module.exports = function sendMail (options) {
