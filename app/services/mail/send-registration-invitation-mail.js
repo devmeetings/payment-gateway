@@ -7,7 +7,7 @@ var config = require('../../../config/config');
 
 module.exports = function sendPaymentCancelMail(options){
     var dates = claimDates(options.claim);
-    var CLAIM_TIME = config.claim_time;
+    var LINK_TIME = 48 * 60 * 60 * 1000;
     var mailConfig = {
         path: 'registration-invitation',
         lng: options.lng,
@@ -15,7 +15,7 @@ module.exports = function sendPaymentCancelMail(options){
             EVENT_TITLE: options.claim.event.title,
             EVENT_CITY: options.claim.event.city,
             EVENT_DATE: dates.eventDate.format('LLL'),
-            END_DATE: moment(new Date(Date.now() + CLAIM_TIME)).format('LLL')
+            END_DATE: moment(new Date(Date.now() + LINK_TIME)).format('LLL')
         },
         title: 'Możliwość rejestracji na ' + options.claim.event.title,
         to: options.claim.userData.email,

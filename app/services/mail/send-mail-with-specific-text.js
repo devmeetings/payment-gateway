@@ -1,6 +1,7 @@
 'use strict';
 
 var Mailer = require('./../../utils/mailer');
+var intercept = require('../../utils/intercept');
 var Q = require('q');
 
 module.exports = function (mailText, userTo, title, next) {

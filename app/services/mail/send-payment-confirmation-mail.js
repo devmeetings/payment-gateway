@@ -34,31 +34,33 @@ module.exports = function sendPaymentConfirmationMail (options) {
     };
 
     sendMail(mailConfig);
+
+
+    function sendPaymentConfirmationMailToUser() {
+
+        var mailConfig = {
+            path: 'payment-confirmation-to-user',
+            lng: options.lng,
+            variables: {
+                AMOUNT: options.claim.amount,
+                CURRENCY: options.currency || 'zł',
+                USERNAME: options.claim.userData.names,
+                USER_EMAIL: options.claim.userData.email,
+                EVENT_TITLE: options.claim.event.title,
+                EVENT_CITY: options.claim.event.mail.city,
+                IF_INVOICE: options.invoiceNo ? true : false,
+                EVENT_DAY: dates.eventDate.format('LLL'),
+                INVOICE_NO: options.invoiceNo
+            },
+            title: 'Potwierdzenie płatności: ' + options.claim.amount + ' ' + (options.currency || 'zł'),
+            to: options.claim.userData.email,
+            noBcc: true,
+            attachments: attachments,
+            next: options.next,
+            cb: options.cb
+        };
+
+        sendMail(mailConfig);
+    }
 };
 
-function sendPaymentConfirmationMailToUser() {
-
-    var mailConfig = {
-        path: 'payment-confirmation-to-user',
-        lng: options.lng,
-        variables: {
-            AMOUNT: options.claim.amount,
-            CURRENCY: options.currency || 'zł',
-            USERNAME: options.claim.userData.names,
-            USER_EMAIL: options.claim.userData.email,
-            EVENT_TITLE: options.claim.event.title,
-            EVENT_CITY: options.claim.event.mail.city,
-            IF_INVOICE: options.invoiceNo ? true : false,
-            EVENT_DAY: dates.eventDate.format('LLL'),
-            INVOICE_NO: options.invoiceNo
-        },
-        title: 'Potwierdzenie płatności: ' + options.claim.amount + ' ' + (options.currency || 'zł'),
-        to: options.claim.userData.email,
-        noBcc: true,
-        attachments: attachments,
-        next: options.next,
-        cb: options.cb
-    };
-
-    sendMail(mailConfig);
-}

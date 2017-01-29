@@ -5,6 +5,7 @@ var intercept = require('../utils/intercept');
 var Settings = require('../models/settings');
 var InvoiceNo = require('../models/invoiceNo');
 var Claims = require('../models/claims');
+var Country = require('../models/country');
 var Q = require('q');
 var admin = require('./admin');
 var Payu = require('../../config/payu');
@@ -35,12 +36,14 @@ function createDefaultInvoicePrefixIfNotExist () {
     Settings.findOne({key: 'INVOICE_PREFIX'}, function (err, setting) {
         if (err) {
             defer.reject();
+            return;
         }
 
         if (!setting) {
             Settings.create({key: 'INVOICE_PREFIX', value: 'RDG/'}, function (err) {
                 if (err) {
                     defer.reject();
+                    return;
                 }
 
                 defer.resolve();
@@ -233,8 +236,24 @@ router.post('/claims/get/invoice/:mode/render', function (req, res, next) {
         invoiceTemplate = 'invoice/invoices';
         data = JSON.stringify(req.body);
     }
-    res.render(invoiceTemplate, {
-        data: data
+
+    Country.findOne({
+        _id: data.claim.event.country
+    }).exec(function (err, country) {
+        if (err) {
+            res.status(500).send('No country');
+            return;
+        }
+        var lng = (country && country.code) || 'pl';
+
+        req.i18n.changeLanguage(lng, function () {
+
+            res.render(invoiceTemplate, {
+                data: data
+            });
+
+            req.i18n.changeLanguage('pl');
+        });
     });
 });
 

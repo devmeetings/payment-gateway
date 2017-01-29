@@ -6,7 +6,7 @@ var languages = ['pl', 'en', 'de'];
 
 var config = {
   development: {
-    claim_time: 48 * 60 * 60 * 1000,
+    registration_claim_time: 15 * 60 * 1000,
     root: rootPath,
     redirectUrl:'http://fronteos.mydevil.net/projects/_test/devmeetings',
     app: {
@@ -21,7 +21,7 @@ var config = {
   },
 
   test: {
-    claim_time: 48 * 60 * 60 * 1000,
+    registration_claim_time: 15 * 60 * 1000,
     root: rootPath,
     redirectUrl:'http://fronteos.mydevil.net/projects/_test/devmeetings',
     app: {
@@ -36,7 +36,7 @@ var config = {
   },
 
   production: {
-    claim_time: 48 * 60 * 60 * 1000,
+    registration_claim_time: 15 * 60 * 1000,
     root: rootPath,
     redirectUrl:'http://devmeetings.com',
     app: {

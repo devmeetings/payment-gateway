@@ -45,5 +45,8 @@
       "contact": "If you have any problems please contact us at",
       "claimId": "Id your ticket"
     }
+  },
+  "invoice": {
+    "smallInfo" : "* TEST"
   }
 }

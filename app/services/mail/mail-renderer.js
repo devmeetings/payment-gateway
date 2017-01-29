@@ -15,6 +15,10 @@ module.exports = function (options, cb) {
     request(url, function (error, response, body) {
         if (!error && response.statusCode === 200) {
             var mailText = response.body;
+            if (!mailText) {
+                cb(error);
+                return;
+            }
             mailText = mailText.replace(/^[\s\uFEFF\xA0"]+|[\s\uFEFF\xA0"]+$/g, '');
             mailText = mailText.replace(/\\"/g, '"').replace(/\\\//g, '/').replace(/\\n/g, '');
             mailText = utf8Converter(mailText);
@@ -54,7 +58,13 @@ module.exports = function (options, cb) {
 
             });
 
-            cb(mailText);
+            cb(null,mailText);
+        }
+        else if (!error) {
+            cb(response.statusCode);
+        }
+        else {
+            cb(error);
         }
     });
 };

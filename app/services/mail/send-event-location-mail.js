@@ -7,14 +7,22 @@ var sendMailWithSpecificText = require('./send-mail-with-specific-text');
 var mailRenderer = require('./mail-renderer');
 var config = require('../../../config/config');
 var intercept = require('../../utils/intercept');
+var Event = require('../../models/event');
 
 module.exports = function sendEventLocationMail (options) {
+    if (options.claims.length === 0) {
+        return;
+    }
 
     var eventLocationConfig = {
-        path: 'event-mail-text/' + 949 //options.claim.event._id
+        path: 'event-mail-text/' + ((config.env === 'development') ? '977' : options.claims[0].event)
     };
 
-    mailRenderer(eventLocationConfig, function (mailText) {
+    mailRenderer(eventLocationConfig, function (error, mailText) {
+        if (error) {
+            options.cb();
+            return;
+        }
         var eventLocationExec = /%EVENT_LOCATION%([^%]*)%EVENT_LOCATION_END%/g.exec(mailText);
         var eventLocation = eventLocationExec && eventLocationExec.length === 2 ? eventLocationExec[1]: '';
 
@@ -58,7 +66,11 @@ function sendFullMail(options, eventLocation, eventDetails){
         next: options.next
     };
 
-    mailRenderer(mailConfig, function (mailText) {
+    mailRenderer(mailConfig, function (error, mailText) {
+        if (error || !mailText) {
+            options.cb();
+            return;
+        }
         if (isTestEmail) {
             sendMailWithSpecificText(mailText, 'lukaszewczak@gmail.com', mailTitle + ' - TEST', mailConfig.next).then(function () {
                 options.cb();
@@ -71,7 +83,7 @@ function sendFullMail(options, eventLocation, eventDetails){
             }
 
             Q.all(
-                claims.map(function (claim) {
+                options.claims.map(function (claim) {
                     return sendMailWithSpecificText(mailText, claim.userData.email, mailTitle, mailConfig.next);
                 }).concat(verificationEmails)
             ).then(function () {
@@ -82,12 +94,12 @@ function sendFullMail(options, eventLocation, eventDetails){
                 else {
 
                     Event.update({
-                        _id: eventId
+                        _id: event._id
                     },{
                         $set: {
                             'mail.sended': true
                         }
-                    }, intercept(next, function (isUpdated){
+                    }).exec(intercept(mailConfig.next, function (isUpdated){
                         options.cb();
                     }));
                 }

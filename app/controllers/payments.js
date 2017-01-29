@@ -23,11 +23,11 @@ module.exports = function (app) {
     app.use('/', router);
 };
 
-function generatePaymentConfirmation (req, res, next, claim, pmtDetails, cb) {
-    function sendMailWithPaymentConfirmation (claim, pmtDetails, file, invoiceNo, cb) {
+function generatePaymentConfirmation (req, res, next, claim, currency, cb) {
+    function sendMailWithPaymentConfirmation (claim, currency, file, invoiceNo, cb) {
         var options = {
             claim: claim,
-            currency: pmtDetails.transactions[0].amount.currency.toLowerCase(),
+            currency: currency,
             file: file,
             invoiceNo: invoiceNo,
             res: res,
@@ -42,7 +42,7 @@ function generatePaymentConfirmation (req, res, next, claim, pmtDetails, cb) {
     invoiceApi.getDataForExistingInvoice(claim, req).then(function (data) {
 
         if (claim.event.mail.sended) {
-            mailEventLocation.sendLocationMail(claim.event._id, claim._id, false, res, next, function () {
+            mailEventLocation.sendLocationMail(claim.event._id, claim._id, false, req, res, next, function () {
             });
         }
 
@@ -52,12 +52,12 @@ function generatePaymentConfirmation (req, res, next, claim, pmtDetails, cb) {
             var fullUrl = req.protocol + '://' + req.get('host') + '/admin/claims/get/invoice/single';
 
             invoiceApi.generateInvoice(fullUrl, data, function (file, invoiceNo) {
-                sendMailWithPaymentConfirmation(claim, pmtDetails, file, invoiceNo, cb);
+                sendMailWithPaymentConfirmation(claim, currency, file, invoiceNo, cb);
             });
         }
         else {
 
-            sendMailWithPaymentConfirmation(claim, pmtDetails, null, null, cb);
+            sendMailWithPaymentConfirmation(claim, currency, null, null, cb);
 
         }
 
@@ -88,9 +88,14 @@ router.post('/tickets/:claim/notify', function (req, res, next) {
             }
             // send mail with confirmation
             Claims.findById(claimId).populate('event').exec(intercept(next, function (claim) {
-                generatePaymentConfirmation(req, res, next, claim, function () {
-                    res.send(200);
+                var currency = order.currencyCode.toLowerCase();
+
+                req.i18n.changeLanguage('pl', function () {
+                    generatePaymentConfirmation(req, res, next, claim, currency, function () {
+                        res.send(200);
+                    });
                 });
+
             }));
         }));
     } else if (order.status === 'PENDING') {
@@ -479,7 +484,9 @@ function executePayPalPayment (req, res, next, pmtDetails, claim) {
 
             claim.status = Claims.STATUS.PAYED;
             claim.save(intercept(next, function () {
-                generatePaymentConfirmation(req, res, next, claim, pmtDetails, function () {
+                var currency = pmtDetails.transactions[0].amount.currency.toLowerCase();
+
+                generatePaymentConfirmation(req, res, next, claim, currency, function () {
                    res.redirect(config.app.url + '/events/' + req.params.id + '/tickets/' + req.params.claim);
                    console.log('----------------- WSYLANO Potwierdzenie Platnosi -------------------------');
                 });

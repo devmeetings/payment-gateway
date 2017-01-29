@@ -108,21 +108,24 @@ html(ng-app='diploma')
                     div
                         img.center-block(src="/img/logo.png")
                 .row
-                    p.text-center.f16x.mt96x Potwierdzamy uczestnictwo w DevMeetingu
+                    p.text-center.f16x.mt96x= t('diploma.confirmation')
                     p.text-center.fb.f32x.fcolor {{user.event.title}}
-                    p.text-center.f16x.mt59x Uczestnik:
+                    p.text-center.f16x.mt59x= t('diploma.participant')
+                        |:
                     p.text-center.fb.f32x.fcolor(style="color: #000090;") {{user.userData.names}}
                     p.text-center.f14x.mt59x
-                        strong Data:
-                        | &nbsp;!{eventStartDate}
+                        strong= t('diploma.date')
+                        |:&nbsp;!{eventStartDate}
                     p.text-center.fi.f14x.mt18x
-                        strong(ng-if="user.event.substantiveContent") Zawartość merytoryczna:
+                        strong(ng-if="user.event.substantiveContent")= t('diploma.substantiveContent')
                         | &nbsp;{{user.event.substantiveContent}}
 
                 .row.mt56x
                     div
                         img.center-block(src="/img/piotr_small_line.jpg", style="width:213px;")
-                    p.text-center.f13x.mt18x !{eventStartDate}, Piotr Zwoliński, Założyciel DevMeetings
+                    p.text-center.f13x.mt18x !{eventStartDate}, Piotr Zwoliński,&nbsp;
+                        span= t('diploma.devmeetingsFounder')
+
         append scripts
             script.
                 angular.module('diploma', []).controller('UsersCtrl', function ($scope) {

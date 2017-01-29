@@ -14,10 +14,39 @@
     "wednesday": "w najbliższą środę",
     "thursday": "w najbliższy czwartek",
     "friday": "w najbliższy piątek",
-    "saturday": "w najbliższż sobotę"
+    "saturday": "w najbliższą sobotę"
   },
   "invoice": {
-    "productName": "Nazwa produktu"
+    "productName": "Nazwa produktu",
+    "smallInfo" : "* Data dostawy rozumiana jest jako data dokonania lub zakończenia dostawy towarów/wykonania usług",
+    "dateOfInvoice": "Wystawiono dnia",
+    "cityOfInvoie": "Wrocław",
+    "invoiceNo": "Faktura VAT nr",
+    "deliveryDate": "Data dostawy*:",
+    "paymentMethod": "Sposób płatności:",
+    "dateOfPayment": "Termin płatności:",
+    "seller": "Sprzedawca:",
+    "sellerName": "Developers Peak Sp. z o. o.",
+    "sellerStreet": "ul. Rzeźnicza 28-31",
+    "sellerCity": "50-130 Wrocław",
+    "sellerNIP": "NIP 8971800894",
+    "buyer": "Nabywca:",
+    "buyerNIP": "NIP",
+    "lp": "Lp.",
+    "serviceName": "Nazwa produktu",
+    "quantity": "Ilość",
+    "unitOfMeasuer": "J.m.",
+    "amountNet": "Cena jedn. netto",
+    "valueNet": "Wartość netto",
+    "vatRate": "Stawka VAT",
+    "vatValue": "Kwota VAT",
+    "amountGross": "Wartość brutto",
+    "total": "Razem:",
+    "amountPayed": "Zapłacono:",
+    "amountStillToPay": "Pozostało do zapłaty:",
+    "bankAccount": "Konto bankowe:",
+    "noSignature": "Faktura bez podpisu odbiorcy",
+    "authorized": "Osoba upoważniona do wystawienia faktury VAT"
   },
   "ticket": {
     "alert": {
@@ -56,5 +85,12 @@
       "contact": "W razie jakichkolwiek problemów skontaktuj się z nami pod adresem",
       "claimId": "Id twojego biletu"
     }
+  },
+  "diploma": {
+    "confirmation": "Potwierdzamy uczestnictwo w DevMeetingu",
+    "participant": "Uczestnik",
+    "date": "Data",
+    "substantiveContent": "Zawartość merytoryczna",
+    "devmeetingsFounder": "Założyciel DevMeetings"
   }
 }
