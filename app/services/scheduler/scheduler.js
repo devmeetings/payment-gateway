@@ -4,9 +4,19 @@ var Country = require('../../models/country');
 var Claims = require('../../models/claims');
 var mailSender = require('../../services/mail/event-mail-sender');
 var config = require('../../../config/config');
+var downloadTranslations = require('../../utils/downloadTranslations');
 
 function startScheduler (app) {
     console.log('Start scheduler');
+
+    schedule.scheduleJob('*/2 * * * *', function () {
+        console.log('Translations update');
+        downloadTranslations(function() {
+            console.log('translations updated');
+        });
+    });
+
+
     schedule.scheduleJob('*/1 * * * *', function () {
         console.log('Scheduler step');
         setInvalidTicketsAsExpired();

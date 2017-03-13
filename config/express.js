@@ -43,7 +43,8 @@ module.exports = function (app, config, mongooseConnection) {
                 lookupSession: 'lng',
             },
             backend: {
-                loadPath: config.root + '/locales/{{lng}}/{{ns}}.json'
+                loadPath: config.root + '/locales/{{lng}}/{{ns}}.server.json',
+                addPath: config.root + '/locales/{{lng}}/{{ns}}.local.json',
             },
             lng: 'pl'
         });

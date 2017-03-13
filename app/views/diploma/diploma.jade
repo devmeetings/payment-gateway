@@ -108,23 +108,23 @@ html(ng-app='diploma')
                     div
                         img.center-block(src="/img/logo.png")
                 .row
-                    p.text-center.f16x.mt96x= t('diploma.confirmation')
+                    p.text-center.f16x.mt96x= t('diploma_confirmation')
                     p.text-center.fb.f32x.fcolor {{user.event.title}}
-                    p.text-center.f16x.mt59x= t('diploma.participant')
+                    p.text-center.f16x.mt59x= t('diploma_participant')
                         |:
                     p.text-center.fb.f32x.fcolor(style="color: #000090;") {{user.userData.names}}
                     p.text-center.f14x.mt59x
-                        strong= t('diploma.date')
+                        strong= t('diploma_date')
                         |:&nbsp;!{eventStartDate}
                     p.text-center.fi.f14x.mt18x
-                        strong(ng-if="user.event.substantiveContent")= t('diploma.substantiveContent')
+                        strong(ng-if="user.event.substantiveContent")= t('diploma_substantiveContent')
                         | &nbsp;{{user.event.substantiveContent}}
 
                 .row.mt56x
                     div
                         img.center-block(src="/img/piotr_small_line.jpg", style="width:213px;")
                     p.text-center.f13x.mt18x !{eventStartDate}, Piotr Zwoliński,&nbsp;
-                        span= t('diploma.devmeetingsFounder')
+                        span= t('diploma_devmeetingsFounder')
 
         append scripts
             script.

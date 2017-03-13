@@ -38,13 +38,13 @@ function sendFullMail(options, eventLocation, eventDetails){
     var isTestEmail = options.test;
     var event = options.claims[0].event;
     var eventDaysWeek = [
-        options.req.t('eventDaysWeek.sunday'),
-        options.req.t('eventDaysWeek.monday'),
-        options.req.t('eventDaysWeek.tuesday'),
-        options.req.t('eventDaysWeek.wednesday'),
-        options.req.t('eventDaysWeek.thursday'),
-        options.req.t('eventDaysWeek.friday'),
-        options.req.t('eventDaysWeek.saturday'),
+        options.req.t('eventDaysWeek_sunday'),
+        options.req.t('eventDaysWeek_monday'),
+        options.req.t('eventDaysWeek_tuesday'),
+        options.req.t('eventDaysWeek_wednesday'),
+        options.req.t('eventDaysWeek_thursday'),
+        options.req.t('eventDaysWeek_friday'),
+        options.req.t('eventDaysWeek_saturday'),
     ];
     var mailTitle = 'Szczegóły DevMeetingu ' + event.title;
     var verificationEmails = [];

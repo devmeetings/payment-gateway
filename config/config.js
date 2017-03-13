@@ -17,7 +17,8 @@ var config = {
     port: 3000,
     db: 'mongodb://localhost/payment-gateway-development',
     sentryDsn: false,
-    mailTemplateURL: 'http://fronteos.mydevil.net/projects/_test/devmeetings/wp-json/mail/'
+    mailTemplateURL: 'http://fronteos.mydevil.net/projects/_test/devmeetings/wp-json/mail/',
+    translateURL: 'http://fronteos.mydevil.net/projects/_test/devmeetings/wp-json/api/translate'
   },
 
   test: {
@@ -32,7 +33,8 @@ var config = {
     port: 3000,
     db: 'mongodb://localhost/payment-gateway-staging',
     sentryDsn: false,
-    mailTemplateURL: 'http://fronteos.mydevil.net/projects/_test/devmeetings/wp-json/mail/'
+    mailTemplateURL: 'http://fronteos.mydevil.net/projects/_test/devmeetings/wp-json/mail/',
+    translateURL: 'http://fronteos.mydevil.net/projects/_test/devmeetings/wp-json/api/translate'
   },
 
   production: {

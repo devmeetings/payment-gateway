@@ -53,25 +53,25 @@ body
            .belt
               img(src="/img/faktura_pasek.jpg")
            p.info
-            small= t('invoice.smallInfo')
+            small= t('invoice_smallInfo')
            .container
                .row
                   .col-xs-12
                      p.text-left
-                      small= t('invoice.dateOfInvoice')
+                      small= t('invoice_dateOfInvoice')
                          | &nbsp;#{data.invoice.dateOfInvoice},&nbsp;
-                         span= t('invoice.cityOfInvoie')
+                         span= t('invoice_cityOfInvoie')
                .row
                   .col-xs-5.col-xs-offset-7
                      p
-                        strong= t('invoice.invoiceNo')
+                        strong= t('invoice_invoiceNo')
                          span.invoice-no &nbsp;#{data.invoice.invoiceNo}
                      .row
-                        .col-xs-6= t('invoice.deliveryDate')
+                        .col-xs-6= t('invoice_deliveryDate')
                            |  <br/>
-                           span= t('invoice.paymentMethod')
+                           span= t('invoice_paymentMethod')
                            |  <br/>
-                           span= t('invoice.dateOfPayment')
+                           span= t('invoice_dateOfPayment')
                         .col-xs-6
                            | #{data.invoice.deliveryDate} <br/>
                            | #{data.paymentMethod} <br/>
@@ -80,39 +80,39 @@ body
                .row
                   .col-xs-7
                      p
-                        strong= t('invoice.seller')
+                        strong= t('invoice_seller')
                      .row
-                        .col-xs-12= t('invoice.sellerName')
+                        .col-xs-12= t('invoice_sellerName')
                            | <br/>
-                           span= t('invoice.sellerStreet')
+                           span= t('invoice_sellerStreet')
                            | <br/>
-                           span= t('invoice.sellerCity')
+                           span= t('invoice_sellerCity')
                            | <br/>
-                           span= t('invoice.sellerNIP')
+                           span= t('invoice_sellerNIP')
                   .col-xs-5
                      p
-                        strong= t('invoice.buyer')
+                        strong= t('invoice_buyer')
                      .row
                         .col-xs-12
                            | #{data.buyer.invoice.recipientName}<br/>
                            | #{data.buyer.invoice.street}<br/>
                            | #{data.buyer.invoice.postalCode} #{data.buyer.invoice.city}<br/>
-                           span= t('invoice.buyerNIP')
+                           span= t('invoice_buyerNIP')
                            |  #{data.buyer.invoice.tin}
            .container
               .row
                  .col-xs-12
                     table.table
                        tr
-                          th= t('invoice.lp')
-                          th= t('invoice.serviceName')
-                          th= t('invoice.quantity')
-                          th= t('invoice.unitOfMeasuer')
-                          th= t('invoice.amountNet')
-                          th= t('invoice.valueNet')
-                          th= t('invoice.vatRate')
-                          th= t('invoice.vatValue')
-                          th= t('invoice.amountGross')
+                          th= t('invoice_lp')
+                          th= t('invoice_serviceName')
+                          th= t('invoice_quantity')
+                          th= t('invoice_unitOfMeasuer')
+                          th= t('invoice_amountNet')
+                          th= t('invoice_valueNet')
+                          th= t('invoice_vatRate')
+                          th= t('invoice_vatValue')
+                          th= t('invoice_amountGross')
                        tr
                           td 1
                           td #{data.serviceName}
@@ -125,7 +125,7 @@ body
                           td #{data.invoice.amountGross} #{data.currencyCode}
                        tr
                           td.text-right(colspan=4)
-                              strong= t('invoice.total')
+                              strong= t('invoice_total')
                           td #{data.invoice.amountNet} #{data.currencyCode}
                           td #{data.invoice.amountNet} #{data.currencyCode}
                           td
@@ -137,20 +137,20 @@ body
                     .panel.panel-default
                        .panel-body
                           .row
-                             .col-xs-6= t('invoice.amountPayed')
+                             .col-xs-6= t('invoice_amountPayed')
                              .col-xs-6
                                 strong #{data.invoice.amountPayed} #{data.currencyCode}
                           .row
-                             .col-xs-6= t('invoice.amountStillToPay')
+                             .col-xs-6= t('invoice_amountStillToPay')
                              .col-xs-6
                                 strong #{data.invoice.amountStillToPay} #{data.currencyCode}
                           .row
-                             .col-xs-6= t('invoice.bankAccount')
+                             .col-xs-6= t('invoice_bankAccount')
                              .col-xs-6
                                 | mBank SA 43 1140 2004 0000 3702 7521 7540
                        .panel-body
                           .row
-                             .col-xs-6= t('invoice.noSignature')
-                             .col-xs-6= t('invoice.authorized')
+                             .col-xs-6= t('invoice_noSignature')
+                             .col-xs-6= t('invoice_authorized')
                                br
                                strong Piotr Zwoliński
