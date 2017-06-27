@@ -11,7 +11,7 @@ var config = require('../../config/config');
 
 
 module.exports = function (app) {
-    app.use('/admin', router);
+    //app.use('/admin', router);
 };
 
 router.use(admin.checkIfAdmin);
