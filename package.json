@@ -28,6 +28,8 @@
     "phantom": "^0.7.2",
     "q": "^1.3.0",
     "raven": "^0.8.1",
+    "request": "^2.81.0",
+    "sentence-tokenizer": "0.0.8",
     "serve-favicon": "~2.0.1",
     "superagent": "^0.21.0"
   },
@@ -41,7 +43,6 @@
     "grunt-jasmine-node": "^0.2.1",
     "grunt-jasmine-node-coffee": "^0.1.4",
     "load-grunt-tasks": "~0.6.0",
-    "request": "~2.36.0",
     "semistandard": "^7.0.2",
     "time-grunt": "~0.3.2"
   },

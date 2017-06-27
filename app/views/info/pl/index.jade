@@ -16,96 +16,95 @@ block content
     .container            
       .row.vertical-space-m
         h2.h3.centered Najbliższe warsztaty
+      - for (var i =0 ; i < events.length; i=i+2) {
+      - var firstEvent = events[i];
+      - var secondEvent = events[i+1];
       .workshop-holder.row.vertical-space-m
         .col-sm-6.col-xs-12
           .box
             .box-image
-              a(href='http://registration.devmeetings.com/events/es6-maj-krakow')
-                .workshop-img(style='background-image: url(/img/static/workshops/teaser1.png);' alt='')
-                  .workshop-inner
-                    img(src='/img/static/workshops/logo_es6.png' alt='')
-                    .workshop-subtitle(style='border-color: #f0da51') Dive into ECMAScript 2015 (ES6)
+              a(href='#{firstEvent.url}', target='_blank')
+                .workshop-img(style='background-image: url(#{firstEvent.logo.url});' alt='')
             .box-details
-              a(href='http://registration.devmeetings.com/events/es6-maj-krakow')
-                h3.h4 ECMA Script 6, Kraków
-              p
-                | Warsztaty poświęcone budowanie aplikacjie przy pomocy ECMA Script 6. Kierowane do osób znających JavaScript oraz programistów innych języków (java, php, ruby), którzy chcą od razu wskoczyć do aktualnej specyfikacji języka.
-              p
-                span.fa.fa-map-marker.fa-lg.fa-fw
-                | &nbsp;<strong>Kraków</strong>
-              p
-                span.fa.fa-calendar.fa-lg.fa-fw
-                | &nbsp; <strong>20 czerwca 2015</strong>
-              p.btn-holder
-                a.btn.btn-dev(href='http://registration.devmeetings.com/events/es6-maj-krakow') Rejestracja
-
+              a(href='#{firstEvent.url}', target='_blank')
+                h3.h4 #{firstEvent.name.text}
+              .row
+                .col-xs-8
+                  p
+                    | #{firstEvent.shortDescription}
+                .col-xs-4
+                  p
+                    span.fa.fa-calendar.fa-lg.fa-fw
+                    | &nbsp; <strong>#{firstEvent.startDateDesc}</strong>
+                  p.btn-holder
+                    a.btn.btn-dev(href='#{firstEvent.url}') Rejestracja
+        .col-sm-6.col-xs-12
+          - if (secondEvent) {
+          .box
+            .box-image
+              a(href='#{secondEvent.url}', target='_blank')
+                .workshop-img(style='background-image: url(#{secondEvent.logo.url});' alt='')
+            .box-details
+              a(href='#{secondEvent.url}', target='_blank')
+                h3.h4 #{secondEvent.name.text}
+              .row
+                .col-xs-8
+                  p
+                    | #{secondEvent.shortDescription}
+                .col-xs-4
+                  p
+                    span.fa.fa-calendar.fa-lg.fa-fw
+                    | &nbsp; <strong>#{secondEvent.startDateDesc}</strong>
+                  p.btn-holder
+                    a.btn.btn-dev(href='#{secondEvent.url}') Rejestracja
+          - }
+      - }
+    .container
+      .row.vertical-space-m
+        h2.h3.centered Warsztaty które się odbyły
+      - for (var i =0 ; i < endedEvents.length; i=i+2) {
+      - var firstEvent = endedEvents[i];
+      - var secondEvent = endedEvents[i+1];
+      .workshop-holder.row.vertical-space-m
         .col-sm-6.col-xs-12
           .box
             .box-image
-              a(href='http://devmeetings.pl/events/react-redux-wro')
-                .workshop-img(style='background-image: url(/img/static/workshops/teaser2.png);' alt='')
-                  .workshop-inner
-                    img(src='/img/static/workshops/logo_react.png' alt='')
-                    .workshop-subtitle(style='border-color: #62dafc') Efficient Webapps with React.js + Redux
+              a(href='#{firstEvent.url}', target='_blank')
+                .workshop-img(style='background-image: url(#{firstEvent.logo.url});' alt='')
             .box-details
-              a(href='http://devmeetings.pl/events/react-redux-wro')
-                h3.h4 React + Redux, Wrocław
-              p
-                | Warsztaty poświęcone budowanie aplikacjie przy pomocy ECMA Script 6. Kierowane do osób znających JavaScript oraz programistów innych języków (java, php, ruby), którzy chcą od razu wskoczyć do aktualnej specyfikacji języka.
-              p
-                span.fa.fa-map-marker.fa-lg.fa-fw
-                | &nbsp;<strong>Wrocław</strong>
-              p
-                span.fa.fa-calendar.fa-lg.fa-fw
-                | &nbsp; <strong>27 czerwca 2015</strong>
-              p.btn-holder
-                a.btn.btn-dev(href='http://devmeetings.pl/events/react-redux-wro') Rejestracja
-     
-      .workshop-holder.row
+              a(href='#{firstEvent.url}', target='_blank')
+                h3.h4 #{firstEvent.name.text}
+              .row
+                .col-xs-7
+                  p
+                    | #{firstEvent.shortDescription}
+                .col-xs-5
+                  p
+                    span.fa.fa-calendar.fa-lg.fa-fw
+                    | &nbsp; <strong>#{firstEvent.startDateDesc}</strong>
+                  p.btn-holder
+                    a.btn.btn-default(href='#{firstEvent.url}') Zobacz szczegóły
         .col-sm-6.col-xs-12
+          - if (secondEvent) {
           .box
             .box-image
-              a(href='http://devmeetings.pl/events/ionic-krk')
-                .workshop-img(style='background-image: url(/img/static/workshops/teaser3.png);' alt='')
-                  .workshop-inner
-                    img(src='/img/static/workshops/logo_ionic.png' alt='')
-                    .workshop-subtitle(style='border-color: #4e8ff7') Hybrid Apps with Ionic Framework
+              a(href='#{secondEvent.url}', target='_blank')
+                .workshop-img(style='background-image: url(#{secondEvent.logo.url});' alt='')
             .box-details
-              a(href='http://devmeetings.pl/events/ionic-krk')
-                h3.h4 Ionic Framework 6, Kraków
-              p
-                | Warsztaty poświęcone budowanie aplikacjie przy pomocy ECMA Script 6. Kierowane do osób znających JavaScript oraz programistów innych języków (java, php, ruby), którzy chcą od razu wskoczyć do aktualnej specyfikacji języka.
-              p
-                span.fa.fa-map-marker.fa-lg.fa-fw
-                | &nbsp;<strong>Kraków</strong>
-              p
-                span.fa.fa-calendar.fa-lg.fa-fw
-                | &nbsp; <strong>20 czerwca 2015</strong>
-              p.btn-holder
-                a.btn.btn-dev(href='http://devmeetings.pl/events/ionic-krk') Rejestracja
-
-        .col-sm-6.col-xs-12
-          .box
-            .box-image
-              a(href='http://devmeetings.pl/events/angular2-wawa')
-                .workshop-img(style='background-image: url(/img/static/workshops/teaser4.png);' alt='')
-                  .workshop-inner
-                    img(src='/img/static/workshops/logo_angular.png' alt='')
-                    .workshop-subtitle(style='border-color: #e23137') Modern Webapps with Angular 2
-            .box-details
-              a(href='http://devmeetings.pl/events/angular2-wawa')
-                h3.h4 Angular 2, Warszawa
-              p
-                | Warsztaty poświęcone budowanie aplikacjie przy pomocy ECMA Script 6. Kierowane do osób znających JavaScript oraz programistów innych języków (java, php, ruby), którzy chcą od razu wskoczyć do aktualnej specyfikacji języka.
-              p
-                span.fa.fa-map-marker.fa-lg.fa-fw
-                | &nbsp;<strong>Warszawa</strong>
-              p
-                span.fa.fa-calendar.fa-lg.fa-fw
-                | &nbsp; <strong>27 czerwca 2015</strong>
-              p.btn-holder
-                a.btn.btn-dev(href='http://devmeetings.pl/events/angular2-wawa') Rejestracja
-
+              a(href='#{secondEvent.url}', target='_blank')
+                h3.h4 #{secondEvent.name.text}
+              .row
+                .col-xs-7
+                  p
+                    | #{secondEvent.shortDescription}
+                .col-xs-5
+                  p
+                    span.fa.fa-calendar.fa-lg.fa-fw
+                    | &nbsp; <strong>#{secondEvent.startDateDesc}</strong>
+                  p.btn-holder
+                    a.btn.btn-default(href='#{secondEvent.url}') Zobacz szczegóły
+          - }
+      - }
     .container-light-gray
       .container
         h2.h3.centered.vertical-space-m Opinie uczestników.

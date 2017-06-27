@@ -13,99 +13,98 @@ block content
           .col-md-8.col-md-offset-2
             .videos 
               <iframe width="854" height="510" src="https://www.youtube.com/embed/t4zh2gII5J8" allowfullscreen></iframe>
-    .container            
-      .row.vertical-space-m
-        h2.h3.centered Nächste Themen
-      .workshop-holder.row.vertical-space-m
-        .col-sm-6.col-xs-12
-          .box
-            .box-image
-              a(href='/de/info/ecmaScript6')
-                .workshop-img(style='background-image: url(/img/static/workshops/teaser1.png);' alt='')
-                  .workshop-inner
-                    img(src='/img/static/workshops/logo_es6.png' alt='')
-                    .workshop-subtitle(style='border-color: #f0da51') Dive into ECMAScript 2015 (ES6)
-            .box-details
-              a(href='/de/info/ecmaScript6')
-                h3.h4 ECMAScript 2015 (ES6)
-              p
-                | Ein Workshop zur Erstellung von Apps mit Hilfe von ECMAScript 6. Ideal für Entwickler mit Kenntnissen in JavaScript, Java, PHP oder Ruby, die sofort in die neue Spachspezifikation einsteigen wollen.
-              p
-                span.fa.fa-map-marker.fa-lg.fa-fw
-                | &nbsp;<strong>Kraków</strong>
-              p
-                span.fa.fa-calendar.fa-lg.fa-fw
-                | &nbsp; <strong>20. Juni 2015</strong>
-              p.btn-holder
-                a.btn.btn-dev(href='/de/info/ecmaScript6') Anmelden!
-
-        .col-sm-6.col-xs-12
-          .box
-            .box-image
-              a(href='/de/info/react')
-                .workshop-img(style='background-image: url(/img/static/workshops/teaser2.png);' alt='')
-                  .workshop-inner
-                    img(src='/img/static/workshops/logo_react.png' alt='')
-                    .workshop-subtitle(style='border-color: #62dafc') Efficient Webapps with React.js + Redux
-            .box-details
-              a(href='/de/info/react')
-                h3.h4 Effiziente Webapps mit React.js + Redux
-              p
-                | Ganztägiger Workshop zum Thema React.js im Zusammenspiel mit Redux (Implementierung des DI-Containers). Lerne die immer populärer werdende Facebook-Bibliothek kennen und lerne effiziente Single-Page Webapps zu erstellen.
-              p
-                span.fa.fa-map-marker.fa-lg.fa-fw
-                | &nbsp;<strong>Kraków</strong>
-              p
-                span.fa.fa-calendar.fa-lg.fa-fw
-                | &nbsp; <strong>20. Juni 2015</strong>
-              p.btn-holder
-                a.btn.btn-dev(href='/de/info/react') Anmelden!
-     
-      .workshop-holder.row
-        .col-sm-6.col-xs-12
-          .box
-            .box-image
-              a(href='/de/info/ionic')
-                .workshop-img(style='background-image: url(/img/static/workshops/teaser3.png);' alt='')
-                  .workshop-inner
-                    img(src='/img/static/workshops/logo_ionic.png' alt='')
-                    .workshop-subtitle(style='border-color: #4e8ff7') Hybrid Apps with Ionic Framework
-            .box-details
-              a(href='/de/info/ionic')
-                h3.h4 Hybrid-Apps mit dem Ionic Framework
-              p
-                | Workshop über die Erstellung von hybriden Mobile-Apps mit dem Ionic Framework. Lerne u.a. das SDK, die Erstellung eines User Interfaces, sowie den Zugriff zu den Hardware-Ressourcen mobiler Endgeräte kennen.
-              p
-                span.fa.fa-map-marker.fa-lg.fa-fw
-                | &nbsp;<strong>Kraków</strong>
-              p
-                span.fa.fa-calendar.fa-lg.fa-fw
-                | &nbsp; <strong>20. Juni 2015</strong>
-              p.btn-holder
-                a.btn.btn-dev(href='/de/info/ionic') Anmelden!
-
-        .col-sm-6.col-xs-12
-          .box
-            .box-image
-              a(href='/de/info/angular-2')
-                .workshop-img(style='background-image: url(/img/static/workshops/teaser4.png);' alt='')
-                  .workshop-inner
-                    img(src='/img/static/workshops/logo_angular.png' alt='')
-                    .workshop-subtitle(style='border-color: #e23137') Moderne Webapps mit Angular 2
-            .box-details
-              a(href='/de/info/angular-2')
-                h3.h4 Teaser Angular 2
-              p
-                | Obwohl Angular 2 noch in der Beta-Phase steckt, nutzen es immer mehr Entwickler bereits produktiv. Lerne in unserem Workshop die Vorteile der neuen Version kennen.
-              p
-                span.fa.fa-map-marker.fa-lg.fa-fw
-                | &nbsp;<strong>Kraków</strong>
-              p
-                span.fa.fa-calendar.fa-lg.fa-fw
-                | &nbsp; <strong>20. Juni 2015</strong>
-              p.btn-holder
-                a.btn.btn-dev(href='/de/info/angular-2') Anmelden!
-
+  .container
+    .row.vertical-space-m
+      h2.h3.centered Nächste Themen
+    - for (var i =0 ; i < events.length; i=i+2) {
+    - var firstEvent = events[i];
+    - var secondEvent = events[i+1];
+    .workshop-holder.row.vertical-space-m
+      .col-sm-6.col-xs-12
+        .box
+          .box-image
+            a(href='#{firstEvent.url}', target='_blank')
+              .workshop-img(style='background-image: url(#{firstEvent.logo.url});' alt='')
+          .box-details
+            a(href='#{firstEvent.url}', target='_blank')
+              h3.h4 #{firstEvent.name.text}
+            .row
+              .col-xs-8
+                p
+                  | #{firstEvent.shortDescription}
+              .col-xs-4
+                p
+                  span.fa.fa-calendar.fa-lg.fa-fw
+                  | &nbsp; <strong>#{firstEvent.startDateDesc}</strong>
+                p.btn-holder
+                  a.btn.btn-dev(href='#{firstEvent.url}') Anmelden!
+      .col-sm-6.col-xs-12
+        - if (secondEvent) {
+        .box
+          .box-image
+            a(href='#{secondEvent.url}', target='_blank')
+              .workshop-img(style='background-image: url(#{secondEvent.logo.url});' alt='')
+          .box-details
+            a(href='#{secondEvent.url}', target='_blank')
+              h3.h4 #{secondEvent.name.text}
+            .row
+              .col-xs-8
+                p
+                  | #{secondEvent.shortDescription}
+              .col-xs-4
+                p
+                  span.fa.fa-calendar.fa-lg.fa-fw
+                  | &nbsp; <strong>#{secondEvent.startDateDesc}</strong>
+                p.btn-holder
+                  a.btn.btn-dev(href='#{secondEvent.url}') Anmelden!
+        - }
+    - }
+  .container
+    .row.vertical-space-m
+      h2.h3.centered Der Workshop stattfand
+    - for (var i =0 ; i < endedEvents.length; i=i+2) {
+    - var firstEvent = endedEvents[i];
+    - var secondEvent = endedEvents[i+1];
+    .workshop-holder.row.vertical-space-m
+      .col-sm-6.col-xs-12
+        .box
+          .box-image
+            a(href='#{firstEvent.url}', target='_blank')
+              .workshop-img(style='background-image: url(#{firstEvent.logo.url});' alt='')
+          .box-details
+            a(href='#{firstEvent.url}', target='_blank')
+              h3.h4 #{firstEvent.name.text}
+            .row
+              .col-xs-7
+                p
+                  | #{firstEvent.shortDescription}
+              .col-xs-5
+                p
+                  span.fa.fa-calendar.fa-lg.fa-fw
+                  | &nbsp; <strong>#{firstEvent.startDateDesc}</strong>
+                p.btn-holder
+                  a.btn.btn-default(href='#{firstEvent.url}') Details
+      .col-sm-6.col-xs-12
+        - if (secondEvent) {
+        .box
+          .box-image
+            a(href='#{secondEvent.url}', target='_blank')
+              .workshop-img(style='background-image: url(#{secondEvent.logo.url});' alt='')
+          .box-details
+            a(href='#{secondEvent.url}', target='_blank')
+              h3.h4 #{secondEvent.name.text}
+            .row
+              .col-xs-7
+                p
+                  | #{secondEvent.shortDescription}
+              .col-xs-5
+                p
+                  span.fa.fa-calendar.fa-lg.fa-fw
+                  | &nbsp; <strong>#{secondEvent.startDateDesc}</strong>
+                p.btn-holder
+                  a.btn.btn-default(href='#{secondEvent.url}') Details
+        - }
+    - }
     .container-light-gray
       .container
         h2.h3.centered.vertical-space-m Feedback der Teilnehmer

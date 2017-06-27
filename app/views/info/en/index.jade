@@ -5,107 +5,106 @@ block content
   .container-full
     .container-light-gray
       .container.container-heading
-        h1.h3.centered.vertical-space-m.text-thin DevMeetings: 
-          strong workshops 
+        h1.h3.centered.vertical-space-m.text-thin DevMeetings:
+          strong workshops
           | for passionate software developers.
         p.h5.centered.text-thin Offered in <strong>Pay What You Want</strong> model.
         .workshop-holder.vertical-space-m
           .col-md-8.col-md-offset-2
-            .videos 
+            .videos
               <iframe width="854" height="510" src="https://www.youtube.com/embed/De17BOe1GnE?rel=0" allowfullscreen></iframe>
-    .container            
+    .container
       .row.vertical-space-m
         h2.h3.centered Upcoming workshops
+      - for (var i =0 ; i < events.length; i=i+2) {
+      - var firstEvent = events[i];
+      - var secondEvent = events[i+1];
       .workshop-holder.row.vertical-space-m
         .col-sm-6.col-xs-12
           .box
             .box-image
-              a(href='/en/info/ecmaScript6')
-                .workshop-img(style='background-image: url(/img/static/workshops/teaser1.png);' alt='')
-                  .workshop-inner
-                    img(src='/img/static/workshops/logo_es6.png' alt='')
-                    .workshop-subtitle(style='border-color: #f0da51') Dive into ECMAScript 2015 (ES6)
+              a(href='#{firstEvent.url}', target='_blank')
+                .workshop-img(style='background-image: url(#{firstEvent.logo.url});' alt='')
             .box-details
-              a(href='/en/info/ecmaScript6')
-                h3.h4 Teaser ES6
-              p
-                | The workshops are dedicated to the creation of application with the help of ECMA Script 6. It is directed at people knowledgeable about JavaScript as well as programmers of other languages (java, php, ruby), who want to immediately enter the current language specification. 
-              p
-                span.fa.fa-map-marker.fa-lg.fa-fw
-                | &nbsp;<strong>Kraków</strong>
-              p
-                span.fa.fa-calendar.fa-lg.fa-fw
-                | &nbsp; <strong>20th of June 2015</strong>
-              p.btn-holder
-                a.btn.btn-dev(href='/en/info/ecmaScript6') Register
-
+              a(href='#{firstEvent.url}', target='_blank')
+                h3.h4 #{firstEvent.name.text}
+              .row
+                .col-xs-8
+                  p
+                    | #{firstEvent.shortDescription}
+                .col-xs-4
+                  p
+                    span.fa.fa-calendar.fa-lg.fa-fw
+                    | &nbsp; <strong>#{firstEvent.startDateDesc}</strong>
+                  p.btn-holder
+                    a.btn.btn-dev(href='#{firstEvent.url}') Register
         .col-sm-6.col-xs-12
+          - if (secondEvent) {
           .box
             .box-image
-              a(href='/en/info/react')
-                .workshop-img(style='background-image: url(/img/static/workshops/teaser2.png);' alt='')
-                  .workshop-inner
-                    img(src='/img/static/workshops/logo_react.png' alt='')
-                    .workshop-subtitle(style='border-color: #62dafc') Efficient Webapps with React.js + Redux
+              a(href='#{secondEvent.url}', target='_blank')
+                .workshop-img(style='background-image: url(#{secondEvent.logo.url});' alt='')
             .box-details
-              a(href='/en/info/react')
-                h3.h4 Teaser React
-              p
-                | All-day workshops of the React library, together with Redux, as an implementation of the state container. Discover the Facebook library, which allows for the creation of efficient applications of the Singe Page Apps type, which gains more and more popularity. 
-              p
-                span.fa.fa-map-marker.fa-lg.fa-fw
-                | &nbsp;<strong>Kraków</strong>
-              p
-                span.fa.fa-calendar.fa-lg.fa-fw
-                | &nbsp; <strong>20th of June 2015</strong>
-              p.btn-holder
-                a.btn.btn-dev(href='/en/info/react') Register
-     
-      .workshop-holder.row
-        .col-sm-6.col-xs-12
-          .box
-            .box-image
-              a(href='/en/info/ionic')
-                .workshop-img(style='background-image: url(/img/static/workshops/teaser3.png);' alt='')
-                  .workshop-inner
-                    img(src='/img/static/workshops/logo_ionic.png' alt='')
-                    .workshop-subtitle(style='border-color: #4e8ff7') Hybrid Apps with Ionic Framework
-            .box-details
-              a(href='/en/info/ionic')
-                h3.h4 Teaser Ionic
-              p
-                | Workshops with Ionic Framework, which allows for the creation of mobile hybrid applications based on JS. During the workshops, you will get to know the SDK, creation aspects of the user interface, as well as an opportunity to access the mobile device’s resources.  
-              p
-                span.fa.fa-map-marker.fa-lg.fa-fw
-                | &nbsp;<strong>Kraków</strong>
-              p
-                span.fa.fa-calendar.fa-lg.fa-fw
-                | &nbsp; <strong>20th of June 2015</strong>
-              p.btn-holder
-                a.btn.btn-dev(href='/en/info/ionic') Register
-
-        .col-sm-6.col-xs-12
-          .box
-            .box-image
-              a(href='/en/info/angular-2')
-                .workshop-img(style='background-image: url(/img/static/workshops/teaser4.png);' alt='')
-                  .workshop-inner
-                    img(src='/img/static/workshops/logo_angular.png' alt='')
-                    .workshop-subtitle(style='border-color: #e23137') Modern Webapps with Angular 2
-            .box-details
-              a(href='/en/info/angular-2')
-                h3.h4 Teaser Angular 2
-              p
-                | Angular 2 is still in its beta state, but more and more developer teams use it for production purposes. We are inviting you for all-day workshops with Angular 2, together with TypeScript and ES2015.
-              p
-                span.fa.fa-map-marker.fa-lg.fa-fw
-                | &nbsp;<strong>Kraków</strong>
-              p
-                span.fa.fa-calendar.fa-lg.fa-fw
-                | &nbsp; <strong>20th of June 2015</strong>
-              p.btn-holder
-                a.btn.btn-dev(href='/en/info/angular-2') Register
-
+              a(href='#{secondEvent.url}', target='_blank')
+                h3.h4 #{secondEvent.name.text}
+              .row
+                .col-xs-8
+                  p
+                    | #{secondEvent.shortDescription}
+                .col-xs-4
+                  p
+                    span.fa.fa-calendar.fa-lg.fa-fw
+                    | &nbsp; <strong>#{secondEvent.startDateDesc}</strong>
+                  p.btn-holder
+                    a.btn.btn-dev(href='#{secondEvent.url}') Register
+          - }
+      - }
+    .container
+        .row.vertical-space-m
+            h2.h3.centered Workshops that took place
+        - for (var i =0 ; i < endedEvents.length; i=i+2) {
+        - var firstEvent = endedEvents[i];
+        - var secondEvent = endedEvents[i+1];
+        .workshop-holder.row.vertical-space-m
+            .col-sm-6.col-xs-12
+                .box
+                    .box-image
+                        a(href='#{firstEvent.url}', target='_blank')
+                            .workshop-img(style='background-image: url(#{firstEvent.logo.url});' alt='')
+                    .box-details
+                        a(href='#{firstEvent.url}', target='_blank')
+                            h3.h4 #{firstEvent.name.text}
+                        .row
+                            .col-xs-7
+                                p
+                                    | #{firstEvent.shortDescription}
+                            .col-xs-5
+                                p
+                                    span.fa.fa-calendar.fa-lg.fa-fw
+                                    | &nbsp; <strong>#{firstEvent.startDateDesc}</strong>
+                                p.btn-holder
+                                    a.btn.btn-default(href='#{firstEvent.url}') Details
+            .col-sm-6.col-xs-12
+                - if (secondEvent) {
+                .box
+                    .box-image
+                        a(href='#{secondEvent.url}', target='_blank')
+                            .workshop-img(style='background-image: url(#{secondEvent.logo.url});' alt='')
+                    .box-details
+                        a(href='#{secondEvent.url}', target='_blank')
+                            h3.h4 #{secondEvent.name.text}
+                        .row
+                            .col-xs-7
+                                p
+                                    | #{secondEvent.shortDescription}
+                            .col-xs-5
+                                p
+                                    span.fa.fa-calendar.fa-lg.fa-fw
+                                    | &nbsp; <strong>#{secondEvent.startDateDesc}</strong>
+                                p.btn-holder
+                                    a.btn.btn-default(href='#{secondEvent.url}') Details
+                - }
+        - }
     .container-light-gray
       .container
         h2.h3.centered.vertical-space-m Testimonials
@@ -141,7 +140,7 @@ block content
                     strong Tony H.
                   br
                   strong AngularJS, Oslo, Norway
-                  
+
         .opinions-holder.row.vertical-space-s
           .opinions-col
             .col-md-1.col-xs-2
@@ -173,13 +172,13 @@ block content
                     strong Paul S.
                   br
                   strong AngularJS, Oslo, Norway
-        .vertical-space-m  
+        .vertical-space-m
     .container
       .container
         .sub-footer-holder.row.vertical-space-m
           .col-md-4.col-sm-4
             h5
-              img(src='/img/icon_pixels.png' alt='') 
+              img(src='/img/icon_pixels.png' alt='')
               | About DevMeetings
             p
               | DevMeetings is a full-day workshop – prepared by programmers with a passion. Since 2011, we have held more than 30 meetings, from Server-Side JavaScript through implementation of games in JavaScript to Responsive Web Design.
@@ -187,7 +186,7 @@ block content
               a(href='/en/info/about_devmeetings') More about DevMeetings >
           .col-md-4.col-sm-4
             h5
-              img(src='/img/icon_pixels.png' alt='') 
+              img(src='/img/icon_pixels.png' alt='')
               | Pay What You Want
             p
               | The main idea of DevMeetings is to maximise availability of trainings. This is why we decided on the "Pay What You Want" model – you can take part completely free of charge or support the initiative by paying registration fee.
@@ -195,7 +194,7 @@ block content
               a(href='/en/info/pwyw') More about Pay What You Want >
           .col-md-4.col-sm-4
             h5
-              img(src='/img/icon_pixels.png' alt='') 
+              img(src='/img/icon_pixels.png' alt='')
               | Collaboration
             p
               | We are looking for speakers, sponsors and people who want to help with the organization of the meetings. Write to us if you want to support our initiative.
