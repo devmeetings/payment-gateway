@@ -10,7 +10,7 @@ var Payu = require('../../config/payu');
 var config = require('../../config/config');
 
 module.exports = function (app) {
-  app.use('/admin', router);
+  //app.use('/admin', router);
 };
 
 function checkIfAdmin (req, res, next) {
