@@ -16,7 +16,7 @@ var claimDates = require('../utils/claim-dates');
 moment.locale('pl');
 
 module.exports = function (app) {
-    app.use('/', router);
+    //app.use('/', router);
 };
 
 router.post('/tickets/:claim/notify', function (req, res, next) {
