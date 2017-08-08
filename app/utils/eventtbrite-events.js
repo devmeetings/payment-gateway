@@ -8,7 +8,7 @@ var cachedData = {};
 var lastCache;
 
 const options = {
-    url: 'https://www.eventbriteapi.com/v3/users/me/owned_events/?status=live,started,ended',
+    url: 'https://www.eventbriteapi.com/v3/users/me/owned_events/?order_by=created_desc&status=live,started,ended',
     headers: {
         'Authorization': 'Bearer ' + config.eventbrite
     }
