@@ -20,8 +20,8 @@ server {
   listen 80;
   {% if server_name == 'registration.devmeetings.com' %}
   server_name {{ server_name }} devmeetings.com devmeetings.pl devmeetings.org devmeetings.de *.devmeetings.com *.devmeetings.pl *.devmeetings.org *.devmeetings.de;
-  if ($closest_server != $host) {
-    rewrite ^ $scheme://$closest_server$request_uri break;
+  if ($http_host != devmeetings.org) {
+    rewrite ^ $scheme://devmeetings.org$request_uri break;
   }
   {% else %}
   server_name {{ server_name }};
@@ -44,16 +44,6 @@ server {
   }
 
   location = / {
-
-    {% if server_name == 'registration.devmeetings.com' %}
-    if ($http_host = devmeetings.com) {
-      rewrite / http://devmeetings.com/en;
-    }
-    if ($http_host = devmeetings.de) {
-      rewrite / http://devmeetings.de/de;
-    }
-    {% endif %}
-
     proxy_pass http://{{ server_id }};
     proxy_set_header Host      $host;
     proxy_set_header X-Real-IP $remote_addr;
