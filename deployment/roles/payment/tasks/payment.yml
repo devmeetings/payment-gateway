@@ -43,23 +43,22 @@
     path: "/srv/{{ server_name }}/"
 
 - name: Run On Startup
-  command: pm2 startup -u payments && mv /etc/init.d/pm2-init.sh /etc/init.d/pm2-{{ server_id }}.sh
+  command: pm2 startup -u payments --hp /srv/{{ server_name }}
   args:
-    creates: "/etc/init.d/pm2-{{ server_id }}.sh"
     chdir: "/srv/{{ server_name }}"
 
 - name: delete existing pm2 processes if running
   command: "pm2 delete {{ server_id }}"
   ignore_errors: True
-  sudo: yes
-  sudo_user: payments
+  become: yes
+  become_user: payments
 
 - name: start pm2 process
   command: 'pm2 start --name "{{ server_id }}" app.js'
   args:
     chdir: "/srv/{{ server_name }}"
-  sudo: yes
-  sudo_user: payments
+  become: yes
+  become_user: payments
   environment:
     NODE_ENV: "{{payments_env}}"
     PORT: "{{payments_port}}"

@@ -1,2 +1,3 @@
 [payment]
-root@xplatform.org server_name=registration.devmeetings.com server_id=payments payments_port=6500 payments_env=production
+# root@xplatform.org server_name=registration.devmeetings.com server_id=payments payments_port=6500 payments_env=production
+138.201.178.165 ansible_ssh_user=root server_name=registration.devmeetings.com server_id=payments payments_port=6500 payments_env=production

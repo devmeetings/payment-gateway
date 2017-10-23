@@ -1,5 +1,5 @@
 ---
-- include: nodejs.yml
+# - include: nodejs.yml
 - include: mongodb.yml
 - include: nginx.yml
 - include: payment.yml
