@@ -1,3 +1,3 @@
 [payment]
 #root@xplatform.org server_name=reg-test.devmeetings.com server_id=payments_test payments_port=6700 payments_env=test
-138.201.178.165 ansible_ssh_user=root server_name=reg-test.devmeetings.com server_id=payments_test payments_port=6700 payments_env=test
+138.201.178.165:2255 ansible_ssh_user=root server_name=reg-test.devmeetings.com server_id=payments_test payments_port=6700 payments_env=test
