@@ -1,25 +1,24 @@
 ---
-- name: NodeJS | Install ppa key
-  apt_key: id=C7917B12 url=http://keyserver.ubuntu.com:11371/pks/lookup?op=get&search=0xB9316A7BC7917B12 state=present
+- name: NodeJS | Add sources
+  command: curl -sL https://deb.nodesource.com/setup_6.x -o /tmp/nodesource_setup.sh
+  args:
+    creates: /tmp/nodesource_setup.sh
 
-- name: NodeJS | Install PPA
-  apt_repository: 
-    repo: "ppa:chris-lea/node.js"
+- name: NodeJS | Install
+  command: bash /tmp/nodesource_setup.sh
 
 - name: NodeJS | Install package
   apt: name=nodejs state=installed
 
-- name: NodeJS | Tools
-  npm: 
+- name: NodeJS | Tools | PM2
+  npm:
     name: pm2
+    global: yes
+
+- name: NodeJS | Tools | Yarn
+  npm:
+    name: yarn
     global: yes
 
 - name: Ensuring build essential
   apt: name=build-essential
-
-- name: NodeJS | PhantomJs
-  npm:
-    name: phantomjs
-    global: yes
-
-
