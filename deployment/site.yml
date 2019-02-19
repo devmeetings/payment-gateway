@@ -1,7 +1,6 @@
 ---
 - hosts: payment
   vars:
-    payments_version: 'lastSuccessfulBuild'
-    payments_job: 'Payments'
+    payments_job: 'payment-gateway'
   roles:
     - payment
