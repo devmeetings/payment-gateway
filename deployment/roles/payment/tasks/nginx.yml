@@ -9,34 +9,34 @@
     pkg: geoip-database
     state: present
 
-- name: Nginx | More GEOIP
-  file:
-    path: /etc/nginx/geoip
-    state: directory
-    mode: 0755
-
-- name: Nginx | Fetch GEOIP
-  get_url:
-    url: http://geolite.maxmind.com/download/geoip/database/GeoLiteCountry/GeoIP.dat.gz
-    dest: /etc/nginx/geoip/
-
-- name: Nginx | Fetch GEOIP City
-  get_url:
-    url: http://geolite.maxmind.com/download/geoip/database/GeoLiteCity.dat.gz
-    dest: /etc/nginx/geoip/
-
-- name: Nginx | Unpack GeoIP
-  command: gunzip ./GeoIP.dat.gz
-  args:
-    chdir: /etc/nginx/geoip
-    creates: /etc/nginx/geoip/GeoIP.dat
-
-- name: Nginx | Unpack GeoLiteCity
-  command: gunzip ./GeoLiteCity.dat.gz
-  args:
-    chdir: /etc/nginx/geoip
-    creates: /etc/nginx/geoip/GeoLiteCity.dat
-
+# - name: Nginx | More GEOIP
+#   file:
+#     path: /etc/nginx/geoip
+#     state: directory
+#     mode: 0755
+#
+# - name: Nginx | Fetch GEOIP
+#   get_url:
+#     url: http://geolite.maxmind.com/download/geoip/database/GeoLiteCountry/GeoIP.dat.gz
+#     dest: /etc/nginx/geoip/
+#
+# - name: Nginx | Fetch GEOIP City
+#   get_url:
+#     url: http://geolite.maxmind.com/download/geoip/database/GeoLiteCity.dat.gz
+#     dest: /etc/nginx/geoip/
+#
+# - name: Nginx | Unpack GeoIP
+#   command: gunzip ./GeoIP.dat.gz
+#   args:
+#     chdir: /etc/nginx/geoip
+#     creates: /etc/nginx/geoip/GeoIP.dat
+#
+# - name: Nginx | Unpack GeoLiteCity
+#   command: gunzip ./GeoLiteCity.dat.gz
+#   args:
+#     chdir: /etc/nginx/geoip
+#     creates: /etc/nginx/geoip/GeoLiteCity.dat
+#
 - name: Nginx | Copying site
   template:
     src: nginx.config.tpl
